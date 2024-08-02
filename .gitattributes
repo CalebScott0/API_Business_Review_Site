@@ -7,3 +7,4 @@ yelp_dataset/review_data/dataset_review_page1.json filter=lfs diff=lfs merge=lfs
 yelp_dataset/review_data/dataset_review_page2.json filter=lfs diff=lfs merge=lfs -text
 yelp_dataset/review_data/dataset_review_page3.json filter=lfs diff=lfs merge=lfs -text
 yelp_dataset/review_data/dataset_review_page4.json filter=lfs diff=lfs merge=lfs -text
+yelp_dataset/review_data/dataset_review_page5.json filter=lfs diff=lfs merge=lfs -text
