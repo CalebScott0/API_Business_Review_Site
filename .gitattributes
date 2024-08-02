@@ -1,3 +1,4 @@
 yelp_dataset/dataset_business.json filter=lfs diff=lfs merge=lfs -text
 yelp_dataset/user_data/dataset_user_page1.json filter=lfs diff=lfs merge=lfs -text
 yelp_dataset/user_data/dataset_user_page2.json filter=lfs diff=lfs merge=lfs -text
+yelp_dataset/user_data/dataset_user_page3.json filter=lfs diff=lfs merge=lfs -text
