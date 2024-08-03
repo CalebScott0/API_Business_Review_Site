@@ -1,3 +1,4 @@
-const { array } = require("./dataset_business");
+const { businesses_array } = require("./dataset_business");
 
-console.log(array[1]);
+console.log(businesses_array[0].name, businesses_array[0]);
+console.log(businesses_array[68].name, businesses_array[68]);
