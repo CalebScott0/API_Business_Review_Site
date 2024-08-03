@@ -14,20 +14,19 @@ datasource db {
 }
 
 model Business {
-  business_id  String              @id @db.VarChar(22)
-  name         String              @unique
+  business_id  String   @id @db.VarChar(22)
+  name         String   @unique
   address      String
   city         String
-  state        String?             @db.VarChar(2)
+  state        String?  @db.VarChar(2)
   zipCode      String?
   latitude     Float?
   longitude    Float?
   stars        Float?
   review_count Int?
-  is_open      Int
-  reviews      Review[]
-  hours        String[]
-  categories   Business_Category[]
+  is_open      Boolean?
+  categories   String[]
+  Reviews      Review[]
 }
 
 model User {
@@ -39,8 +38,8 @@ model User {
   lastname     String?
   created_at   DateTime  @default(now())
   review_count Int?
-  reviews      Review[]
-  comments     Comment[]
+  Reviews      Review[]
+  Comments     Comment[]
 }
 
 model Review {
@@ -53,7 +52,7 @@ model Review {
   author      User      @relation(fields: [author_id], references: [user_id])
   business_id String
   business    Business  @relation(fields: [business_id], references: [business_id])
-  comments    Comment[]
+  Comments    Comment[]
 
   @@unique([author_id, business_id])
 }
@@ -67,18 +66,4 @@ model Comment {
   author     User     @relation(fields: [author_id], references: [user_id])
   review_id  String
   review     Review   @relation(fields: [review_id], references: [review_id])
-}
-
-model Category {
-  category_id       String              @id @db.VarChar(22)
-  category          String
-  businesses Business_Category[]
-}
-
-model Business_Category {
-  business_category_id String   @id @db.VarChar(22)
-  business_id          String
-  business             Business @relation(fields: [business_id], references: [business_id])
-  category_id          String
-  category             Category @relation(fields: [category_id], references: [category_id])
 }

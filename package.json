@@ -4,13 +4,19 @@
   "description": "Capstone Project: create the backend and frontend of a review site.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node ./prisma/seed.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.17.0",
+    "from-ndjson": "1.0.4",
+    "fs.promises": "^0.1.2",
     "prisma": "^5.17.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1"
   }
 }
