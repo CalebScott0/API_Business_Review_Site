@@ -49,6 +49,7 @@ model Review {
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   author_id   String
+  comment_count Int?
   author      User      @relation(fields: [author_id], references: [user_id])
   business_id String
   business    Business  @relation(fields: [business_id], references: [business_id])
