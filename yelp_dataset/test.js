@@ -8,6 +8,11 @@ const { review_array7 } = require("./review_dataset/review_7dataset");
 const { review_array8 } = require("./review_dataset/review_8dataset");
 const { review_array9 } = require("./review_dataset/review_9dataset");
 const { review_array10 } = require("./review_dataset/review_10dataset");
+const { review_array11 } = require("./review_dataset/review_11dataset");
+const { review_array12 } = require("./review_dataset/review_12dataset");
+const { review_array13 } = require("./review_dataset/review_13dataset");
+const { review_array14 } = require("./review_dataset/review_14dataset");
+const { review_array15 } = require("./review_dataset/review_15dataset");
 
 const reviewArr = [
   ...review_array1,
@@ -20,10 +25,15 @@ const reviewArr = [
   ...review_array8,
   ...review_array9,
   ...review_array10,
+  ...review_array11,
+  ...review_array12,
+  ...review_array13,
+  ...review_array14,
+  ...review_array15,
 ];
 console.log("First Object index 0: ", reviewArr[0]);
 
 const randNum = Math.floor(Math.random() * reviewArr.length);
-console.log(reviewArr[randNum].review_id, reviewArr[randNum]);
+console.log(reviewArr[randNum]);
 console.log("index of second object: ", randNum);
 console.log("Array length: ", reviewArr.length);
