@@ -4,6 +4,7 @@ const { businessArr } = require("../yelp_dataset/business_dataset");
 
 const prisma = new PrismaClient();
 
+// change this to be all categories to show ranking by occurence in prisma query?
 const categoryArray = [];
 for (let i = 0; i < businessArr.length; i++) {
   const splitCategories = businessArr[i].categories

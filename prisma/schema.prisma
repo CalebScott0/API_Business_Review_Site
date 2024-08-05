@@ -14,57 +14,74 @@ datasource db {
 }
 
 model Business {
-  business_id  String   @id @db.VarChar(22)
-  name         String   @unique
-  address      String
-  city         String
-  state        String?  @db.VarChar(2)
-  zipCode      String?
-  latitude     Float?
-  longitude    Float?
-  stars        Float?
-  review_count Int?
-  is_open      Boolean?
-  categories   String[]
-  Reviews      Review[]
+  id          String               @id @db.VarChar(22)
+  name        String
+  address     String
+  city        String
+  state       String?              @db.VarChar(2)
+  zipCode     String?
+  latitude    Float?
+  longitude   Float?
+  stars       Float                @default(0.0)
+  reviewCount Int                  @default(0)
+  isOpen      Boolean?
+  Reviews     Review[]
+  Categories  CategoryToBusiness[]
 }
 
 model User {
-  user_id      String    @id @db.VarChar(22)
+  id           String    @id @db.VarChar(22)
   username     String    @unique
   password     String    @unique
   email        String?   @unique
   firstname    String?
   lastname     String?
-  created_at   DateTime  @default(now())
-  review_count Int?
+  createdAt    DateTime  @default(now())
+  reviewCount  Int       @default(0)
+  averageStars Float     @default(0.0)
   Reviews      Review[]
   Comments     Comment[]
 }
 
 model Review {
-  review_id   String    @id @db.VarChar(22)
-  text        String
-  stars       Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  author_id   String
-  comment_count Int?
-  author      User      @relation(fields: [author_id], references: [user_id])
-  business_id String
-  business    Business  @relation(fields: [business_id], references: [business_id])
-  Comments    Comment[]
+  id           String    @id @db.VarChar(22)
+  text         String
+  stars        Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  commentCount Int       @default(0)
+  authorId     String
+  author       User      @relation(fields: [authorId], references: [id])
+  businessId   String
+  business     Business  @relation(fields: [businessId], references: [id])
+  Comments     Comment[]
 
-  @@unique([author_id, business_id])
+  @@unique([authorId, businessId])
 }
 
 model Comment {
-  comment_id String   @id @db.VarChar(22)
-  text       String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  author_id  String
-  author     User     @relation(fields: [author_id], references: [user_id])
-  review_id  String
-  review     Review   @relation(fields: [review_id], references: [review_id])
+  id        String   @id @db.VarChar(22)
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id])
+}
+
+model Category {
+  id         String               @id @db.VarChar(22)
+  name       String
+  // add count of how many times category occurs for algorithm?
+  Businesses CategoryToBusiness[]
+}
+
+model CategoryToBusiness {
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([businessId, categoryId])
 }
