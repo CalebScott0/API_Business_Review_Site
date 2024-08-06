@@ -103,12 +103,6 @@ const reviewArr = [
   ...review_array50,
   ...review_array51,
 ];
-console.log("First Object index 0: ", reviewArr[0]);
-
-const randNum = Math.floor(Math.random() * reviewArr.length);
-console.log(reviewArr[randNum]);
-console.log("index of second object: ", randNum);
-console.log("Array length: ", reviewArr.length);
 module.exports = {
   reviewArr,
 };
