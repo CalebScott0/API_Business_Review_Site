@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "seedBusinesses": "node --max-old-space-size=6000 ./prisma/seedBusinesses.js",
-    "seedUsers": "node --max-old-space-size=6000 ./prisma/seedUsers.js"
+    "seedUsers": "node --max-old-space-size=6000 ./prisma/seedUsers.js",
+    "seedReviews": "node --max-old-space-size=6000 ./prisma/seedReviews.js"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +15,6 @@
   "dependencies": {
     "@prisma/client": "^5.17.0",
     "from-ndjson": "1.0.4",
-    "fs.promises": "^0.1.2",
     "prisma": "^5.17.0",
     "uuid": "^10.0.0"
   },

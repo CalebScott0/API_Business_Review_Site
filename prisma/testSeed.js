@@ -1,8 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 async function main() {
-  const userData = await prisma.user.findMany();
-  console.log("userData", userData.length);
+  const reviewData = await prisma.review.findMany();
+  console.log("reviewData", reviewData.length);
 }
 main()
   .then(async () => {
