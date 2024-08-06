@@ -21,7 +21,8 @@ async function main() {
     await prisma.review.create({
       data: {
         id: review_id,
-        text,
+        // fallback to faker lorem if review has no text
+        text: text || faker.lorem.lines({ min: 1, max: 10 }),
         stars,
         createdAt: dateConverter,
         authorId: user_id,
