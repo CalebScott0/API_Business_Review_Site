@@ -39,6 +39,7 @@ async function main() {
     take: 10,
   });
   console.log("businessData", businessData);
+  console.log(`${businessData.length} Businesses Seeded.`)
 }
 main()
   .then(async () => {

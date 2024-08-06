@@ -109,3 +109,6 @@ const randNum = Math.floor(Math.random() * reviewArr.length);
 console.log(reviewArr[randNum]);
 console.log("index of second object: ", randNum);
 console.log("Array length: ", reviewArr.length);
+module.exports = {
+  reviewArr,
+};
