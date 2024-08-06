@@ -34,12 +34,13 @@ async function main() {
     });
   }
 
-  const businessData = await prisma.business.findMany({
-    skip: 5800,
+  const sampleBusinessData = await prisma.business.findMany({
+    skip: 6800,
     take: 10,
   });
-  console.log("businessData", businessData);
-  console.log(`${businessData.length} Businesses Seeded.`)
+  console.log("businessData", sampleBusinessData);
+  const businessData = await prisma.business.findMany();
+  console.log(`${businessData.length} Businesses Seeded.`);
 }
 main()
   .then(async () => {

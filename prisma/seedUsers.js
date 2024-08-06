@@ -25,11 +25,13 @@ async function main() {
       },
     });
   }
-  const userData = await prisma.user.findMany({
-    skip: 5800,
+  const sampleUserData = await prisma.user.findMany({
+    skip: 6800,
     take: 10,
   });
-  console.log("userData", userData);
+  console.log("userData", sampleUserData);
+  const userData = await prisma.user.findMany();
+  console.log(`${userData.length} Users Seeded.`);
 }
 main()
   .then(async () => {
