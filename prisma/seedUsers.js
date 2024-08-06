@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { faker } = require("@faker-js/faker");
 const { userArr } = require("../yelp_dataset/User_ArrayBuilder");
 
 const prisma = new PrismaClient();
@@ -8,17 +9,18 @@ async function main() {
   for (let i = 0; i < userArr.length; i++) {
     const { user_id, name, yelping_since } = userArr[i];
     const dateConverter = new Date(yelping_since).toISOString();
-    let num = 1;
+    /* add randNum to username and password
+       to satisfy @unique constraint in user table columns */
+    const randNum = Math.floor(Math.random() * 6868);
     await prisma.user.create({
       data: {
         id: user_id,
-        username: num,
-        password: num,
+        username: `${name}${randNum}`,
+        password: `${faker.internet.password}${randNum}`,
         firstname: name,
         createdAt: dateConverter,
       },
     });
-    num++;
   }
   const userData = await prisma.user.findMany({
     skip: 5800,
