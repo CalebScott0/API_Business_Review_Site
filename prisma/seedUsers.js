@@ -3,13 +3,17 @@ const { faker } = require("@faker-js/faker");
 const { userArr } = require("../yelp_dataset/User_ArrayBuilder");
 
 const prisma = new PrismaClient();
+
 async function main() {
   // seed users
   console.log("Creating Initial User Data...");
+
   for (let i = 0; i < userArr.length; i++) {
     const { user_id, name, yelping_since } = userArr[i];
-    // convert yelping_since date/time into ISOString for prisma DateTime
+
+    // convert yelping_since date/time string into ISOString for prisma DateTime
     const dateConverter = new Date(yelping_since).toISOString();
+
     await prisma.user.create({
       data: {
         id: user_id,
@@ -25,12 +29,16 @@ async function main() {
       },
     });
   }
+
   const sampleUserData = await prisma.user.findMany({
     skip: 6800,
     take: 10,
   });
+
   console.log("userData", sampleUserData);
+
   const userData = await prisma.user.findMany();
+
   console.log(`${userData.length} Users Seeded.`);
 }
 main()

@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   // seed businesses without categories, attributes, and hours for now.
   console.log("Creating Initial Business Data...");
+
   for (let i = 0; i < businessArr.length; i++) {
     const {
       business_id,
@@ -18,7 +19,9 @@ async function main() {
       longitude,
       is_open,
     } = businessArr[i];
+
     const openStatus = is_open === 1 ? true : false;
+
     await prisma.business.create({
       data: {
         id: business_id,
@@ -38,8 +41,11 @@ async function main() {
     skip: 6800,
     take: 10,
   });
+
   console.log("businessData", sampleBusinessData);
+
   const businessData = await prisma.business.findMany();
+
   console.log(`${businessData.length} Businesses Seeded.`);
 }
 main()
