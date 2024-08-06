@@ -9,7 +9,14 @@ async function main() {
   for (let i = 0; i < reviewArr.length; i++) {
     const { review_id, text, stars, date, user_id, business_id } = reviewArr[i];
     // convert date/time string into ISOString for prisma DateTime
-    const dateConverter = new Date(date).toISOString();
+    /* try/catch implemented to handle incorrect formatted dates from sample data
+       using regular conditionals still provided an error on the .toIsoString() method  */
+    let dateConverter;
+    try {
+      dateConverter = new Date(date).toISOString();
+    } catch (error) {
+      dateConverter = faker.date.past();
+    }
     await prisma.review.create({
       data: {
         id: review_id,
