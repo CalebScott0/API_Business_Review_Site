@@ -8,7 +8,7 @@ async function main() {
   console.log("Creating Initial Review Data...");
   for (let i = 0; i < reviewArr.length; i++) {
     const { review_id, text, stars, date, user_id, business_id } = reviewArr[i];
-    // convert date into ISOString for prisma DateTime
+    // convert date/time string into ISOString for prisma DateTime
     const dateConverter = new Date(date).toISOString();
     await prisma.review.create({
       data: {
@@ -25,7 +25,7 @@ async function main() {
     skip: 6800,
     take: 10,
   });
-  console.log("userData", sampleReviewData);
+  console.log("reviewData", sampleReviewData);
   const reviewData = await prisma.review.findMany();
   console.log(`${reviewData.length} Reviews Seeded.`);
 }
