@@ -16,14 +16,15 @@ async function main() {
     try {
       dateConverter = new Date(date).toISOString();
     } catch (error) {
-      dateConverter = faker.date.past();
+      dateConverter = faker.date.past({ years: 10 });
     }
     await prisma.review.create({
       data: {
         id: review_id,
         // fallback to faker lorem if review has no text
         text: text || faker.lorem.lines({ min: 1, max: 10 }),
-        stars,
+        // fall back if no stars were provided with review (1-5 for values)
+        stars: stars || Math.floor(Math.random() * 5) + 1,
         createdAt: dateConverter,
         authorId: user_id,
         businessId: business_id,
