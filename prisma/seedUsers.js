@@ -10,18 +10,24 @@ async function main() {
     const { user_id, name, yelping_since } = userArr[i];
     // convert yelping_since date/time into ISOString for prisma DateTime
     const dateConverter = new Date(yelping_since).toISOString();
-    /* add randNum to username and password
-       to satisfy @unique constraint in user table columns */
-    const randNum = Math.floor(Math.random() * 6868);
+    /* add incrementing number to password
+       to satisfy @unique constraint in user table column */
+    //  somehow it failed using randomNum * 1000000
+    let num = 1;
     await prisma.user.create({
       data: {
         id: user_id,
-        username: `${name}${randNum}`,
-        password: `${faker.internet.password}${randNum}`,
+        // create display name using given names as base, may use one or both provided names
+        username: `${faker.internet.displayName({
+          firstName: name,
+          lastName: faker.internet.lastName,
+        })}`,
+        password: `${faker.internet.password}${num}`,
         firstname: name,
         createdAt: dateConverter,
       },
     });
+    num++;
   }
   const userData = await prisma.user.findMany({
     skip: 5800,

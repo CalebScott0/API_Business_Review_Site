@@ -12,4 +12,3 @@ main()
     console.log(e);
     await prisma.$disconnect();
   });
-
