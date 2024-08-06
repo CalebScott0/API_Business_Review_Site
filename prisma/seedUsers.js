@@ -8,6 +8,7 @@ async function main() {
   console.log("Creating Initial User Data...");
   for (let i = 0; i < userArr.length; i++) {
     const { user_id, name, yelping_since } = userArr[i];
+    // convert yelping_since date/time into ISOString for prisma DateTime
     const dateConverter = new Date(yelping_since).toISOString();
     /* add randNum to username and password
        to satisfy @unique constraint in user table columns */
