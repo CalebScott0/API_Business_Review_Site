@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { faker } = require("@faker-js/faker");
 const { reviewArr } = require("../yelp_dataset/Review_ArrayBuilder");
 
 const prisma = new PrismaClient();
