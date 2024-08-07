@@ -10,6 +10,14 @@ async function main() {
   //   },
   // });
   // console.log(user[3]);
+  // const business = await prisma.business.findMany({
+  //   skip: 1000,
+  //   take: 5,
+  //   include: {
+  //     Reviews: true,
+  //   },
+  // });
+  // console.log(business[3]);
   const comments = await prisma.comment.findMany();
   console.log("# comments:", comments.length);
   // const randUser = Math.floor(Math.random() * (users.length - 1) + 1);

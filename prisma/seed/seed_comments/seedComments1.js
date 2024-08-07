@@ -33,8 +33,22 @@ async function main() {
         await prisma.comment.create({
           data: {
             text: faker.lorem.lines({ max: 1 }),
-            author: users[randUser].id,
+            authorId: users[randUser].id,
             reviewId: review.id,
+            // author: {
+            //   connectOrCreate: {
+            //     where: {
+            //       id: users[randUser].id,
+            //     },
+            //   },
+            // },
+            // review: {
+            //   connectOrCreate: {
+            //     where: {
+            //       id: review.id,
+            //     },
+            //   },
+            // },
           },
         });
       });
