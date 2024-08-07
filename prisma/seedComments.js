@@ -56,6 +56,7 @@ async function main() {
   // find all users to assign random user to each seeded comment
   const users = await prisma.user.findMany();
 
+  console.log("Creating comments...");
   await Promise.all(
     [...reviews].map((review) => {
       //pick random user index from all users array
@@ -83,6 +84,7 @@ async function main() {
       });
     })
   );
+
   const sampleComments = await prisma.review.findMany({
     skip: 100,
     take: 10,
@@ -90,7 +92,9 @@ async function main() {
       Comments: true,
     },
   });
+
   console.log("Reviews:", sampleComments);
+
   for (let i = 0; i < sampleComments.length; i++) {
     console.log(`Comments for review ${100 + 1}:`, sampleComments[i].Comments);
   }
