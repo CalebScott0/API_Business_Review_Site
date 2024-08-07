@@ -1,27 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
-// const { reviewArr } = require("../yelp_dataset/Review_ArrayBuilder");
+const { reviewArr } = require("../yelp_dataset/Review_ArrayBuilder");
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // assign random user or business if related user/business for review has been deleted when parsing json
-  const userIds = await prisma.user.findMany({
-    skip: 68,
-    take: 68,
-    select: {
-      id: true,
-    },
-  });
-
-  const businessIds = await prisma.business.findMany({
-    skip: 68,
-    take: 68,
-    select: {
-      id: true,
-    },
-  });
-
   // seed reviews
   console.log("Creating Initial Review Data...");
 
@@ -40,6 +23,29 @@ async function main() {
       dateConverter = faker.date.past({ years: 10 });
     }
 
+    // assign new user or business if related user/business for review has been deleted when parsing json
+    const newUser =
+      !user_id &&
+      (await prisma.user.create({
+        data: {
+          username: faker.internet.displayName({
+            firstName: faker.person.firstName(),
+            lastName: faker.person.lastName(),
+          }),
+          password: faker.internet.password(),
+        },
+      }));
+
+    const newBusiness =
+      !business_id &&
+      (await prisma.business.create({
+        data: {
+          name: faker.word.noun(),
+          address: faker.location.streetAddress(),
+          city: faker.location.city(),
+        },
+      }));
+
     await prisma.review.create({
       data: {
         id: review_id,
@@ -49,11 +55,8 @@ async function main() {
         stars: stars || Math.floor(Math.random() * 5) + 1,
         createdAt: dateConverter,
         // fall back if user/business was deleted when json was parsed
-        authorId:
-          user_id || userIds[Math.floor(Math.random() * userIds.length)].id,
-        businessId:
-          business_id ||
-          businessIds[Math.floor(Math.random() * businessIds.length)].id,
+        authorId: user_id || newUser.id,
+        businessId: business_id || newBusiness.id,
       },
     });
   }
