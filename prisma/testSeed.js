@@ -3,7 +3,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   // check data length
-  const reviewData = await prisma.review.findMany();
+  const reviewData = await prisma.review.findMany({
+    skip: 4100000,
+    take: 10,
+  });
 
   console.log("reviewData", reviewData.length);
 }
