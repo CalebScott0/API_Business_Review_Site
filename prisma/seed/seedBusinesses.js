@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { businessArr } = require("../yelp_dataset/business_dataset");
+const { businessArr } = require("../../yelp_dataset/business_dataset");
 
 const prisma = new PrismaClient();
 

@@ -10,13 +10,13 @@ async function main() {
   //   },
   // });
   // console.log(user[3]);
-  const users = await prisma.user.findMany();
+  const users = await prisma.comment.findMany();
+  console.log(users.length);
+  // const randUser = Math.floor(Math.random() * (users.length - 1) + 1);
   // console.log(users[users.length - 1]);
-  // console.log(users.length);
-  for (let i = 0; i < 5; i++) {
-    const randUser = Math.floor(Math.random() * (users.length - 1) + 1);
-    console.log(users[randUser].id);
-  }
+  // for (let i = 0; i < 5; i++) {
+  // console.log(users[randUser].id);
+  // }
 }
 main()
   .then(async () => {
