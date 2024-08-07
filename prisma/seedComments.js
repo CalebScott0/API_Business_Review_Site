@@ -90,6 +90,7 @@ async function main() {
       Comments: true,
     },
   });
+  console.log("Reviews:", sampleComments);
   for (let i = 0; i < sampleComments.length; i++) {
     console.log(`Comments for review ${100 + 1}:`, sampleComments[i].Comments);
   }
