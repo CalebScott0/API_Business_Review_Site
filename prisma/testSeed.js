@@ -10,8 +10,8 @@ async function main() {
   //   },
   // });
   // console.log(user[3]);
-  const users = await prisma.comment.findMany();
-  console.log(users.length);
+  const comments = await prisma.comment.findMany();
+  console.log("# comments:", comments.length);
   // const randUser = Math.floor(Math.random() * (users.length - 1) + 1);
   // console.log(users[users.length - 1]);
   // for (let i = 0; i < 5; i++) {

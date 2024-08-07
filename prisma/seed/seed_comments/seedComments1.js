@@ -5,21 +5,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   // use pagination to build array of all reviews, too big to find all at once
-  // will assign random number of comments to each review (1-5 comments)
-  // split into 3 files to comply with node size
-  const reviewArr1 = await prisma.review.findMany({
+  // will assign 1 comment to each review
+  const reviews = await prisma.review.findMany({
     take: 500000,
   });
-  const reviewArr2 = await prisma.review.findMany({
-    skip: 500000,
-    take: 500000,
-  });
-  const reviewArr3 = await prisma.review.findMany({
-    skip: 1000000,
-    take: 500000,
-  });
-
-  const reviews = [...reviewArr1, ...reviewArr2, ...reviewArr3];
 
   // find all users to assign random user to each seeded comment
   const users = await prisma.user.findMany();
@@ -39,12 +28,11 @@ async function main() {
         }
       }
       // random number of comments to seed to current review
-      const numOfComments = Math.floor(Math.random() * 5) + 1;
 
-      [...Array(numOfComments)].map(async () => {
+      [...Array(1)].map(async () => {
         await prisma.comment.create({
           data: {
-            text: faker.lorem.lines({ min: 1, max: 3 }),
+            text: faker.lorem.lines({ max: 1 }),
             author: users[randUser].id,
             reviewId: review.id,
           },
@@ -54,7 +42,7 @@ async function main() {
   );
 
   const sampleComments = await prisma.review.findMany({
-    skip: 1000000,
+    skip: 250000,
     take: 10,
     include: {
       Comments: true,
