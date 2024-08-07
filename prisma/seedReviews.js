@@ -23,42 +23,46 @@ async function main() {
       dateConverter = faker.date.past({ years: 10 });
     }
 
-    // assign new user or business if related user/business for review has been deleted when parsing json
-    const newUser =
-      !user_id &&
-      (await prisma.user.create({
-        data: {
-          username: faker.internet.displayName({
-            firstName: faker.person.firstName(),
-            lastName: faker.person.lastName(),
-          }),
-          password: faker.internet.password(),
-        },
-      }));
+    // // assign new user or business if related user/business for review has been deleted when parsing json
+    // const newUser =
+    //   !user_id &&
+    //   (await prisma.user.create({
+    //     data: {
+    //       username: faker.internet.displayName({
+    //         firstName: faker.person.firstName(),
+    //         lastName: faker.person.lastName(),
+    //       }),
+    //       password: faker.internet.password(),
+    //     },
+    // }));
 
-    const newBusiness =
-      !business_id &&
-      (await prisma.business.create({
+    // const newBusiness =
+    //   !business_id &&
+    //   (await prisma.business.create({
+    //     data: {
+    //       name: faker.word.noun(),
+    //       address: faker.location.streetAddress(),
+    //       city: faker.location.city(),
+    //     },
+    //   }));
+    try {
+      await prisma.review.create({
         data: {
-          name: faker.word.noun(),
-          address: faker.location.streetAddress(),
-          city: faker.location.city(),
+          id: review_id,
+          // fallback to faker lorem if review has no text
+          text: text || faker.lorem.lines({ min: 1, max: 10 }),
+          // fall back if no stars were provided with review (1-5 for values)
+          stars: stars || Math.floor(Math.random() * 5) + 1,
+          createdAt: dateConverter,
+          // fall back if user/business was deleted when json was parsed
+          authorId: user_id,
+          businessId: business_id,
         },
-      }));
-
-    await prisma.review.create({
-      data: {
-        id: review_id,
-        // fallback to faker lorem if review has no text
-        text: text || faker.lorem.lines({ min: 1, max: 10 }),
-        // fall back if no stars were provided with review (1-5 for values)
-        stars: stars || Math.floor(Math.random() * 5) + 1,
-        createdAt: dateConverter,
-        // fall back if user/business was deleted when json was parsed
-        authorId: user_id || newUser.id,
-        businessId: business_id || newBusiness.id,
-      },
-    });
+      });
+    } catch (err) {
+      // skip record if error on unique constraint or user/business was deleted in JSON parse.
+      continue;
+    }
   }
 
   const sampleReviewData = await prisma.review.findMany({
