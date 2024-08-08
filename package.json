@@ -8,9 +8,7 @@
     "seedBusinesses": "node --max-old-space-size=6000 ./prisma/seed/seedBusinesses.js",
     "seedUsers": "node --max-old-space-size=6000 ./prisma/seed/seedUsers.js",
     "seedReviews": "node --max-old-space-size=6000 ./prisma/seed/seedReviews.js",
-    "seedComments1": "node --max-old-space-size=8192 ./prisma/seed/seed_comments/seedComments1.js",
-    "seedComments2": "node --max-old-space-size=8192 ./prisma/seed/seed_comments/seedComments2.js",
-    "seedComments3": "node --max-old-space-size=8192 ./prisma/seed/seed_comments/seedComments3.js"
+    "seedComments": "node --max-old-space-size=8192 ./prisma/seed/seedComments.js"
   },
   "keywords": [],
   "author": "",
