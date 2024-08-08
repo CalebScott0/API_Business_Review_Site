@@ -6,6 +6,7 @@ async function main() {
   // find all users to assign random user to each seeded comment
   const users = await prisma.user.findMany();
   // create comments for reviews 500000 reviews at a time, skipping every other 500000
+  // will be adding on to pre seeded comments
   async function reviewSeed1() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
