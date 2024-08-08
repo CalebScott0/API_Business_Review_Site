@@ -33,6 +33,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -81,6 +82,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -129,6 +131,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -177,6 +180,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -225,6 +229,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -273,6 +278,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -321,6 +327,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -369,6 +376,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
@@ -417,6 +425,7 @@ async function main() {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
               reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
             },
           });
         });
