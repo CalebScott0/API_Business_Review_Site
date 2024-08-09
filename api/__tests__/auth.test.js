@@ -96,11 +96,22 @@ describe("/api/auth", () => {
       expect(res.status).toBe(401);
     });
 
+    test("returns 401 status code when hashed password does NOT match password provided", async () => {
+        bcrypt.compare = jest.fn().mockResolvedValue(false);
+  
+        const res = await supertest(server)
+          .post("/api/auth/login")
+          .send(user);
+  
+        expect(res.status).toBe(401);
+      });
+      
     test("returns error message on failure", async () => {
       prisma.user.findUnique = jest.fn().mockResolvedValue(null);
       const res = await supertest(server).post("/api/auth/login").send(user);
 
       expect(res.body.message).toEqual("Invalid login credentials");
     });
+
   });
 });
