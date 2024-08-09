@@ -44,17 +44,17 @@ model User {
 }
 
 model Review {
-  id           String    @id @default(uuid())
-  text         String
-  stars        Int
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
-  commentCount Int       @default(0)
-  authorId     String
-  author       User      @relation(fields: [authorId], references: [id])
-  businessId   String
-  business     Business  @relation(fields: [businessId], references: [id])
-  Comments     Comment[]
+  id         String    @id @default(uuid())
+  text       String
+  stars      Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  // commentCount Int       @default(0)
+  authorId   String
+  author     User      @relation(fields: [authorId], references: [id])
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id])
+  Comments   Comment[]
 
   @@unique([authorId, businessId])
 }
