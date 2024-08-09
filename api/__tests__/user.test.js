@@ -1,5 +1,3 @@
-// TEST RESULT TO HAVE REVIEW PROPERTY
-// TEST WITH NO HEADER?
 const supertest = require("supertest");
 const server = require("../../server");
 const prisma = require("../../db/index");
@@ -41,10 +39,5 @@ describe("/api/user", () => {
         .set("Authorization", `Bearer ${token}`);
       expect(res.body.user).not.toHaveProperty("password");
     });
-    // check returns a review array of objects,
-    // HOW TO TEST THIS PROPERLY??
-    //    test("returns user reviews", async () => {
-    //     const res = await supertest(server).get("/api/user").set("Authorization")
-    //    })
   });
 });
