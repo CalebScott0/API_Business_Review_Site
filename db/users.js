@@ -6,7 +6,8 @@ const createUser = (userData) => {
   });
 };
 
-// // ADD THE BELOW TO NEW USER.UTILS.JS FILE and create users folder???
+// if file gets too large with functions create a users.utils file and a users folder?
+
 // const userReviewCount = (id) => {
 //   return  prisma.review.count({
 //     where: {
@@ -23,12 +24,12 @@ const createUser = (userData) => {
 //   });
 // };
 // const roundHalf = (num) => {
-//   return Math.round(num) / 2;
+//   return Math.round(num * 2) / 2;
 // };
-// // userReviewCount("Ceo8BI43WswoggrBpDv3Wg");
-// const updateUser = (id) => {
-//   const userReviews = userReviewCount(id);
-//   const userAvgRating = roundHalf(userAverageStars(id));
+//
+// const updateUser = async (id) => {
+//   const userReviews = await userReviewCount(id);
+//   const userAvgRating = await roundHalf(userAverageStars(id));
 //   return prisma.user.update({
 //     where: { id },
 //     data: {
