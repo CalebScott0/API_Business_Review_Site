@@ -41,7 +41,7 @@ authRouter.post("/login", async (req, res) => {
     // find user by username
     const user = await findUserByUsername(username);
 
-    // run bcypt if login was NOT via OAuth
+    // run bcypt if login was NOT via OAuth, check user exists when you grab password from user
     const isSamePass = await bcrypt.compare(password, user?.password);
 
     // check there is a user and passwords match
