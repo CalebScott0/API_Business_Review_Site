@@ -17,7 +17,11 @@ const checkUserExists = async (req, res, next) => {
   const isUser = await findUserByUsername(req.body.username);
 
   if (isUser) {
-    return res.status(400).send({ message: "Username is taken" });
+    // error if username exists
+    return res.status(409).send({
+      name: "UserExistsError",
+      message: "A user by that username already exists",
+    });
   }
 
   next();

@@ -14,6 +14,12 @@ server.get("/"),
     res.send({ message: "Working" });
   };
 
+// all routes
 server.use("/api", require("./api/index"));
+
+// error handling route
+server.use((error, req, res, next) => {
+  res.status(500).send({ error });
+});
 
 module.exports = server;
