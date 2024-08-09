@@ -39,5 +39,19 @@ describe("/api/user", () => {
         .set("Authorization", `Bearer ${token}`);
       expect(res.body.user).not.toHaveProperty("password");
     });
+    test("returns 400 status code with no Bearer in header", async () => {
+      const res = await supertest(server)
+        .get("/api/user")
+        .set("Authorization", `${token}`);
+      expect(res.status).toBe(400);
+    });
+    test("returns error message with no Bearer in header", async () => {
+      const res = await supertest(server)
+        .get("/api/user")
+        .set("Authorization", `${token}`);
+      expect(res.body.message).toEqual(
+        "Authorization token must start with Bearer "
+      );
+    });
   });
 });

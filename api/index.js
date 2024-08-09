@@ -26,7 +26,8 @@ apiRouter.use(async (req, res, next) => {
         req.user = await findUserById(id);
         next();
       } else {
-        next({
+        // 400 status on bad request
+        res.status(400).send({
           name: "AuthorizationHeaderError",
           message: "Authorization Token Malformed",
         });
@@ -35,7 +36,8 @@ apiRouter.use(async (req, res, next) => {
       next({ name, message });
     }
   } else {
-    next({
+    // 400 status on bad request
+    res.status(400).send({
       name: "AuthorizationHeaderError",
       message: `Authorization token must start with ${prefix}`,
     });
@@ -49,10 +51,5 @@ apiRouter.use("/auth", require("./auth/auth"));
 apiRouter.use("/user", require("./user"));
 
 // review & comment routes will all need requireUser middleware!
-
-// error handling route
-apiRouter.use((error, req, res, next) => {
-  res.send(error);
-});
 
 module.exports = apiRouter;
