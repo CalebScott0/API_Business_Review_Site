@@ -20,6 +20,7 @@ async function main() {
       is_open,
     } = businessArr[i];
 
+    // to convert is_open to boolean: convert to true if = 1 and false for all else
     const openStatus = is_open === 1 ? true : false;
 
     await prisma.business.create({
@@ -56,18 +57,3 @@ main()
     console.log(e);
     await prisma.$disconnect();
   });
-// change this to be all categories to show ranking by occurence in prisma query?
-
-// to convert is_open to isOpen boolean: convert to true if = 1 and false for all else
-
-// const categoryArray = [];
-// for (let i = 0; i < businessArr.length; i++) {
-//   const splitCategories = businessArr[i].categories
-//     ? businessArr[i].categories.split(", ")
-//     : [];
-//   for (let j = 0; j < splitCategories.length; j++) {
-//     !categoryArray.includes(splitCategories[j]) &&
-//       categoryArray.push(splitCategories[j]);
-//   }
-// }
-// // console.log(categoryArray);
