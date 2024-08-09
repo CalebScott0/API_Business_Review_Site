@@ -38,14 +38,27 @@ const createUser = (userData) => {
 //     },
 //   });
 // };
+
+// only get comments or reviews? no need to show comment data for user?
+
 const findUserByUsername = (username) => {
   return prisma.user.findUnique({
     where: { username },
     include: {
-      Comments: true,
+      // Comments: true,
       Reviews: true,
     },
   });
 };
 
-module.exports = { createUser, findUserByUsername };
+const findUserById = (id) => {
+  return prisma.user.findUnique({
+    where: { id },
+    include: {
+      // Comments: true,
+      Reviews: true,
+    },
+  });
+};
+
+module.exports = { createUser, findUserByUsername, findUserById };
