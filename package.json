@@ -8,6 +8,7 @@
     "seedUsers": "node --max-old-space-size=6000 ./prisma/seed/seedUsers.js",
     "seedReviews": "node --max-old-space-size=6000 ./prisma/seed/seedReviews.js",
     "seedComments": "node --max-old-space-size=8192 ./prisma/seed/seedComments.js",
+    "seedCategories": "node --max-old-space-size=8192 ./prisma/seed/seedCategories.js",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "test": "jest --runInBand --watch"
