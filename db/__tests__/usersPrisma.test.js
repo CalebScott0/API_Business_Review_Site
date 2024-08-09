@@ -1,5 +1,5 @@
 const prisma = require("../index");
-const { createUser, findUserByUsername } = require("../users");
+const { createUser, findUserByUsername, findUserById } = require("../users");
 
 describe("Create User Prisma Unit Tests", () => {
   const user = {
@@ -50,5 +50,19 @@ describe("Create User Prisma Unit Tests", () => {
       username: "someUsername123",
       password: "somePass",
     });
+  });
+  test("find user with given id", async () => {
+    const userById = findUserById(user.id);
+    console.log(await userById);
+    await expect(userById).resolves.toEqual({
+      id: "123",
+      username: "someUsername123",
+      password: "somePass",
+    });
+    // await expect(findUserById(user.id)).resolves.toEqual({
+    //   id: "123",
+    //   username: "someUsername123",
+    //   password: "somePass",
+    // });
   });
 });

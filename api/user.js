@@ -6,7 +6,12 @@ userRouter.get("/", requireUser, async (req, res, next) => {
   try {
     // delete user password? won't be needed on frontend?
     delete req.user.password;
-  } catch (error) {
-    console.log(error);
+
+    // req.user is set in api/index.js, do not need to requery here
+    res.send({ user: req.user });
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
+
+module.exports = userRouter;

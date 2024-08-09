@@ -15,6 +15,7 @@ apiRouter.use(async (req, res, next) => {
     next();
   } else if (auth.startsWith(prefix)) {
     const token = auth.slice(prefix.length);
+
     try {
       const { id } = jwt.verify(
         token,
@@ -22,7 +23,7 @@ apiRouter.use(async (req, res, next) => {
       );
       //   if id is successfully made, set req.user
       if (id) {
-        req.user = findUserById(id);
+        req.user = await findUserById(id);
         next();
       } else {
         next({
@@ -41,10 +42,10 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-// auth routes
+// /api/auth auth routes
 apiRouter.use("/auth", require("./auth/auth"));
 
-// route to get logged in user
+// /api/user route to get logged in user
 apiRouter.use("/user", require("./user"));
 
 // review & comment routes will all need requireUser middleware!
@@ -54,4 +55,4 @@ apiRouter.use((error, req, res, next) => {
   res.send(error);
 });
 
-module.exports = router;
+module.exports = apiRouter;

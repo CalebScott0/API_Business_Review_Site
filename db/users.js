@@ -62,11 +62,17 @@ const findUserById = (id) => {
 const findUserByUsername = (username) => {
   return prisma.user.findUnique({
     where: { username },
-    include: {
-      // Comments: true,
-      Reviews: true,
-    },
+  });
+};
+const findUserByEmail = (email) => {
+  return prisma.user.findUnique({
+    where: { email },
   });
 };
 
-module.exports = { createUser, findUserByUsername, findUserById };
+module.exports = {
+  createUser,
+  findUserByUsername,
+  findUserById,
+  findUserByEmail,
+};

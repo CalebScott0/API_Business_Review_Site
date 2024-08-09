@@ -12,7 +12,7 @@ authRouter.post(
   "/register",
   checkUserData,
   checkUserExists,
-  async (req, res) => {
+  async (req, res, next) => {
     try {
       const { password } = req.body;
       //   checkUserData / checkUserExists
@@ -28,14 +28,12 @@ authRouter.post(
       );
       res.status(201).send({ token });
     } catch (error) {
-      console.log(error);
-      // send response (status, body:  {error˝}
-      res.status(500).send({ error, message: "Failed to register user" });
+      next(error);
     }
   }
 );
 
-authRouter.post("/login", async (req, res) => {
+authRouter.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
     // find user by username
@@ -57,8 +55,7 @@ authRouter.post("/login", async (req, res) => {
 
     res.send({ token });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ error, message: "Failed to login" });
+    next(error);
   }
 });
 
