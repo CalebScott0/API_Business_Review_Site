@@ -8,6 +8,10 @@ const createUser = (userData) => {
 
 // if file gets too large with functions create a users.utils file and a users folder?
 
+// TEST OUT THE BELOW FUNCTIONS BY CREATING AN ASYNC FUNCTION AND CALLING THEM WITH AWAIT
+// console logging variable set to await function
+// (Call function to see console logged value lol)
+
 // const userReviewCount = (id) => {
 //   return  prisma.review.count({
 //     where: {
@@ -41,19 +45,20 @@ const createUser = (userData) => {
 
 // only get comments or reviews? no need to show comment data for user?
 
-const findUserByUsername = (username) => {
+const findUserById = (id) => {
+  /* call update user function here? this is the function that will be called 
+     in api/index.js to set req.user and subsequently will be used with "get/me" */
   return prisma.user.findUnique({
-    where: { username },
+    where: { id },
     include: {
       // Comments: true,
       Reviews: true,
     },
   });
 };
-
-const findUserById = (id) => {
+const findUserByUsername = (username) => {
   return prisma.user.findUnique({
-    where: { id },
+    where: { username },
     include: {
       // Comments: true,
       Reviews: true,
