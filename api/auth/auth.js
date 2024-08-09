@@ -42,11 +42,11 @@ authRouter.post("/login", async (req, res) => {
     const user = await findUserByUsername(username);
 
     // run bcypt if login was NOT via OAuth
-    const isSamePass = await bcrypt.compare(password, user.password);
+    const isSamePass = await bcrypt.compare(password, user?.password);
 
     // check there is a user and passwords match
     if (!user || !isSamePass) {
-      return res.status(401).send("Invalid login credentials");
+      return res.status(401).send({ message: "Invalid login credentials" });
     }
 
     // if user exists and passwords match, create token with user id
@@ -58,7 +58,7 @@ authRouter.post("/login", async (req, res) => {
     res.send({ token });
   } catch (error) {
     console.log(error);
-    res.status(500), send({ error, message: "Failed to login" });
+    res.status(500).send({ error, message: "Failed to login" });
   }
 });
 
