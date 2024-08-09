@@ -14,6 +14,6 @@ server.get("/"),
     res.send({ message: "Working" });
   };
 
-server.use("/api", require("/api/index"));
+server.use("/api", require("./api/index"));
 
 module.exports = server;

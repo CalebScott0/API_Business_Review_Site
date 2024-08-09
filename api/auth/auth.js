@@ -14,7 +14,7 @@ authRouter.post(
   checkUserExists,
   async (req, res) => {
     try {
-      const { password } = req.body();
+      const { password } = req.body;
       //   checkUserData / checkUserExists
       // hash pass
       const hashPass = await bcrypt.hash(password, +process.env.SALT || 7);
