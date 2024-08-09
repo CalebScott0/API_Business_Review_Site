@@ -84,10 +84,10 @@ describe("/api/auth", () => {
     });
 
     test("prisma.user.findUnique is called", async () => {
-        await supertest(server).post("/api/auth/login").send(user);
-  
-        expect(prisma.user.findUnique).toHaveBeenCalled();
-      });
+      await supertest(server).post("/api/auth/login").send(user);
+
+      expect(prisma.user.findUnique).toHaveBeenCalled();
+    });
 
     test("returns 401 status code on failure", async () => {
       prisma.user.findUnique = jest.fn().mockResolvedValue(null);
@@ -97,21 +97,18 @@ describe("/api/auth", () => {
     });
 
     test("returns 401 status code when hashed password does NOT match password provided", async () => {
-        bcrypt.compare = jest.fn().mockResolvedValue(false);
-  
-        const res = await supertest(server)
-          .post("/api/auth/login")
-          .send(user);
-  
-        expect(res.status).toBe(401);
-      });
-      
+      bcrypt.compare = jest.fn().mockResolvedValue(false);
+
+      const res = await supertest(server).post("/api/auth/login").send(user);
+
+      expect(res.status).toBe(401);
+    });
+
     test("returns error message on failure", async () => {
       prisma.user.findUnique = jest.fn().mockResolvedValue(null);
       const res = await supertest(server).post("/api/auth/login").send(user);
 
       expect(res.body.message).toEqual("Invalid login credentials");
     });
-
   });
 });
