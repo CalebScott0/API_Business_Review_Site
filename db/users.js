@@ -7,7 +7,7 @@ const createUser = (userData) => {
 };
 
 // aggregate user's review count to update table column
-const userReviewCount = (id) => {
+const countUserReviews = (id) => {
   return prisma.review.count({
     where: {
       authorId: id,
@@ -16,7 +16,7 @@ const userReviewCount = (id) => {
 };
 
 // aggregate user's average stars to update table column
-const userAverageStars = (id) => {
+const averageUserStars = (id) => {
   return prisma.review.aggregate({
     _avg: {
       stars: true,
@@ -31,20 +31,19 @@ const roundHalf = (num) => {
 };
 
 const updateUser = async (id) => {
-  const userReviews = await userReviewCount(id);
-  const userAvgRating = await roundHalf(userAverageStars(id));
+  const numUserReviews = await countUserReviews(id);
+  const roundAvgUserStars = roundHalf(await averageUserStars(id));
   await prisma.user.update({
     where: { id },
     data: {
-      reviewCount: 2,
-      averageStars: roundHalf(2.8),
-    },  
+      reviewCount: numUserReviews,
+      averageStars: roundAvgUserStars,
+    },
   });
 };
 
-// only get comments or reviews? no need to show comment data for user?
-
 const findUserById = async (id) => {
+  // update user aggregate fields reviewCount & averageStars
   await updateUser(id);
   return prisma.user.findUnique({
     where: { id },
@@ -59,6 +58,7 @@ const findUserByUsername = (username) => {
     where: { username },
   });
 };
+// findUserByEmail to check if account with email already exists
 const findUserByEmail = (email) => {
   return prisma.user.findUnique({
     where: { email },
