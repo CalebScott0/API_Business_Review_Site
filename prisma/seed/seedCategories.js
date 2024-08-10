@@ -33,11 +33,13 @@ async function main() {
   const categories = await prisma.category.findMany();
 
   console.log("Category data example: ", categories[0]);
+  console.log("Category data example: ", categories[100]);
 
-  // return categories, grouped by name and with count of occurence
+  // return categories, grouped by name and ordered with count of occurence
   const groupByCategory = await prisma.category.groupBy({
     by: ["name"],
     _count: { name: true },
+    orderBy: { _count: { name: "desc" } },
   });
 
   console.log("categories grouped by name with count: ", groupByCategory);
@@ -50,7 +52,6 @@ async function main() {
   for (let i = 0; i < businessArr.length; i++) {
     // only create category to business record if current business has categories
     if (businessArr[i].categories) {
-
       const splitCategories = businessArr[i].categories.split(", ");
 
       await Promise.all(
