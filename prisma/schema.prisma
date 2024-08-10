@@ -72,16 +72,16 @@ model Comment {
 
 model Category {
   id         String               @id @default(uuid())
-  name       String
-  // add count of how many times category occurs for algorithm?
+  name       String               @unique
   Businesses CategoryToBusiness[]
 }
 
 model CategoryToBusiness {
-  businessId String
-  business   Business @relation(fields: [businessId], references: [id])
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  categoryName String
+  businessId   String
+  business     Business @relation(fields: [businessId], references: [id])
+  categoryId   String
+  category     Category @relation(fields: [categoryId], references: [id])
 
   @@unique([businessId, categoryId])
 }

@@ -13,13 +13,13 @@ async function main() {
     const splitCategories = businessArr[i].categories
       ? businessArr[i].categories.split(", ")
       : [];
-    // add all elements of split categories array to categoriesArr
+    // add unique elements of split categories array to categoriesArr
     for (const category of splitCategories) {
-      categoriesArr.push(category);
+      !categoriesArr.includes(category) && categoriesArr.push(category);
     }
   }
 
-  // for each category in array (non distinct) create prisma category row
+  // for each category in array create prisma category row
   await Promise.all(
     [...categoriesArr].map(async (category) => {
       await prisma.category.create({
@@ -35,16 +35,7 @@ async function main() {
   console.log("Category data example: ", categories[0]);
   console.log("Category data example: ", categories[100]);
 
-  // return categories, grouped by name and ordered with count of occurence
-  const groupByCategory = await prisma.category.groupBy({
-    by: ["name"],
-    _count: { name: true },
-    orderBy: { _count: { name: "desc" } },
-  });
-
-  console.log("categories grouped by name with count: ", groupByCategory);
-
-  console.log("Categories seeded");
+  console.log(`${categories.length} Categories seeded`);
 
   // seed categories to businesses
   console.log("Seeding Categories to Businesses...");
@@ -56,8 +47,8 @@ async function main() {
 
       await Promise.all(
         [...splitCategories].map(async (category) => {
-          // destructure id from object returned with prisma findUnique
-          const { id } = await prisma.category.findUnique({
+          // destructure id & name from object returned with prisma findUnique
+          const { id, name } = await prisma.category.findUnique({
             select: {
               id: true,
             },
@@ -72,6 +63,7 @@ async function main() {
            (business <-> categories = many to many relationship) */
           await prisma.categoryToBusiness.create({
             data: {
+              categoryName: name,
               categoryId: id,
               businessId: business_id,
             },
@@ -89,6 +81,21 @@ async function main() {
   });
 
   console.log("Businesses with categories: ", businesses);
+
+  // group categories by occurence of name
+  const groupedCategories = await prisma.categoryToBusiness.groupBy({
+    by: ["categoryName"],
+    _count: {
+      categoryName,
+    },
+    orderBy: {
+      _count: {
+        categoryName: "desc",
+      },
+    },
+  });
+
+  console.log("Grouped categories: ", groupedCategories);
 
   console.log("Categories to Businesses seeded.");
 }
