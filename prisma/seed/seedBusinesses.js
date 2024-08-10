@@ -26,7 +26,7 @@ async function main() {
     await prisma.business.create({
       data: {
         id: business_id,
-        name: name,
+        name,
         address,
         city,
         state,

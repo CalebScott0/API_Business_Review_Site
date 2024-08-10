@@ -17,6 +17,7 @@ const countUserReviews = (id) => {
 
 // aggregate user's average stars to update table column
 const averageUserStars = (id) => {
+  // return will look like: { _avg: { stars: 5 } }
   return prisma.review.aggregate({
     _avg: {
       stars: true,
@@ -32,7 +33,7 @@ const roundHalf = (num) => {
 
 const updateUser = async (id) => {
   const numUserReviews = await countUserReviews(id);
-  const roundAvgUserStars = roundHalf(await averageUserStars(id));
+  const roundAvgUserStars = roundHalf((await averageUserStars(id))._avg.stars);
   await prisma.user.update({
     where: { id },
     data: {
