@@ -48,6 +48,6 @@ const getBusinessById = async (id) => {
     },
   });
 };
-// get businesses by category just include the top review (look at what yelp has?
+// get businesses by category just include the most recent review or most popular? (look at what yelp has?)
 // (group by stars order by most recent?)
 module.exports = { getBusinessById };
