@@ -30,7 +30,7 @@ const averageUserStars = (id) => {
 const roundHalf = (num) => {
   return Math.round(num * 2) / 2;
 };
-
+// update user aggregate fields reviewCount & averageStars
 const updateUser = async (id) => {
   const numUserReviews = await countUserReviews(id);
   const roundAvgUserStars = roundHalf((await averageUserStars(id))._avg.stars);
@@ -44,13 +44,12 @@ const updateUser = async (id) => {
 };
 
 const getUserById = async (id) => {
-  // update user aggregate fields reviewCount & averageStars
   await updateUser(id);
   return prisma.user.findUnique({
     where: { id },
     include: {
       // Comments: true,
-      Reviews: true,
+      Reviews: { orderBy: { createdAt: "desc" } },
     },
   });
 };
@@ -71,4 +70,5 @@ module.exports = {
   getUserByUsername,
   getUserById,
   getUserByEmail,
+  roundHalf,
 };
