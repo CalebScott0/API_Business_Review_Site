@@ -71,9 +71,9 @@ model Comment {
 }
 
 model Category {
-  id         String               @id @default(uuid())
-  name       String               @unique
-  Businesses CategoryToBusiness[]
+  id                 String               @id @default(uuid())
+  name               String               @unique
+  CategoryToBusiness CategoryToBusiness[]
 }
 
 model CategoryToBusiness {

@@ -77,19 +77,19 @@ async function main() {
 
   const businesses = await prisma.business.findMany({
     skip: 68,
-    take: 10,
+    take: 1,
     include: {
       Categories: true,
     },
   });
 
-  console.log("Businesses with categories: ", businesses);
+  console.log("Business with categories: ", businesses[0]);
 
   // group categories by occurence of name
   const groupedCategories = await prisma.categoryToBusiness.groupBy({
     by: ["categoryName"],
     _count: {
-      categoryName,
+      categoryName: true,
     },
     orderBy: {
       _count: {
