@@ -43,7 +43,7 @@ const updateUser = async (id) => {
   });
 };
 
-const findUserById = async (id) => {
+const getUserById = async (id) => {
   // update user aggregate fields reviewCount & averageStars
   await updateUser(id);
   return prisma.user.findUnique({
@@ -54,13 +54,13 @@ const findUserById = async (id) => {
     },
   });
 };
-const findUserByUsername = (username) => {
+const getUserByUsername = (username) => {
   return prisma.user.findUnique({
     where: { username },
   });
 };
 // findUserByEmail to check if account with email already exists
-const findUserByEmail = (email) => {
+const getUserByEmail = (email) => {
   return prisma.user.findUnique({
     where: { email },
   });
@@ -68,7 +68,7 @@ const findUserByEmail = (email) => {
 
 module.exports = {
   createUser,
-  findUserByUsername,
-  findUserById,
-  findUserByEmail,
+  getUserByUsername,
+  getUserById,
+  getUserByEmail,
 };

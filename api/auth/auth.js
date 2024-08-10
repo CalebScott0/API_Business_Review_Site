@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { createUser, findUserByUsername } = require("../../db/users");
+const { createUser, getUserByUsername } = require("../../db/users");
 const { checkUserData, checkUserExists } = require("./utils");
 
 const authRouter = express.Router();
@@ -37,7 +37,7 @@ authRouter.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;
     // find user by username
-    const user = await findUserByUsername(username);
+    const user = await getUserByUsername(username);
 
     // run bcypt if login was NOT via OAuth, check user exists when you grab password from user
     const isSamePass = await bcrypt.compare(password, user?.password);

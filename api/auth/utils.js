@@ -1,4 +1,4 @@
-const { findUserByUsername, findUserByEmail } = require("../../db/users");
+const { getUserByUsername, getUserByEmail } = require("../../db/users");
 
 // check user has given username and password in body
 const checkUserData = (req, res, next) => {
@@ -14,9 +14,9 @@ const checkUserData = (req, res, next) => {
 };
 
 const checkUserExists = async (req, res, next) => {
-  const userNameExists = await findUserByUsername(req.body.username);
+  const userNameExists = await getUserByUsername(req.body.username);
   // if user registers with email, check if email is already taken
-  const emailExists = req.body.email && (await findUserByEmail(req.body.email));
+  const emailExists = req.body.email && (await getUserByEmail(req.body.email));
 
   if (userNameExists) {
     // error if username exists

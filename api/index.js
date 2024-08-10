@@ -1,6 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const { findUserById } = require("../db/users");
+const { getUserById } = require("../db/users");
 const { requireUser } = require("./utils");
 
 const apiRouter = express.Router();
@@ -23,7 +23,7 @@ apiRouter.use(async (req, res, next) => {
       );
       //   if id is successfully made, set req.user
       if (id) {
-        req.user = await findUserById(id);
+        req.user = await getUserById(id);
         next();
       } else {
         // 400 status on bad request
