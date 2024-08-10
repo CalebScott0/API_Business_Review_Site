@@ -5,22 +5,83 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding business categories...");
-  // change this to be all categories to show ranking by occurence in prisma query?
-  const categories = [];
+
+  const categoriesArr = [];
+
   for (let i = 0; i < businessArr.length; i++) {
-    // split categories into array if business has categories property
+    // split categories into array if business has categories property and push all to categories array
     const splitCategories = businessArr[i].categories
       ? businessArr[i].categories.split(", ")
       : [];
-    categories.push(splitCategories[j]);
+    // add all elements of split categories to categoriesArr
+    for (const category of splitCategories) {
+      categoriesArr.push(category);
+    }
   }
-  // loop to grab unique categories
 
-  // SEED DISTINCT CATEGORIES INTO CATEGORIES TABLE AND THEN SEED CATEGORIES TO BUSINESS TABLE ALL IN THIS FILE AT ONCE!!
+  // for each category in array (non distinct) create prisma category row
+  await Promise.all(
+    [...categoriesArr].map(async (category) => {
+      await prisma.category.create({
+        data: {
+          name: category,
+        },
+      });
+    })
+  );
 
-  //   USE ORDER BY ON RETURN IN PRISMA QUERY TO ORDER BY CATEGORIES
-  //  AND INCLUDE A COUNT OF EACH IN THE RESPONSE!!
-  console.log(categories[0]);
+  const categories = await prisma.category.findMany();
+
+  console.log("Category data example: ", categories[0]);
+
+  // return categories, grouped by name and with count of occurence
+  const groupByCategory = await prisma.category.groupBy({
+    by: ["name"],
+    _count: { name: true },
+  });
+
+  console.log("categories grouped by name with count: ", groupByCategory);
+
+  console.log("Categories seeded");
+
+  for (let i = 0; i < businessArr.length; i++) {
+    const splitCategories = businessArr[i].categories
+      ? businessArr[i].categories.split(", ")
+      : [];
+
+    await Promise.all(
+      [...splitCategories].map(async (category) => {
+        // destructure id from object returned with prisma findUnique
+        const { id } = await prisma.category.findUnique({
+          select: {
+            id: true,
+          },
+          where: {
+            name: category,
+          },
+        });
+        // destrcuture business_id from current object of businessArr
+        const { business_id } = businessArr[i];
+
+        /* create a category to business record 
+           (business <-> categories = many to many relationship) */
+        await prisma.categoryToBusiness.create({
+          data: {
+            categoryId: id,
+            businessId: business_id,
+          },
+        });
+      })
+    );
+  }
+  const businesses = await prisma.business.findMany({
+    skip: 68,
+    take: 10,
+    include: {
+      Reviews: true,
+      Categories: true,
+    },
+  });
 }
 main()
   .then(async () => {
