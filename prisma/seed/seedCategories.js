@@ -45,8 +45,13 @@ async function main() {
     if (businessArr[i].categories) {
       const splitCategories = businessArr[i].categories.split(", ");
 
+      // filter out any duplicate category values of business
+      const categoriesArr = splitCategories.filter(
+        (category, index) => splitCategories.indexOf(category) === index
+      );
+
       await Promise.all(
-        [...splitCategories].map(async (category) => {
+        [...categoriesArr].map(async (category) => {
           // destructure id & name from object returned with prisma findUnique
           const { id, name } = await prisma.category.findUnique({
             where: {
@@ -69,6 +74,7 @@ async function main() {
       );
     }
   }
+
   const businesses = await prisma.business.findMany({
     skip: 68,
     take: 10,
