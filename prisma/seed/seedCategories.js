@@ -49,9 +49,6 @@ async function main() {
         [...splitCategories].map(async (category) => {
           // destructure id & name from object returned with prisma findUnique
           const { id, name } = await prisma.category.findUnique({
-            select: {
-              id: true,
-            },
             where: {
               name: category,
             },
