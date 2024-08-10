@@ -48,8 +48,8 @@ const getUserById = async (id) => {
   return prisma.user.findUnique({
     where: { id },
     include: {
-      // Comments: true,
       Reviews: { orderBy: { createdAt: "desc" } },
+      Comments: { orderBy: { createdAt: "desc" } },
     },
   });
 };
