@@ -48,6 +48,8 @@ const getBusinessById = async (id) => {
     },
   });
 };
+
+const getBusinessesByCategory = async(prisma.category);
 // get businesses by category just include the most recent review or most popular? (look at what yelp has?)
 // (group by stars order by most recent?)
 module.exports = { getBusinessById };
