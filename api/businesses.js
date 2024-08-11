@@ -5,7 +5,6 @@ const {
   getBusinessById,
   getBusinessesByCategory,
 } = require("../db/businesses");
-const { business } = require("../db");
 
 // get businesses by param category
 businessRouter.get("/:category", async (req, res, next) => {
