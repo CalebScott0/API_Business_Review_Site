@@ -18,6 +18,15 @@ const deleteReview = (id) => {
     where: { id },
   });
 };
+
+const getUserRevByBusiness = (authorId, businessId) => {
+  return prisma.review.findUnique({
+    where: {
+      authorId,
+      businessId,
+    },
+  });
+};
 // find unique where authorId: user id AND businessId: business id?
 // UPDATE/DELETE REVIEW ON USER.UPDATE?
 module.exports = { createReview, updateReview, deleteReview };
