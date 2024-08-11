@@ -39,6 +39,11 @@ const getBusinessById = async (id) => {
   return prisma.business.findUnique({
     where: { id },
     include: {
+      Categories: {
+        select: {
+          categoryName: true,
+        },
+      },
       Reviews: {
         orderBy: { createdAt: "desc" },
         include: {
@@ -63,6 +68,11 @@ const getBusinessesByCategory = async (category) => {
   return prisma.business.findMany({
     where: { id: { in: [...busIdArr] } },
     include: {
+      Categories: {
+        select: {
+          categoryName: true,
+        },
+      },
       Reviews: {
         orderBy: { createdAt: "desc" },
         take: 1,

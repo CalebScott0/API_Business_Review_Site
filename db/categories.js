@@ -30,7 +30,7 @@ const updateCategories = async () => {
 const getCategories = async () => {
   await updateCategories();
   return prisma.category.findMany({
-    orderBy: { businessCount: "desc" },
+    orderBy: { businessCount: "asc" },
   });
 };
 
