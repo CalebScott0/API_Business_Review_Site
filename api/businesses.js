@@ -7,9 +7,11 @@ const {
 } = require("../db/businesses");
 
 // get businesses by param category
-businessRouter.get("/:category", async (req, res, next) => {
+businessRouter.get("/category/:category", async (req, res, next) => {
   try {
     const businesses = await getBusinessesByCategory(req.params.category);
+
+    !businesses.length && res.status(400).send({ message: "Invalid category" });
 
     res.send({ businesses });
   } catch ({ name, message }) {
@@ -23,8 +25,11 @@ businessRouter.get("/:id", async (req, res, next) => {
     const business = await getBusinessById(req.params.id);
 
     res.send({ business });
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch (error) {
+    next({
+      name: "UnableToFindBusinessError",
+      message: "Unable to find business, id may be invalid",
+    });
   }
 });
 

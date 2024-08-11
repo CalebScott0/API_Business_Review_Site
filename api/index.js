@@ -50,7 +50,7 @@ apiRouter.use("/auth", require("./auth/auth"));
 // /api/user route to get logged in user
 apiRouter.use("/user", require("./user"));
 
-// /api/business to get businessess by id and category
+// /api/businesses to get businessess by id and category
 apiRouter.use("/businesses", require("./businesses"));
 
 // review & comment routes will all need requireUser middleware!

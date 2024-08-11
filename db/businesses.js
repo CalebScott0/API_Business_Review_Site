@@ -25,7 +25,7 @@ const updateBusiness = async (id) => {
   const roundBusUserStars = roundHalf(
     (await averageBusinessStars(id))._avg.stars
   );
-  await prisma.business.update({
+  return prisma.business.update({
     where: { id },
     data: {
       stars: roundBusUserStars,
@@ -65,9 +65,7 @@ const getBusinessesByCategory = async (category) => {
     include: {
       Reviews: {
         orderBy: { createdAt: "desc" },
-        include: {
-          Comments: { orderBy: { createdAt: "desc" } },
-        },
+        take: 1,
       },
     },
   });
