@@ -1,32 +1,35 @@
-const { getUserRevByBusiness } = require("../db/reviews");
+const { getUserRevByBusiness, getReviewById } = require("../db/reviews");
 
 // function to ensure user is logged in before accessing certain functionality
 const requireUser = (req, res, next) => {
   if (!req.user || !req.user.id) {
-    return res.staus(401).send({ message: "You must be logged in to do that" });
+    return res
+      .status(401)
+      .send({ message: "You must be logged in to do that" });
   }
   next();
 };
 
-// checks create review function has both text and star rating
-const checkCreateReviewData = (req, res, next) => {
+const checkCreateReviewData = async (req, res, next) => {
+  // await checkReviewStars();
   const { text, stars } = req.body;
-  if (!text || !stars) {
-    return res
-      .status(400)
-      .send({ message: "Please provide text and a star rating for review" });
+  if (!text || !stars || stars > 5) {
+    return res.status(400).send({
+      message: "Please provide text and a stars rating (1-5) for review",
+    });
   }
 
   next();
 };
 
 // checks update review function has text and/or star rating
-const checkUpdateReviewData = (req, res, next) => {
+const checkUpdateReviewData = async (req, res, next) => {
+  // await checkReviewStars();
   const { text, stars } = req.body;
-  if (!text && !stars) {
-    return res
-      .status(400)
-      .send({ message: "Please update the text or star rating for review" });
+  if ((!text && !stars) || stars > 5) {
+    return res.status(400).send({
+      message: "Please update the text or stars rating (1-5) for review",
+    });
   }
 
   next();
@@ -42,12 +45,22 @@ const checkUserHasReview = async (req, res, next) => {
 
   if (hasReview) {
     return res.status(409).send({
-      name: "UserReviewForBusinessExistsError",
-      message:
-        "A review already exists with this unique combination of authorId and businessId",
+      name: "UserReviewError",
+      message: "User already has review for this business",
     });
   }
 
+  next();
+};
+
+// check if user is author of review before update or delete
+const checkUserIsAuthor = async (req, res, next) => {
+  const review = await getReviewById(req.params.id);
+  if (req.user.id !== review.authorId) {
+    return res
+      .status(401)
+      .send({ message: "User is not the author of this review" });
+  }
   next();
 };
 module.exports = {
@@ -55,4 +68,5 @@ module.exports = {
   checkCreateReviewData,
   checkUpdateReviewData,
   checkUserHasReview,
+  checkUserIsAuthor,
 };

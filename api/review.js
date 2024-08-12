@@ -8,9 +8,11 @@ const {
   checkCreateReviewData,
   checkUpdateReviewData,
   checkUserHasReview,
+  checkUserIsAuthor,
 } = require("./utils");
 
 // user will be set to req.user as token will be required for review functions
+// POST /api/review/:businessId
 reviewRouter.post(
   "/:businessId",
   // check if user already has review for business,
@@ -19,15 +21,11 @@ reviewRouter.post(
   checkCreateReviewData,
   async (req, res, next) => {
     try {
-      const { businessId } = req.params.businessId;
-      const { text, stars } = req.body;
-      const newReview = {
-        text,
-        stars,
+      const postReview = await createReview({
+        ...req.body,
         authorId: req.user.id,
-        businessId,
-      };
-      const postReview = await createReview(newReview);
+        businessId: req.params.businessId,
+      });
 
       res.status(201).send({ postReview });
     } catch ({ name, message }) {
@@ -36,4 +34,34 @@ reviewRouter.post(
   }
 );
 
+// PUT /api/review/:id
+reviewRouter.put(
+  "/:id",
+  // check user is author of review
+  // then check either text or stars have been provided
+  checkUserIsAuthor,
+  checkUpdateReviewData,
+  async (req, res, next) => {
+    try {
+      const putReview = await updateReview(req.params.id, {
+        ...req.body,
+      });
+
+      res.send({ putReview });
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  }
+);
+
+// DELETE /api/review/:id
+reviewRouter.delete("/:id", checkUserIsAuthor, async (req, res, next) => {
+  try {
+    await deleteReview(req.params.id);
+
+    res.sendStatus(204);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 module.exports = reviewRouter;

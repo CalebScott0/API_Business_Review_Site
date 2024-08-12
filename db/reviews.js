@@ -1,12 +1,13 @@
 const prisma = require("./index");
 // create a review for user
 const createReview = (reviewData) => {
+  // const { text, stars, authorId, businessId } = reviewData;
   return prisma.review.create({
     data: reviewData,
   });
 };
 // update a user review
-const updateReview = ({ id, reviewData }) => {
+const updateReview = (id, reviewData) => {
   return prisma.review.update({
     where: { id },
     data: reviewData,
@@ -27,7 +28,19 @@ const getUserRevByBusiness = ({ authorId, businessId }) => {
         authorId,
         businessId,
       },
+      author: {
+        id: authorId,
+      },
+      business: {
+        id: businessId,
+      },
     },
+  });
+};
+
+const getReviewById = (id) => {
+  return prisma.review.findUnique({
+    where: { id },
   });
 };
 // find unique where authorId: user id AND businessId: business id?
@@ -37,4 +50,5 @@ module.exports = {
   updateReview,
   deleteReview,
   getUserRevByBusiness,
+  getReviewById,
 };
