@@ -6,7 +6,7 @@ const createReview = (reviewData) => {
   });
 };
 // update a user review
-const updateReview = (id, reviewData) => {
+const updateReview = ({ id, reviewData }) => {
   return prisma.review.update({
     where: { id },
     data: reviewData,
@@ -19,10 +19,13 @@ const deleteReview = (id) => {
   });
 };
 
-const getUserRevByBusiness = (authorId_businessId) => {
+const getUserRevByBusiness = ({ authorId, businessId }) => {
   return prisma.review.findUnique({
     where: {
-      authorId_businessId,
+      uniqueReview: {
+        authorId,
+        businessId,
+      },
     },
   });
 };
