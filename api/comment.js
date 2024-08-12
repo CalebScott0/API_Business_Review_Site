@@ -8,21 +8,23 @@ const {
   updateComment,
   deleteComment,
 } = require("../db/comments");
-const { checkUserIsNotAuthor } = require("./utils");
+const { checkUserIsNotAuthor, checkCommentData } = require("./utils");
 
 // user will be set to req.user as token will be required for comment functions
 
 // POST /api/comment/:reviewId
 commentRouter.post(
-  "/:reviewid",
+  "/review/:reviewId",
   // check user is not author of review
+  // then check user provided text for comment
   checkUserIsNotAuthor,
+  checkCommentData,
   async (req, res, next) => {
     try {
       const newComment = await createComment({
         ...req.body,
         authorId: req.user.id,
-        reviewId: req.params.reviewid,
+        reviewId: req.params.reviewId,
       });
 
       res.status(201).send({ newComment });
@@ -32,4 +34,14 @@ commentRouter.post(
   }
 );
 
+// PUT /api/comment/:id
+commentRouter.put("/:id", checkCommentData, async (req, res, next) => {
+  try {
+    const putComment = await updateComment(req.params.id, req.body.text);
+
+    res.send({ putComment });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 module.exports = commentRouter;

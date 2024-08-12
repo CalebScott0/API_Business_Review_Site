@@ -66,7 +66,7 @@ const checkUserIsAuthor = async (req, res, next) => {
 
 // check if user is trying to comment on their own review
 const checkUserIsNotAuthor = async (req, res, next) => {
-  const review = await getReviewById(req.params.id);
+  const review = await getReviewById(req.params.reviewId);
   if (req.user.id === review.authorId) {
     return res
       .status(400)
@@ -74,6 +74,15 @@ const checkUserIsNotAuthor = async (req, res, next) => {
   }
   next();
 };
+
+const checkCommentData = async (req, res, next) => {
+  const { text } = req.body;
+  if (!text || !text.length) {
+    return res.status(400).send({ message: "Please provide text for comment" });
+  }
+  next();
+};
+
 module.exports = {
   requireUser,
   checkCreateReviewData,
@@ -81,4 +90,5 @@ module.exports = {
   checkUserHasReview,
   checkUserIsAuthor,
   checkUserIsNotAuthor,
+  checkCommentData,
 };

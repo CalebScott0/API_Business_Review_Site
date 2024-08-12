@@ -13,9 +13,13 @@ const createComment = (commentData) => {
 };
 
 const updateComment = (id, commentData) => {
+  console.log(commentData);
   return prisma.comment.update({
     where: { id },
-    data: commentData,
+    data: {
+      updatedAt: new Date(),
+      ...commentData,
+    },
   });
 };
 

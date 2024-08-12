@@ -15,6 +15,15 @@ const countUserReviews = (id) => {
   });
 };
 
+// aggregate user's comment count to update table column
+const countUserComments = (id) => {
+  return prisma.comment.count({
+    where: {
+      authorId: id,
+    },
+  });
+};
+
 // aggregate user's average stars to update table column
 const averageUserStars = (id) => {
   // return will look like: { _avg: { stars: 5 } }
@@ -33,11 +42,13 @@ const roundHalf = (num) => {
 // update user aggregate fields reviewCount & averageStars
 const updateUser = async (id) => {
   const numUserReviews = await countUserReviews(id);
+  const numUserComments = await countUserComments(id);
   const roundAvgUserStars = roundHalf((await averageUserStars(id))._avg.stars);
   await prisma.user.update({
     where: { id },
     data: {
       reviewCount: numUserReviews,
+      commentCount: numUserComments,
       averageStars: roundAvgUserStars,
     },
   });

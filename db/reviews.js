@@ -9,7 +9,10 @@ const createReview = (reviewData) => {
 const updateReview = (id, reviewData) => {
   return prisma.review.update({
     where: { id },
-    data: reviewData,
+    data: {
+      updatedAt: new Date(),
+      ...reviewData,
+    },
   });
 };
 // delete a user review

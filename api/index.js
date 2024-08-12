@@ -57,7 +57,7 @@ apiRouter.use("/businesses", require("./businesses"));
 apiRouter.use("/review", requireUser, require("./review"));
 
 //  /api/comment
-apiRouter.use("/review", requireUser, require("./comment"));
+apiRouter.use("/comment", requireUser, require("./comment"));
 // review & comment routes will all need requireUser middleware!
 
 module.exports = apiRouter;
