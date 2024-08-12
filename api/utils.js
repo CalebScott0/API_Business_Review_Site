@@ -1,3 +1,5 @@
+const { getUserRevByBusiness } = require("../db/reviews");
+
 // function to ensure user is logged in before accessing certain functionality
 const requireUser = (req, res, next) => {
   if (!req.user || !req.user.id) {
@@ -6,4 +8,5 @@ const requireUser = (req, res, next) => {
   next();
 };
 
+const checkUserHasReview = (req, res, next) => {};
 module.exports = { requireUser };
