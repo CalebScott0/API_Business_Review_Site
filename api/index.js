@@ -53,6 +53,8 @@ apiRouter.use("/user", require("./user"));
 // /api/businesses to get businessess by id and category
 apiRouter.use("/businesses", require("./businesses"));
 
+//  /api/review
+apiRouter.use("/review", requireUser, require("./review"));
 // review & comment routes will all need requireUser middleware!
 
 module.exports = apiRouter;

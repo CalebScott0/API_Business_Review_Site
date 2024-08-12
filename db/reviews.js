@@ -19,6 +19,7 @@ const deleteReview = (id) => {
   });
 };
 
+// find a review given an authorId & businessId
 const getUserRevByBusiness = ({ authorId, businessId }) => {
   return prisma.review.findUnique({
     where: {
