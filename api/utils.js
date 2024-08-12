@@ -1,4 +1,5 @@
 const { getUserRevByBusiness, getReviewById } = require("../db/reviews");
+const { getCommentById } = require("../db/comments");
 
 // function to ensure user is logged in before accessing certain functionality
 const requireUser = (req, res, next) => {
@@ -54,8 +55,9 @@ const checkUserHasReview = async (req, res, next) => {
 };
 
 // check if user is author of review before update or delete
-const checkUserIsAuthor = async (req, res, next) => {
+const checkIsUserReview = async (req, res, next) => {
   const review = await getReviewById(req.params.id);
+  console.log(req.params.id);
   if (req.user.id !== review.authorId) {
     return res
       .status(400)
@@ -65,7 +67,7 @@ const checkUserIsAuthor = async (req, res, next) => {
 };
 
 // check if user is trying to comment on their own review
-const checkUserIsNotAuthor = async (req, res, next) => {
+const checkIsNotUserReview = async (req, res, next) => {
   const review = await getReviewById(req.params.reviewId);
   if (req.user.id === review.authorId) {
     return res
@@ -82,13 +84,23 @@ const checkCommentData = async (req, res, next) => {
   }
   next();
 };
-
+// check user is author of comment before update or delete
+const checkIsUserComment = async (req, res, next) => {
+  const comment = await getCommentById(req.params.id);
+  if (req.user.id !== comment.authorId) {
+    return res
+      .status(400)
+      .send({ message: "User is not the author of this comment" });
+  }
+  next();
+};
 module.exports = {
   requireUser,
   checkCreateReviewData,
   checkUpdateReviewData,
   checkUserHasReview,
-  checkUserIsAuthor,
-  checkUserIsNotAuthor,
+  checkIsUserReview,
+  checkIsNotUserReview,
   checkCommentData,
+  checkIsUserComment,
 };

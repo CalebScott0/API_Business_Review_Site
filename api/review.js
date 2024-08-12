@@ -6,7 +6,7 @@ const {
   checkCreateReviewData,
   checkUpdateReviewData,
   checkUserHasReview,
-  checkUserIsAuthor,
+  checkIsUserReview,
 } = require("./utils");
 
 // user will be set to req.user as token will be required for review functions
@@ -38,7 +38,7 @@ reviewRouter.put(
   "/:id",
   // check user is author of review
   // then check either text or stars have been provided
-  checkUserIsAuthor,
+  checkIsUserReview,
   checkUpdateReviewData,
   async (req, res, next) => {
     try {
@@ -54,7 +54,7 @@ reviewRouter.put(
 );
 
 // DELETE /api/review/:id
-reviewRouter.delete("/:id", checkUserIsAuthor, async (req, res, next) => {
+reviewRouter.delete("/:id", checkIsUserReview, async (req, res, next) => {
   try {
     await deleteReview(req.params.id);
 

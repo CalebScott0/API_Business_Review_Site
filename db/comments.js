@@ -12,20 +12,28 @@ const createComment = (commentData) => {
   });
 };
 
-const updateComment = (id, commentData) => {
-  console.log(commentData);
+const updateComment = (id, text) => {
+  console.log("id:", id);
   return prisma.comment.update({
     where: { id },
     data: {
+      text,
       updatedAt: new Date(),
-      ...commentData,
     },
   });
 };
 
 const deleteComment = (id) => {
-  return prisma.review.delete({
+  return prisma.comment.delete({
     where: { id },
+  });
+};
+
+const getCommentById = (id) => {
+  return prisma.comment.findUnique({
+    where: {
+      id,
+    },
   });
 };
 
@@ -33,4 +41,5 @@ module.exports = {
   createComment,
   updateComment,
   deleteComment,
+  getCommentById,
 };
