@@ -9,10 +9,9 @@ server.use(morgan("dev"));
 // body parsing middleware
 server.use(express.json());
 
-server.get("/"),
-  (req, res) => {
-    res.send({ message: "Working" });
-  };
+server.get("/", (req, res) => {
+  res.send({ message: "Working" });
+});
 
 // all routes
 server.use("/api", require("./api/index"));

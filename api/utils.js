@@ -58,8 +58,19 @@ const checkUserIsAuthor = async (req, res, next) => {
   const review = await getReviewById(req.params.id);
   if (req.user.id !== review.authorId) {
     return res
-      .status(401)
+      .status(400)
       .send({ message: "User is not the author of this review" });
+  }
+  next();
+};
+
+// check if user is trying to comment on their own review
+const checkUserIsNotAuthor = async (req, res, next) => {
+  const review = await getReviewById(req.params.id);
+  if (req.user.id === review.authorId) {
+    return res
+      .status(400)
+      .send({ message: "User can not submit comment on their own review" });
   }
   next();
 };
@@ -69,4 +80,5 @@ module.exports = {
   checkUpdateReviewData,
   checkUserHasReview,
   checkUserIsAuthor,
+  checkUserIsNotAuthor,
 };

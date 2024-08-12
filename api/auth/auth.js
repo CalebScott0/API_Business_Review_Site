@@ -8,6 +8,7 @@ const authRouter = express.Router();
 
 // path /api/auth
 
+// POST /api/auth/register
 authRouter.post(
   "/register",
   checkUserData,
@@ -33,6 +34,7 @@ authRouter.post(
   }
 );
 
+//  POST /api/auth/login
 authRouter.post("/login", async (req, res, next) => {
   try {
     const { username, password } = req.body;

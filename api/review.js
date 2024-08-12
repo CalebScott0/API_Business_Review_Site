@@ -1,5 +1,3 @@
-// CREATE MIDDLEWARE IN UTILS - CHECKS IF USER HAS ALREADY SUBMITTED REVIEW ON BUSINESS
-
 const express = require("express");
 const reviewRouter = express.Router();
 
@@ -12,6 +10,7 @@ const {
 } = require("./utils");
 
 // user will be set to req.user as token will be required for review functions
+
 // POST /api/review/:businessId
 reviewRouter.post(
   "/:businessId",

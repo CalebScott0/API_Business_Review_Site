@@ -4,4 +4,29 @@
 // update user comment
 // delete user comment
 
-// UPDATE/DELETE COMMENT ON USER.UPDATE?
+const prisma = require("./index");
+
+const createComment = (commentData) => {
+  return prisma.comment.create({
+    data: commentData,
+  });
+};
+
+const updateComment = (id, commentData) => {
+  return prisma.comment.update({
+    where: { id },
+    data: commentData,
+  });
+};
+
+const deleteComment = (id) => {
+  return prisma.review.delete({
+    where: { id },
+  });
+};
+
+module.exports = {
+  createComment,
+  updateComment,
+  deleteComment,
+};
