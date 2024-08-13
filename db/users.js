@@ -6,39 +6,7 @@ const createUser = (userData) => {
   });
 };
 
-// aggregate user's review count to update table column
-const countUserReviews = (id) => {
-  return prisma.review.count({
-    where: {
-      authorId: id,
-    },
-  });
-};
 
-// aggregate user's comment count to update table column
-const countUserComments = (id) => {
-  return prisma.comment.count({
-    where: {
-      authorId: id,
-    },
-  });
-};
-
-// aggregate user's average stars to update table column
-const averageUserStars = (id) => {
-  // return will look like: { _avg: { stars: 5 } }
-  return prisma.review.aggregate({
-    _avg: {
-      stars: true,
-    },
-    where: { authorId: id },
-  });
-};
-
-// convert into float rounding to the nearest 0.5
-const roundHalf = (num) => {
-  return Math.round(num * 2) / 2;
-};
 // update user aggregate fields reviewCount & averageStars
 const updateUser = async (id) => {
   const numUserReviews = await countUserReviews(id);

@@ -11,7 +11,8 @@
     "seedCategories": "node --max-old-space-size=8192 ./prisma/seed/seedCategories.js",
     "start": "node index.js",
     "start:dev": "nodemon index.js",
-    "test": "jest --runInBand --watch"
+    "test": "jest --runInBand --watch",
+    "updateTables": "node --max-old-space-size=6000 ./prisma/update_tables/updateTables.js"
   },
   "keywords": [],
   "author": "",
