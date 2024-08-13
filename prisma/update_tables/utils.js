@@ -1,3 +1,4 @@
+const prisma = require("../../db/index");
 // total count of reviews for a business given an id
 const countBusinessReviews = (id) => {
   return prisma.review.count({

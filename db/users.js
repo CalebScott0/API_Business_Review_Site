@@ -6,18 +6,14 @@ const createUser = (userData) => {
   });
 };
 
-
 // update user aggregate fields reviewCount & averageStars
 const updateUser = async (id) => {
-  const numUserReviews = await countUserReviews(id);
-  const numUserComments = await countUserComments(id);
-  const roundAvgUserStars = roundHalf((await averageUserStars(id))._avg.stars);
   await prisma.user.update({
     where: { id },
     data: {
-      reviewCount: numUserReviews,
-      commentCount: numUserComments,
-      averageStars: roundAvgUserStars,
+      // reviewCount: numUserReviews,
+      // commentCount: numUserComments,
+      // averageStars: roundAvgUserStars,
     },
   });
 };
@@ -49,5 +45,4 @@ module.exports = {
   getUserByUsername,
   getUserById,
   getUserByEmail,
-  roundHalf,
 };
