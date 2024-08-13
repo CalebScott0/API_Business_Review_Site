@@ -20,12 +20,12 @@ const getBusinessById = async (id) => {
   });
 };
 
-const getBusinessesByCategory = async (category) => {
+const getBusinessesByCategory = (categoryId) => {
   return prisma.business.findMany({
     where: {
       Categories: {
         some: {
-          categoryName: category,
+          categoryId,
         },
       },
     },
