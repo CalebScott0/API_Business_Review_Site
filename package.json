@@ -12,7 +12,7 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "test": "jest --runInBand --watch",
-    "updateTables": "node --max-old-space-size=6000 ./prisma/update_tables/updateTables.js"
+    "updateTables": "node --max-old-space-size=6000 ./db/update_tables/updateTables.js"
   },
   "keywords": [],
   "author": "",
