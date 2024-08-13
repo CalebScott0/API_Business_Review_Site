@@ -6,20 +6,7 @@ const createUser = (userData) => {
   });
 };
 
-// update user aggregate fields reviewCount & averageStars
-const updateUser = async (id) => {
-  await prisma.user.update({
-    where: { id },
-    data: {
-      // reviewCount: numUserReviews,
-      // commentCount: numUserComments,
-      // averageStars: roundAvgUserStars,
-    },
-  });
-};
-
 const getUserById = async (id) => {
-  await updateUser(id);
   return prisma.user.findUnique({
     where: { id },
     include: {
@@ -28,6 +15,7 @@ const getUserById = async (id) => {
     },
   });
 };
+
 const getUserByUsername = (username) => {
   return prisma.user.findUnique({
     where: { username },

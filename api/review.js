@@ -1,7 +1,17 @@
 const express = require("express");
 const reviewRouter = express.Router();
 
-const { createReview, updateReview, deleteReview } = require("../db/reviews");
+const {
+  createReview,
+  updateReview,
+  deleteReview,
+  updateBusinessOnReview,
+  updateUserOnReview,
+  changeBusinessStars,
+  changeUserStars,
+  decrementBusinessReview,
+  decrementUserReview,
+} = require("../db/reviews");
 const {
   checkCreateReviewData,
   checkUpdateReviewData,
@@ -25,6 +35,8 @@ reviewRouter.post(
         authorId: req.user.id,
         businessId: req.params.businessId,
       });
+      await updateBusinessOnReview(req.params.businessId);
+      await updateUserOnReview(req.user.id);
 
       res.status(201).send({ postReview });
     } catch ({ name, message }) {
@@ -42,10 +54,14 @@ reviewRouter.put(
   checkUpdateReviewData,
   async (req, res, next) => {
     try {
-      const putReview = await updateReview(req.params.id, {
+      const { id } = req.params.id;
+      const putReview = await updateReview(id, {
         ...req.body,
       });
-
+      if (req.body.stars) {
+        await changeBusinessStars(id);
+        await changeUserStars(id);
+      }
       res.send({ putReview });
     } catch ({ name, message }) {
       next({ name, message });
@@ -56,7 +72,10 @@ reviewRouter.put(
 // DELETE /api/review/:id
 reviewRouter.delete("/:id", checkIsUserReview, async (req, res, next) => {
   try {
-    await deleteReview(req.params.id);
+    const { id } = req.params.id;
+    await deleteReview(id);
+    await decrementBusinessReview(id);
+    await decrementUserReview(id);
 
     res.sendStatus(204);
   } catch ({ name, message }) {

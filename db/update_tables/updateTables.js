@@ -1,4 +1,3 @@
-const { PrismaClient } = require("@prisma/client");
 const {
   countBusinessReviews,
   averageBusinessStars,
@@ -8,7 +7,7 @@ const {
   roundHalf,
 } = require("./utils");
 
-const prisma = new PrismaClient();
+const prisma = require("../index");
 
 async function main() {
   console.log("Updating businesses with review count and average stars...");
@@ -26,7 +25,7 @@ async function main() {
     );
 
     await prisma.business.update({
-      where: { id: business.id },
+      where: { id: businesses[i].id },
       data: {
         reviewCount: reviews,
         stars: avgStars,
@@ -62,7 +61,7 @@ async function main() {
     );
 
     await prisma.user.update({
-      where: { id: business.id },
+      where: { id: users[i].id },
       data: {
         reviewCount: reviews,
         commentCount: comments,
@@ -81,11 +80,4 @@ async function main() {
   console.log("Users updated");
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.log(e);
-    await prisma.$disconnect();
-  });
+main();
