@@ -21,22 +21,42 @@ const getUserById = async (id) => {
   // average user star ratings on reviews rounded to nearest 0.5
   const stars = await averageUserStars(id);
 
-  await prisma.user.update({
+  // return user with updated aggregates, reviews (and associated comments) & comments
+  return prisma.user.update({
     where: { id },
     data: {
       reviewCount,
       commentCount,
       stars,
     },
-  });
-
-  return prisma.user.findUnique({
-    where: { id },
     include: {
-      Reviews: { orderBy: { createdAt: "desc" }, include: { Comments: true } },
-      Comments: { orderBy: { createdAt: "desc" } },
+      Reviews: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          Comments: {
+            orderBy: {
+              createdAt: "desc",
+            },
+          },
+        },
+      },
+      Comments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
+
+  // return prisma.user.findUnique({
+  //   where: { id },
+  //   include: {
+  //     Reviews: { orderBy: { createdAt: "desc" }, include: { Comments: true } },
+  //     Comments: { orderBy: { createdAt: "desc" } },
+  //   },
+  // });
 };
 
 const getUserByUsername = (username) => {
