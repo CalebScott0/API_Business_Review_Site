@@ -1,5 +1,3 @@
-/*  CREATE MIDDLEWARE IN UTILS FOLDER TO CHECK
-    IF USER IS TRYING TO COMMENT ON THEIR OWN REVIEW!! */
 const express = require("express");
 const commentRouter = express.Router();
 
@@ -25,13 +23,13 @@ commentRouter.post(
   checkCommentData,
   async (req, res, next) => {
     try {
-      const newComment = await createComment({
+      const comment = await createComment({
         ...req.body,
         authorId: req.user.id,
         reviewId: req.params.reviewId,
       });
 
-      res.status(201).send({ newComment });
+      res.status(201).send({ comment });
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -46,11 +44,9 @@ commentRouter.put(
   checkCommentData,
   async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const { text } = req.body;
-      const putComment = await updateComment(id, text);
+      const comment = await updateComment(req.params.id, req.body.text);
 
-      res.send({ putComment });
+      res.send({ comment });
     } catch ({ name, message }) {
       next({ name, message });
     }

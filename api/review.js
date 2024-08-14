@@ -8,6 +8,7 @@ const {
   checkUserHasReview,
   checkIsUserReview,
 } = require("./utils");
+const { review } = require("../db");
 
 // user will be set to req.user as token will be required for review functions
 
@@ -20,13 +21,13 @@ reviewRouter.post(
   checkCreateReviewData,
   async (req, res, next) => {
     try {
-      const postReview = await createReview({
+      const review = await createReview({
         ...req.body,
         authorId: req.user.id,
         businessId: req.params.businessId,
       });
 
-      res.status(201).send({ postReview });
+      res.status(201).send({ review });
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -42,12 +43,11 @@ reviewRouter.put(
   checkUpdateReviewData,
   async (req, res, next) => {
     try {
-      const { id } = req.params;
-      const putReview = await updateReview(id, {
+      const review = await updateReview(req.params.id, {
         ...req.body,
       });
 
-      res.send({ putReview });
+      res.send({ review });
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -57,8 +57,7 @@ reviewRouter.put(
 // DELETE /api/review/:id
 reviewRouter.delete("/:id", checkIsUserReview, async (req, res, next) => {
   try {
-    const { id } = req.params;
-    await deleteReview(id);
+    await deleteReview(req.params.id);
 
     res.sendStatus(204);
   } catch ({ name, message }) {
