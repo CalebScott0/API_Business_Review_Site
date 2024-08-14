@@ -48,7 +48,7 @@ apiRouter.use(async (req, res, next) => {
 apiRouter.use("/auth", require("./auth/auth"));
 
 // /api/user route to get logged in user
-apiRouter.use("/user", require("./user"));
+apiRouter.use("/user", requireUser, require("./user"));
 
 // /api/businesses to get businessess by id and category
 apiRouter.use("/businesses", require("./businesses"));

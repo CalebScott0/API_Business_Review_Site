@@ -39,7 +39,7 @@ model User {
   createdAt    DateTime  @default(now())
   reviewCount  Int       @default(0)
   commentCount Int       @default(0)
-  averageStars Float     @default(0.0)
+  stars        Float     @default(0.0)
   Reviews      Review[]
   Comments     Comment[]
 }
