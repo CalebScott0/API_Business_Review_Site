@@ -50,13 +50,6 @@ const getUserById = async (id) => {
     },
   });
 
-  // return prisma.user.findUnique({
-  //   where: { id },
-  //   include: {
-  //     Reviews: { orderBy: { createdAt: "desc" }, include: { Comments: true } },
-  //     Comments: { orderBy: { createdAt: "desc" } },
-  //   },
-  // });
 };
 
 const getUserByUsername = (username) => {
