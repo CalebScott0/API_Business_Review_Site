@@ -1,15 +1,7 @@
 const express = require("express");
 const reviewRouter = express.Router();
 
-const {
-  createReview,
-  updateReview,
-  deleteReview,
-  updateBusinessOnReview,
-  updateUserOnReview,
-  changeBusinessStars,
-  changeUserStars,
-} = require("../db/reviews");
+const { createReview, updateReview, deleteReview } = require("../db/reviews");
 const {
   checkCreateReviewData,
   checkUpdateReviewData,
@@ -33,8 +25,6 @@ reviewRouter.post(
         authorId: req.user.id,
         businessId: req.params.businessId,
       });
-      await updateBusinessOnReview(req.params.businessId);
-      await updateUserOnReview(req.user.id);
 
       res.status(201).send({ postReview });
     } catch ({ name, message }) {
@@ -56,10 +46,7 @@ reviewRouter.put(
       const putReview = await updateReview(id, {
         ...req.body,
       });
-      if (req.body.stars) {
-        await changeBusinessStars(id);
-        await changeUserStars(id);
-      }
+
       res.send({ putReview });
     } catch ({ name, message }) {
       next({ name, message });
