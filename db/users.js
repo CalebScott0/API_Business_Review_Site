@@ -2,7 +2,6 @@ const {
   countUserReviews,
   countUserComments,
   averageUserStars,
-  roundHalf,
 } = require("./update_tables/utils");
 const prisma = require("./index");
 
@@ -14,20 +13,20 @@ const createUser = (userData) => {
 
 const getUserById = async (id) => {
   // count total num user reviews
-  const reviews = await countUserReviews(id);
+  const reviewCount = await countUserReviews(id);
 
   // count total num user comment
-  const comments = await countUserComments(id);
+  const commentCount = await countUserComments(id);
 
   // average user star ratings on reviews rounded to nearest 0.5
-  const avgStars = roundHalf((await averageUserStars(id))._avg.stars);
+  const stars = await averageUserStars(id);
 
   await prisma.user.update({
     where: { id },
     data: {
-      reviewCount: reviews,
-      commentCount: comments,
-      stars: avgStars,
+      reviewCount,
+      commentCount,
+      stars,
     },
   });
 

@@ -2,7 +2,6 @@ const prisma = require("./index");
 const {
   averageBusinessStars,
   averageUserStars,
-  roundHalf,
 } = require("../db/update_tables/utils");
 
 // create a review for user
@@ -14,7 +13,7 @@ const createReview = (reviewData) => {
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
-  const busStars = roundHalf(await averageBusinessStars(id));
+  const stars = await averageBusinessStars(id);
 
   return prisma.business.update({
     where: {
@@ -24,14 +23,14 @@ const updateBusinessOnReview = async (id) => {
       reviewCount: {
         increment: 1,
       },
-      stars: busStars,
+      stars,
     },
   });
 };
 
 // update user on review creation
 const updateUserOnReview = async (id) => {
-  const userStars = roundHalf(await averageUserStars(id));
+  const stars = await averageUserStars(id);
 
   return prisma.user.update({
     where: {
@@ -41,7 +40,7 @@ const updateUserOnReview = async (id) => {
       reviewCount: {
         increment: 1,
       },
-      stars: userStars,
+      stars,
     },
   });
 };
@@ -56,19 +55,18 @@ const updateReview = (id, reviewData) => {
     },
   });
 };
-
 // update business average stars if review update stars changed
 const changeBusinessStars = async (reviewId) => {
   const { businessId } = await getReviewById(reviewId);
 
-  const busStars = roundHalf(await averageBusinessStars(businessId));
+  const stars = await averageBusinessStars(businessId);
 
   return prisma.business.update({
     where: {
       id: businessId,
     },
     data: {
-      stars: busStars,
+      stars,
     },
   });
 };
@@ -77,22 +75,15 @@ const changeBusinessStars = async (reviewId) => {
 const changeUserStars = async (reviewId) => {
   const { authorId } = await getReviewById(reviewId);
 
-  const userStars = roundHalf(await averageUserStars(authorId));
+  const stars = await averageUserStars(authorId);
 
   return prisma.user.update({
     where: {
       id: authorId,
     },
     data: {
-      stars: userStars,
+      stars,
     },
-  });
-};
-
-// delete a user review
-const deleteReview = (id) => {
-  return prisma.review.delete({
-    where: { id },
   });
 };
 
@@ -100,7 +91,7 @@ const deleteReview = (id) => {
 const decrementBusinessReview = async (reviewId) => {
   const { businessId } = await getReviewById(reviewId);
 
-  const busStars = roundHalf(await averageBusinessStars(businessId));
+  const stars = await averageBusinessStars(businessId);
 
   return prisma.business.update({
     where: {
@@ -110,7 +101,7 @@ const decrementBusinessReview = async (reviewId) => {
       reviewCount: {
         decrement: 1,
       },
-      stars: busStars,
+      stars,
     },
   });
 };
@@ -119,7 +110,7 @@ const decrementBusinessReview = async (reviewId) => {
 const decrementUserReview = async (reviewId) => {
   const { authorId } = await getReviewById(reviewId);
 
-  const userStars = roundHalf(await averageUserStars(authorId));
+  const stars = await averageUserStars(authorId);
 
   return prisma.user.update({
     where: {
@@ -129,9 +120,19 @@ const decrementUserReview = async (reviewId) => {
       reviewCount: {
         decrement: 1,
       },
-      stars: userStars,
+      stars,
     },
   });
+};
+
+// delete a user review
+const deleteReview = async (id) => {
+  const deletedReview = await prisma.review.delete({
+    where: { id },
+  });
+  await decrementBusinessReview(id);
+  await decrementUserReview(id);
+  return deletedReview;
 };
 
 // find a review given an authorId & businessId
@@ -161,6 +162,4 @@ module.exports = {
   updateUserOnReview,
   changeUserStars,
   changeBusinessStars,
-  decrementBusinessReview,
-  decrementUserReview,
 };

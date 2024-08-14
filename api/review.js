@@ -9,8 +9,6 @@ const {
   updateUserOnReview,
   changeBusinessStars,
   changeUserStars,
-  decrementBusinessReview,
-  decrementUserReview,
 } = require("../db/reviews");
 const {
   checkCreateReviewData,
@@ -54,7 +52,7 @@ reviewRouter.put(
   checkUpdateReviewData,
   async (req, res, next) => {
     try {
-      const { id } = req.params.id;
+      const { id } = req.params;
       const putReview = await updateReview(id, {
         ...req.body,
       });
@@ -72,10 +70,8 @@ reviewRouter.put(
 // DELETE /api/review/:id
 reviewRouter.delete("/:id", checkIsUserReview, async (req, res, next) => {
   try {
-    const { id } = req.params.id;
+    const { id } = req.params;
     await deleteReview(id);
-    await decrementBusinessReview(id);
-    await decrementUserReview(id);
 
     res.sendStatus(204);
   } catch ({ name, message }) {

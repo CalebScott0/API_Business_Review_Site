@@ -6,15 +6,24 @@ const countBusinessReviews = (id) => {
   });
 };
 
+// convert into float rounding to the nearest 0.5
+const roundHalf = (num) => {
+  return Math.round(num * 2) / 2;
+};
+
 // average all stars from reviews for a business given an id
-const averageBusinessStars = (id) => {
-  // return will look like: { _avg: { stars: 5 } }
-  return prisma.review.aggregate({
-    _avg: {
-      stars: true,
-    },
-    where: { businessId: id },
-  });
+const averageBusinessStars = async (id) => {
+  // return from aggregate will look like: { _avg: { stars: 5 } }
+  return roundHalf(
+    (
+      await prisma.review.aggregate({
+        _avg: {
+          stars: true,
+        },
+        where: { businessId: id },
+      })
+    )._avg.stars
+  );
 };
 
 // aggregate user's review count to update table column
@@ -35,20 +44,19 @@ const countUserComments = (id) => {
   });
 };
 
-// aggregate user's average stars to update table column
-const averageUserStars = (id) => {
-  // return will look like: { _avg: { stars: 5 } }
-  return prisma.review.aggregate({
-    _avg: {
-      stars: true,
-    },
-    where: { authorId: id },
-  });
-};
-
-// convert into float rounding to the nearest 0.5
-const roundHalf = (num) => {
-  return Math.round(num * 2) / 2;
+// average all stars from reviews for a user given an id
+const averageUserStars = async (id) => {
+  // return from aggregate will look like: { _avg: { stars: 5 } }
+  return roundHalf(
+    (
+      await prisma.review.aggregate({
+        _avg: {
+          stars: true,
+        },
+        where: { authorId: id },
+      })
+    )._avg.stars
+  );
 };
 
 module.exports = {
@@ -57,5 +65,4 @@ module.exports = {
   countUserReviews,
   countUserComments,
   averageUserStars,
-  roundHalf,
 };
