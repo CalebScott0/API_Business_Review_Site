@@ -57,7 +57,7 @@ model Review {
   business   Business  @relation(fields: [businessId], references: [id])
   Comments   Comment[]
 
-  @@unique([authorId, businessId])
+  @@unique(name: "uniqueReview", [authorId, businessId])
 }
 
 model Comment {

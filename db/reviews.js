@@ -142,12 +142,6 @@ const getUserRevByBusiness = ({ authorId, businessId }) => {
         authorId,
         businessId,
       },
-      author: {
-        id: authorId,
-      },
-      business: {
-        id: businessId,
-      },
     },
   });
 };
