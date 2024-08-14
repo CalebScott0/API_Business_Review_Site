@@ -57,6 +57,7 @@ const checkUserHasReview = async (req, res, next) => {
 // check if user is author of review before update or delete
 const checkIsUserReview = async (req, res, next) => {
   const review = await getReviewById(req.params.id);
+
   if (req.user.id !== review.authorId) {
     return res
       .status(400)

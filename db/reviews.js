@@ -61,12 +61,11 @@ const updateReview = async (id, reviewData) => {
 
 // update business on review delete
 const decrementBusinessReview = async (id) => {
+  console.log(id);
   const stars = await averageBusinessStars(id);
 
   return prisma.business.update({
-    where: {
-      id: businessId,
-    },
+    where: { id },
     data: {
       reviewCount: {
         decrement: 1,
@@ -80,6 +79,7 @@ const decrementBusinessReview = async (id) => {
 const deleteReview = async (id) => {
   // id to pass to decrementBusinessReview before review is deleted
   const { businessId } = await getReviewById(id);
+  console.log(businessId);
 
   const deletedReview = await prisma.review.delete({
     where: { id },
