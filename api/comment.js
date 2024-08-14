@@ -14,9 +14,9 @@ const {
 
 // user will be set to req.user as token will be required for comment functions
 
-// POST /api/comment/review/:reviewId
+// POST /api/comment/:reviewId
 commentRouter.post(
-  "/review/:reviewId",
+  "/:reviewId",
   // check user is not author of review
   // then check user provided text for comment
   checkIsNotUserReview,
