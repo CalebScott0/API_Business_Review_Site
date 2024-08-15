@@ -1,7 +1,7 @@
 const express = require("express");
 const categoryRouter = express.Router();
 
-const { getCategories } = require("../db/categories");
+const getCategories = require("../db/categories");
 
 // /api/categories
 categoryRouter.get("/", async (req, res, next) => {
