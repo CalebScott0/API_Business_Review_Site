@@ -37,4 +37,6 @@ const getCategories = () => {
   });
 };
 
+const getCategoriesToDisplay = () => {};
+
 module.exports = getCategories;
