@@ -8,7 +8,6 @@ const {
   checkUserHasReview,
   checkIsUserReview,
 } = require("./utils");
-const { review } = require("../db");
 
 // user will be set to req.user as token will be required for review functions
 
