@@ -1,5 +1,5 @@
 const prisma = require("../index");
-const { createUser, findUserByUsername, findUserById } = require("../users");
+const { createUser, getUserByUsername, getUserById } = require("../users");
 
 describe("Create User Prisma Unit Tests", () => {
   const user = {
