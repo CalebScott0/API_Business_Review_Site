@@ -4,7 +4,10 @@ const prisma = require("./index");
 const getCategories = () => {
   // await updateCategories();
   return prisma.category.findMany({
-    select: { name: true },
+    select: {
+      id: true,
+      name: true,
+    },
     // first record returning in asc name order is "& Probates" - remove for ui cleanliness
     skip: 1,
     orderBy: { name: "asc" },
