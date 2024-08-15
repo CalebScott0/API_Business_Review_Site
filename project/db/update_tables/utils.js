@@ -1,14 +1,15 @@
 const prisma = require("../index");
+
+// convert into float rounding to the nearest 0.5
+const roundHalf = (num) => {
+  return Math.round(num * 2) / 2;
+};
+
 // total count of reviews for a business given an id
 const countBusinessReviews = (id) => {
   return prisma.review.count({
     where: { businessId: id },
   });
-};
-
-// convert into float rounding to the nearest 0.5
-const roundHalf = (num) => {
-  return Math.round(num * 2) / 2;
 };
 
 // average all stars from reviews for a business given an id
