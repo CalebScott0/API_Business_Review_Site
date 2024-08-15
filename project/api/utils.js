@@ -12,7 +12,6 @@ const requireUser = (req, res, next) => {
 };
 
 const checkCreateReviewData = async (req, res, next) => {
-  // await checkReviewStars();
   const { text, stars } = req.body;
   if (!text || !stars || stars > 5) {
     return res.status(400).send({
@@ -25,8 +24,14 @@ const checkCreateReviewData = async (req, res, next) => {
 
 // checks update review function has text and/or star rating
 const checkUpdateReviewData = async (req, res, next) => {
-  // await checkReviewStars();
   const { text, stars } = req.body;
+  // error to avoid accidentally removing text during update
+  // checks if text key was provided in req.body obj then if length = 0
+  if (stars && text?.length === 0) {
+    return res.status(400).send({
+      message: "Text value cannot be empty",
+    });
+  }
   if ((!text && !stars) || stars > 5) {
     return res.status(400).send({
       message: "Please update the text or stars rating (1-5) for review",
