@@ -53,6 +53,9 @@ apiRouter.use("/user", requireUser, require("./user"));
 // /api/businesses to get businessess by id and category
 apiRouter.use("/businesses", require("./businesses"));
 
+// /api/categories to get all categories
+apiRouter.use("/categories", require("./categories"));
+
 //  /api/review
 apiRouter.use("/review", requireUser, require("./review"));
 

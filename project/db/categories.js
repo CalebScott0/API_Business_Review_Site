@@ -27,7 +27,7 @@ const prisma = require("./index");
 // };
 
 // get all categories, ordered by name asc
-const getCategories = async () => {
+const getCategories = () => {
   // await updateCategories();
   return prisma.category.findMany({
     orderBy: { name: "asc" },

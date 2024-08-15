@@ -14,4 +14,4 @@ categoryRouter.get("/", async (req, res, next) => {
   }
 });
 
-module.exports = getCategories;
+module.exports = categoryRouter;
