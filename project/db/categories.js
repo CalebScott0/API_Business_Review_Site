@@ -37,15 +37,15 @@ const getCategories = () => {
   });
 };
 
-const getCategoriesToDisplay = () => {
-  return prisma.category.findMany({
-    where: {
-      name: { in: [...categories] },
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
-};
+// const getCategoriesToDisplay = () => {
+//   return prisma.category.findMany({
+//     where: {
+//       name: { in: [...categories] },
+//     },
+//     orderBy: {
+//       name: "asc",
+//     },
+//   });
+// };
 
 module.exports = { getCategories, getCategoriesToDisplay };

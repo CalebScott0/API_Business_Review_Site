@@ -14,15 +14,15 @@ categoryRouter.get("/", async (req, res, next) => {
   }
 });
 
-// /api/categories/display
-categoryRouter.get("/display", async (req, res, next) => {
-  try {
-    const categories = await getCategoriesToDisplay();
+// // /api/categories/display
+// categoryRouter.get("/display", async (req, res, next) => {
+//   try {
+//     const categories = await getCategoriesToDisplay();
 
-    res.send({ categories });
-  } catch ({ name, message }) {
-    next({ name, message });
-  }
-});
+//     res.send({ categories });
+//   } catch ({ name, message }) {
+//     next({ name, message });
+//   }
+// });
 
 module.exports = categoryRouter;
