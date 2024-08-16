@@ -68,7 +68,7 @@ model Comment {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   reviewId  String
-  review    Review   @relation(fields: [reviewId], references: [id])
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }
 
 model Category {
