@@ -42,6 +42,6 @@ const getBusinessesByCategory = (categoryId) => {
     },
   });
 };
-// get businesses by category just include the most recent review or most popular? (look at what yelp has?)
-// (group by stars order by most recent?)
+// get businesses by category most popular? (look at what yelp has?)
+// (order by stars first then order by most recent?)
 module.exports = { getBusinessById, getBusinessesByCategory };
