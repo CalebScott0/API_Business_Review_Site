@@ -24,16 +24,23 @@ const categories = [
   "Shopping",
 ];
 
-// get all categories, returning id and name - ordered by name asc
+const testCategories = () => {
+  return prisma.category.groupBy({
+    by: ["businessCount"],
+  });
+};
+// get all categories, returning id and name - ordered by count of businesses desc
 const getCategories = () => {
   return prisma.category.findMany({
     select: {
       id: true,
       name: true,
+      businessCount: true,
     },
-    // first record returning in asc name order is "& Probates" - remove for ui cleanliness
-    skip: 1,
-    orderBy: { name: "asc" },
+    where: {
+      businessCount: { gte: 100 },
+    },
+    orderBy: { businessCount: "desc" },
   });
 };
 
