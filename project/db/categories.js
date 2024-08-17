@@ -24,11 +24,6 @@ const categories = [
   "Shopping",
 ];
 
-const testCategories = () => {
-  return prisma.category.groupBy({
-    by: ["businessCount"],
-  });
-};
 // get all categories, returning id and name - ordered by count of businesses desc
 const getCategories = () => {
   return prisma.category.findMany({
