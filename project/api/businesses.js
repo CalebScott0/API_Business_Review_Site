@@ -6,12 +6,14 @@ const {
   getBusinessesByCategory,
 } = require("../db/businesses");
 
-// get businesses by param category
-businessRouter.get("/category/:category", async (req, res, next) => {
+// GET /api/businesses/category/:category
+businessRouter.get("/category/:categoryName", async (req, res, next) => {
   try {
-    const businesses = await getBusinessesByCategory(req.params.category);
-
-    !businesses.length && res.status(400).send({ message: "Invalid category" });
+    const businesses = await getBusinessesByCategory(req.params.categoryName);
+    if (!businesses.length) {
+      res.status(400).send({ message: "Invalid category" });
+      return;
+    }
 
     res.send({ businesses });
   } catch ({ name, message }) {
@@ -19,7 +21,7 @@ businessRouter.get("/category/:category", async (req, res, next) => {
   }
 });
 
-// get business by id
+// GET /api/businesses/:id
 businessRouter.get("/:id", async (req, res, next) => {
   try {
     const business = await getBusinessById(req.params.id);
