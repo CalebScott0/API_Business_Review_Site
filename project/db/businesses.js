@@ -19,7 +19,35 @@ const getBusinessById = async (id) => {
     },
   });
 };
+// Select all business names - no duplicates
+// order by stars descending and then review count descending
+const getAllBusinesses = async () => {
+  return prisma.business.findMany({
+    distinct: ["name"],
+    select: {
+      name: true,
+    },
+    orderBy: [
+      {
+        stars: "desc",
+      },
+      {
+        reviewCount: "desc",
+      },
+    ],
+  });
+};
 
+const getBusinessByName = async (name) => {
+  return prisma.business.findMany({
+    where: {
+      name,
+    },
+  });
+};
+
+// get business by category, returning categories, most recent review -
+//  ordered by stars descending and then review count descending
 const getBusinessesByCategory = (categoryName) => {
   return prisma.business.findMany({
     where: {
@@ -40,8 +68,21 @@ const getBusinessesByCategory = (categoryName) => {
         take: 1,
       },
     },
+    orderBy: [
+      {
+        stars: "desc",
+      },
+      {
+        reviewCount: "desc",
+      },
+    ],
   });
 };
 // get businesses by category most popular? (look at what yelp has?)
 // (order by stars first then order by most recent?)
-module.exports = { getBusinessById, getBusinessesByCategory };
+module.exports = {
+  getBusinessById,
+  getBusinessByName,
+  getBusinessesByCategory,
+  getAllBusinesses,
+};
