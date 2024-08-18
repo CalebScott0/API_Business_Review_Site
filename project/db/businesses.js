@@ -25,6 +25,7 @@ const getAllBusinesses = async () => {
   return prisma.business.findMany({
     distinct: ["name"],
     select: {
+      id: true,
       name: true,
     },
     orderBy: [
@@ -35,14 +36,6 @@ const getAllBusinesses = async () => {
         reviewCount: "desc",
       },
     ],
-  });
-};
-
-const getBusinessByName = async (name) => {
-  return prisma.business.findMany({
-    where: {
-      name,
-    },
   });
 };
 
@@ -82,7 +75,6 @@ const getBusinessesByCategory = (categoryName) => {
 // (order by stars first then order by most recent?)
 module.exports = {
   getBusinessById,
-  getBusinessByName,
   getBusinessesByCategory,
   getAllBusinesses,
 };

@@ -5,7 +5,6 @@ const {
   getBusinessById,
   getBusinessesByCategory,
   getAllBusinesses,
-  getBusinessByName,
 } = require("../db/businesses");
 
 // GET /api/businesses
