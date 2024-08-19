@@ -6,19 +6,20 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding Photos...");
 
- for(let i = 0; i < photosArr.length; i++)
-    if(!business_id) {
-        continue;
+  for (let i = 0; i < photosArr.length; i++) {
+    try {
+      await prisma.photo.create({
+        data: {
+          id: photosArr[i].photo_id,
+          businessId: photosArr[i].business_id,
+          caption: photosArr[i].caption,
+          label: photosArr[i].label,
+        },
+      });
+    } catch (e) {
+      continue;
     }
-    await prisma.photo.create({
-      data: {
-        id: photosArr[i].photo_id,
-        businessId: photosArr[i].business_id,
-        caption: photosArr[i].caption,
-        label: photosArr[i].label,
-      },
-    });
-  });
+  }
 
   console.log(await prisma.photo.findFirst());
   console.log(
