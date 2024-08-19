@@ -27,6 +27,7 @@ model Business {
   isOpen      Boolean?
   Reviews     Review[]
   Categories  CategoryToBusiness[]
+  Photos      Photo[]
 }
 
 model User {
@@ -86,4 +87,12 @@ model CategoryToBusiness {
   category     Category @relation(fields: [categoryId], references: [id])
 
   @@unique([businessId, categoryId])
+}
+
+model Photo {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  caption    String   @db.VarChar(256)
+  label      String   @db.VarChar(10)
 }
