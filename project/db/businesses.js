@@ -39,6 +39,8 @@ const getAllBusinesses = async () => {
   });
 };
 
+// GET ALL BUSINESSES BY A NAME? filter by location first?
+
 // get business by category, returning categories, most recent review -
 //  ordered by stars descending and then review count descending
 const getBusinessesByCategory = (categoryName) => {

@@ -12,6 +12,9 @@ const createUser = (userData) => {
 };
 
 const getUserById = async (id) => {
+  
+  // MOVE THE BELOW INTO THE PRISMA QUERY??
+
   // count total num user reviews
   const reviewCount = await countUserReviews(id);
 
