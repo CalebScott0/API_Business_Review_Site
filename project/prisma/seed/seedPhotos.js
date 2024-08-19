@@ -6,14 +6,16 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding Photos...");
 
-  photosArr.map(async (element, index) => {
-    const { photo_id, business_id, caption, label } = element;
+ for(let i = 0; i < photosArr.length; i++)
+    if(!business_id) {
+        continue;
+    }
     await prisma.photo.create({
       data: {
-        id: photo_id,
-        businessId: business_id,
-        caption,
-        label,
+        id: photosArr[i].photo_id,
+        businessId: photosArr[i].business_id,
+        caption: photosArr[i].caption,
+        label: photosArr[i].label,
       },
     });
   });
