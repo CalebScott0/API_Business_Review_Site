@@ -68,6 +68,12 @@ const getBusinessesByCategory = (categoryName) => {
         select: {
           categoryName: true,
         },
+        // order categories to display the first several to user
+        orderBy: {
+          category: {
+            businessCount: "desc",
+          },
+        },
       },
       Reviews: {
         orderBy: { createdAt: "desc" },
