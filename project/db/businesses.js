@@ -61,7 +61,9 @@ const getBusinessesByCategory = (categoryName) => {
       },
     },
     include: {
-      Photos: true,
+      Photos: {
+        take: 1,
+      },
       Categories: {
         select: {
           categoryName: true,
@@ -80,6 +82,7 @@ const getBusinessesByCategory = (categoryName) => {
         reviewCount: "desc",
       },
     ],
+    take: 25,
   });
 };
 // get businesses by category most popular? (look at what yelp has?)
