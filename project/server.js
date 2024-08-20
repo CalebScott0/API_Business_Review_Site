@@ -1,13 +1,17 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const server = express();
 
 // http logging middleware
 server.use(morgan("dev"));
 
+server.options("*", cors());
 // body parsing middleware
 server.use(express.json());
+// cross origin resource sharing
+server.use(cors());
 
 server.get("/", (req, res) => {
   res.send({ message: "Working" });

@@ -19,11 +19,16 @@ const getBusinessById = async (id) => {
     },
   });
 };
-// Select all business names - no duplicates
+// Select all businesses with pictures ids & names - no duplicates
 // order by stars descending and then review count descending
 const getAllBusinesses = async () => {
   return prisma.business.findMany({
     distinct: ["name"],
+    where: {
+      Photos: {
+        some: {},
+      },
+    },
     select: {
       id: true,
       name: true,
@@ -41,7 +46,7 @@ const getAllBusinesses = async () => {
 
 // GET ALL BUSINESSES BY A NAME? filter by location first?
 
-// get business by category, returning categories, most recent review -
+// get business with photos by category, returning categories, most recent review -
 //  ordered by stars descending and then review count descending
 const getBusinessesByCategory = (categoryName) => {
   return prisma.business.findMany({
@@ -51,8 +56,12 @@ const getBusinessesByCategory = (categoryName) => {
           categoryName,
         },
       },
+      Photos: {
+        some: {},
+      },
     },
     include: {
+      Photos: true,
       Categories: {
         select: {
           categoryName: true,
