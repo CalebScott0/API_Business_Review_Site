@@ -306,7 +306,6 @@ describe("/api/review", () => {
 
     test("returns 204 status code on success", async () => {
       prisma.review.delete = jest.fn().mockResolvedValue(testReview);
-      console.log(token);
 
       const res = await supertest(server)
         .delete("/api/review/1234")
