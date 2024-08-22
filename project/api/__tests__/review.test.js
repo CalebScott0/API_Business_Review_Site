@@ -59,7 +59,8 @@ describe("/api/review", () => {
 
   //     expect(res.body.review).toMatchObject(testReview);
   //   }, 20000);
-  //   // timeout set to 20 seconds
+  // timeout set to 20 seconds
+
   //   test("returns 201 status code on success", async () => {
   //     prisma.review.create = jest.fn().mockResolvedValue(testReview);
 
@@ -308,8 +309,11 @@ describe("/api/review", () => {
       prisma.review.delete = jest.fn().mockResolvedValue(testReview);
 
       const res = await supertest(server)
-        .delete("/api/review/1234")
+        .delete(`/api/review/${testReview.id}`)
         .set("Authorization", `Bearer ${token}`);
+
+      console.log("Token2", token);
+      console.log(res.body);
 
       expect(res.status).toBe(204);
     });
