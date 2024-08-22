@@ -25,15 +25,13 @@ apiRouter.use(async (req, res, next) => {
       if (id) {
         req.user = await getUserById(id);
         next();
-      } else {
-        // 400 status on bad request
-        res.status(400).send({
-          name: "AuthorizationHeaderError",
-          message: "Authorization Token Malformed",
-        });
       }
-    } catch ({ name, message }) {
-      next({ name, message });
+    } catch (e) {
+      // 400 status on bad request
+      res.status(400).send({
+        name: "AuthorizationHeaderError",
+        message: "Authorization Token Malformed",
+      });
     }
   } else {
     // 400 status on bad request
