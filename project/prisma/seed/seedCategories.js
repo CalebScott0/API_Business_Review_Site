@@ -11,9 +11,11 @@ async function main() {
   for (let bus of businessArr) {
     // split categories into array if business has categories property
     const splitCategories = bus.categories ? bus.categories.split(", ") : [];
-    // add unique elements of split categories array to data
-    for (let category of splitCategories) {
-      !data.includes(category) && data.push(category);
+    /* add unique elements of split categories array to data
+        object key = name of each array item to match category table column 
+            [ { name: "..." } ]*/
+    for (let name of splitCategories) {
+      !data.includes(name) && data.push({ name });
     }
   }
 
