@@ -10,9 +10,7 @@ async function main() {
 
   for (let bus of businessArr) {
     // split categories into array if business has categories property
-    const splitCategories = bus.categories
-      ? bus.categories.split(", ")
-      : [];
+    const splitCategories = bus.categories ? bus.categories.split(", ") : [];
     // add unique elements of split categories array to categoriesArr
     for (let category of splitCategories) {
       !categoriesArr.includes(category) && categoriesArr.push(category);
@@ -76,29 +74,15 @@ async function main() {
   }
 
   const businesses = await prisma.business.findMany({
-    skip: 68,
-    take: 1,
-    include: {
+    skip: 1000,
+    take: 2,
+    select: {
+      name: true,
       Categories: true,
     },
   });
 
-  console.log("Business with categories: ", businesses[0]);
-
-  // group categories by occurence of name
-  const groupedCategories = await prisma.categoryToBusiness.groupBy({
-    by: ["categoryName"],
-    _count: {
-      categoryName: true,
-    },
-    orderBy: {
-      _count: {
-        categoryName: "desc",
-      },
-    },
-  });
-
-  console.log("Grouped categories: ", groupedCategories);
+  console.log("Business with categories: ", businesses);
 
   console.log("Categories to Businesses seeded.");
 }
