@@ -18,18 +18,10 @@ async function main() {
   }
 
   // for each category in array create prisma category row
-  await Promise.all(
-    [...categoriesArr].map(async (category) => {
-      await prisma.category.create({
-        data: {
-          name: category,
-        },
-      });
-    })
-  );
-
+  await prisma.category.createMany({
+    data: [...categoriesArr],
+  });
   const categories = await prisma.category.findMany();
-
   console.log("Category data example: ", categories[0]);
   console.log("Category data example: ", categories[100]);
 
@@ -38,10 +30,10 @@ async function main() {
   // seed categories to businesses
   console.log("Seeding Categories to Businesses...");
 
-  for (let i = 0; i < businessArr.length; i++) {
+  for (let bus of businessArr) {
     // only create category to business record if current business has categories
-    if (businessArr[i].categories) {
-      const splitCategories = businessArr[i].categories.split(", ");
+    if (bus.categories) {
+      const splitCategories = bus.categories.split(", ");
 
       // filter out any duplicate category values of business
       const categoriesArr = splitCategories.filter(
@@ -57,7 +49,7 @@ async function main() {
             },
           });
           // destrcuture business_id from current object of businessArr
-          const { business_id } = businessArr[i];
+          const { business_id } = bus;
 
           /* create a category to business record 
            (business <-> categories = many to many relationship) */

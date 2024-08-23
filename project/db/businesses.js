@@ -21,8 +21,8 @@ const getBusinessById = async (id) => {
 };
 // Select all businesses with pictures ids & names - no duplicates
 // order by stars descending and then review count descending
-const getAllBusinesses = async () => {
-  const businesses = await prisma.business.findMany({
+const getAllBusinesses = () => {
+  return prisma.business.findMany({
     distinct: ["name"],
     where: {
       Photos: {
@@ -42,7 +42,6 @@ const getAllBusinesses = async () => {
       },
     ],
   });
-  console.log(businesses);
 };
 
 // GET ALL BUSINESSES BY A NAME? filter by location first?
