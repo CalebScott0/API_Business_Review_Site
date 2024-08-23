@@ -8,13 +8,13 @@ async function main() {
 
   const categoriesArr = [];
 
-  for (let i = 0; i < businessArr.length; i++) {
+  for (let bus of businessArr) {
     // split categories into array if business has categories property
-    const splitCategories = businessArr[i].categories
-      ? businessArr[i].categories.split(", ")
+    const splitCategories = bus.categories
+      ? bus.categories.split(", ")
       : [];
     // add unique elements of split categories array to categoriesArr
-    for (const category of splitCategories) {
+    for (let category of splitCategories) {
       !categoriesArr.includes(category) && categoriesArr.push(category);
     }
   }
