@@ -6,21 +6,20 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding categories...");
 
-  const categoriesArr = [];
+  const data = [];
 
   for (let bus of businessArr) {
     // split categories into array if business has categories property
     const splitCategories = bus.categories ? bus.categories.split(", ") : [];
-    // add unique elements of split categories array to categoriesArr
+    // add unique elements of split categories array to data
     for (let category of splitCategories) {
-      !categoriesArr.includes(category) && categoriesArr.push(category);
+      !data.includes(category) && data.push(category);
     }
   }
 
   // for each category in array create prisma category row
-  await prisma.category.createMany({
-    data: [...categoriesArr],
-  });
+  await prisma.category.createMany({ data });
+
   const categories = await prisma.category.findMany();
   console.log("Category data example: ", categories[0]);
   console.log("Category data example: ", categories[100]);
@@ -36,12 +35,12 @@ async function main() {
       const splitCategories = bus.categories.split(", ");
 
       // filter out any duplicate category values of business
-      const categoriesArr = splitCategories.filter(
+      const data = splitCategories.filter(
         (category, index) => splitCategories.indexOf(category) === index
       );
 
       await Promise.all(
-        [...categoriesArr].map(async (category) => {
+        [...data].map(async (category) => {
           // destructure id & name from object returned with prisma findUnique
           const { id, name } = await prisma.category.findUnique({
             where: {
