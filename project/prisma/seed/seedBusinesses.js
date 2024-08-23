@@ -19,9 +19,7 @@ async function main() {
     isOpen: (is_open = 1 ? true : false),
   }));
 
-  await prisma.business.createMany({
-    data,
-  });
+  await prisma.business.createMany({ data });
 
   // for (let bus of businessArr) {
   //   const {
