@@ -2,8 +2,8 @@ const prisma = require("./index");
 
 // get all categories from businesses with photos and containing >= 100 businesses
 // - ordered by count of businesses desc
-const getCategories = async () => {
-  const cat = await prisma.categoryToBusiness.findMany({
+const getCategories = () => {
+  return prisma.categoryToBusiness.findMany({
     distinct: ["categoryName"],
     where: {
       business: {
@@ -23,7 +23,6 @@ const getCategories = async () => {
       },
     },
   });
-  console.log(cat);
 };
 
 module.exports = getCategories;
