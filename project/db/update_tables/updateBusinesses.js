@@ -30,15 +30,15 @@ async function main() {
     });
 
     // console log first, last and every 50 businesses to see progress
-    if (i === 0 || i % 50 === 0 || i === businesses.length - 1) {
+    if (i === 0 || i % 100 === 0 || i === businesses.length - 1) {
       console.log(
         await prisma.business.findUnique({
           where: { id: businesses[i].id },
         })
       );
       console.log(
-        `Updated business # ${i == 0 ? 1 : i} / ${businesses.length} - ${(
-          (i / businesses.length) *
+        `Updated business # ${i == 0 ? 1 : i} / ${businesses.length - 1} - ${(
+          (i / (businesses.length - 1)) *
           100
         ).toFixed(2)}%...`
       );
