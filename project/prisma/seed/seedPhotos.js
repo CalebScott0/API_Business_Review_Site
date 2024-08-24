@@ -5,32 +5,30 @@ const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding Photos...");
-
-  const data = photosArr.map((photo) => ({
-    id: photo.photo_id,
-    businessId: photo.business_id,
-    caption: photo.caption,
-    label: photo.label,
-  }));
-
-  await prisma.photo.createMany({ data });
-
-  // for (let i = 0; i < photosArr.length; i++) {
-  //   try {
-  //     await prisma.photo.create({
-  //       data: {
-  //         id: photosArr[i].photo_id,
-  //         businessId: photosArr[i].business_id,
-  //         caption: photosArr[i].caption,
-  //         label: photosArr[i].label,
-  //       },
-  //     });
-  //   } catch (e) {
-  //     continue;
-  //   }
-  // }
+  // can not use createMany as some businessIds were deleted in json parse
+  for (let photo of photosArr) {
+    try {
+      await prisma.photo.create({
+        data: {
+          id: photo.photo_id,
+          businessId: photo.business_id,
+          caption: photo.caption,
+          label: photo.label,
+        },
+      });
+    } catch (e) {
+      continue;
+    }
+  }
 
   console.log(await prisma.photo.findFirst());
+  console.log(
+    await prisma.photo.findUnique({
+      where: {
+        id: "NHEtLh7APk7Yssjo0h45VA",
+      },
+    })
+  );
 
   console.log(`${(await prisma.photo.findMany()).length} Photos Seeded`);
 }
