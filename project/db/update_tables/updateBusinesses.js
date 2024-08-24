@@ -46,22 +46,6 @@ async function main() {
   }
 
   console.log("Businesses updated");
-
-  // update category with count of businesses
-  const categories = await prisma.category.findMany();
-  for (let item of categories) {
-    const businessCount = await prisma.categoryToBusiness.count({
-      where: {
-        name: item.name,
-      },
-    });
-    await prisma.category.update({
-      where: {
-        id: item.id,
-      },
-      data: { businessCount },
-    });
-  }
 }
 
 main();

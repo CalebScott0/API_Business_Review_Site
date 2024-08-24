@@ -86,6 +86,7 @@ const getBusinessesByCategory = (categoryName) => {
           },
         },
       },
+      // take first review to display on business list
       Reviews: {
         include: {
           author: {
@@ -101,14 +102,11 @@ const getBusinessesByCategory = (categoryName) => {
         stars: "desc",
       },
       {
-        reviewCount: "asc",
+        reviewCount: "desc",
       },
     ],
-    take: 25,
   });
 };
-// get businesses by category most popular? (look at what yelp has?)
-// (order by stars first then order by most recent?)
 module.exports = {
   getBusinessById,
   getBusinessesByCategory,
