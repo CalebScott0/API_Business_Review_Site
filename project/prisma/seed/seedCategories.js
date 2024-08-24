@@ -6,23 +6,22 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding categories...");
 
-  const data = [];
+  let data = [];
 
   for (let bus of businessArr) {
     // split categories into array if business has categories property
     const splitCategories = bus.categories ? bus.categories.split(", ") : [];
-    /* add unique elements of split categories array to data
-        object key = name of each array item to match category table column 
-            [ { name: "..." } ]*/
-    for (let name of splitCategories) {
-      !data.includes(name) && data.push({ name });
+    // add unique elements of split categories array to data - (this is the same speed as pushing all items and filtering large array)
+    for (let item of splitCategories) {
+      !data.includes(item) && data.push(item);
     }
   }
+  /* object key = name to match category table column - value = array item (category)
+       [ { name: "..." } */
+  data = data.map((item) => (item = { name: item }));
+  // create category for each object in data array
+  const categories = await prisma.category.createManyAndReturn({ data });
 
-  // for each category in array create prisma category row
-  await prisma.category.createMany({ data });
-
-  const categories = await prisma.category.findMany();
   console.log("Category data example: ", categories[0]);
   console.log("Category data example: ", categories[100]);
 
@@ -38,7 +37,7 @@ async function main() {
 
       // filter out any duplicate category values of business
       const data = splitCategories.filter(
-        (category, index) => splitCategories.indexOf(category) === index
+        (value, idx) => splitCategories.indexOf(value) === idx
       );
 
       await Promise.all(
@@ -52,7 +51,7 @@ async function main() {
           // destrcuture business_id from current object of businessArr
           const { business_id } = bus;
 
-          /* create a category to business record 
+          /* create a category to business record
            (business <-> categories = many to many relationship) */
           await prisma.categoryToBusiness.create({
             data: {
