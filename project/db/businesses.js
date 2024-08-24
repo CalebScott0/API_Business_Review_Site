@@ -72,9 +72,6 @@ const getBusinessesByCategory = (categoryName) => {
       },
     },
     include: {
-      Photos: {
-        take: 1,
-      },
       Categories: {
         select: {
           categoryName: true,
@@ -96,6 +93,9 @@ const getBusinessesByCategory = (categoryName) => {
         orderBy: { createdAt: "desc" },
         take: 1,
       },
+      Photos: {
+        take: 1,
+      },
     },
     orderBy: [
       {
@@ -105,6 +105,7 @@ const getBusinessesByCategory = (categoryName) => {
         reviewCount: "desc",
       },
     ],
+    take: 10,
   });
 };
 module.exports = {
