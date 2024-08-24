@@ -13,7 +13,8 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "test": "jest --runInBand --watch",
-    "updateTables": "node --max-old-space-size=6000 ./db/update_tables/updateTables.js"
+    "updateBusinesses": "node --max-old-space-size=6000 ./db/update_tables/updateBusinesses.js",
+    "updateCategories": "node --max-old-space-size=6000 ./db/update_tables/updateCategories.js"
   },
   "keywords": [],
   "author": "",
