@@ -1,4 +1,8 @@
-const { countBusinessReviews, averageBusinessStars } = require("./utils");
+const {
+  countBusinessReviews,
+  averageBusinessStars,
+  roundHalf,
+} = require("./utils");
 
 const prisma = require("../index");
 
@@ -19,7 +23,9 @@ async function main() {
   for (let i = 0; i < businesses.length; i++) {
     const reviews = await countBusinessReviews(businesses[i].id);
 
-    const avgStars = await averageBusinessStars(businesses[i].id);
+    const avgStars = roundHalf(
+      (await averageBusinessStars(businesses[i].id))._avg.stars
+    );
 
     await prisma.business.update({
       where: { id: businesses[i].id },

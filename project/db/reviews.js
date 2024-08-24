@@ -1,9 +1,12 @@
 const prisma = require("./index");
-const { averageBusinessStars } = require("../db/update_tables/utils");
+const {
+  averageBusinessStars,
+  roundHalf,
+} = require("../db/update_tables/utils");
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
-  const stars = await averageBusinessStars(id);
+  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
 
   return prisma.business.update({
     where: {
@@ -32,7 +35,7 @@ const createReview = async (reviewData) => {
 const updateBusinessStars = async (reviewId) => {
   const { businessId } = await getReviewById(reviewId);
 
-  const stars = await averageBusinessStars(businessId);
+  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
 
   return prisma.business.update({
     where: {
@@ -61,7 +64,7 @@ const updateReview = async (id, reviewData) => {
 
 // update business on review delete
 const decrementBusinessReview = async (id) => {
-  const stars = await averageBusinessStars(id);
+  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
 
   return prisma.business.update({
     where: { id },
