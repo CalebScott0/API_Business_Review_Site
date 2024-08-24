@@ -42,7 +42,7 @@ async function main() {
       })
     );
 
-    const sampleComments = await prisma.review.findMany({
+    const comments = await prisma.review.findMany({
       skip: 250000,
       take: 10,
       include: {
@@ -50,9 +50,10 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < sampleComments.length; i++) {
-      console.log(sampleComments[i].Comments);
+    for (const comment of comments) {
+      console.log(comment);
     }
+
     console.log("Seeding 1/5 completed...");
   }
   async function reviewSeed2() {
@@ -91,7 +92,7 @@ async function main() {
       })
     );
 
-    const sampleComments = await prisma.review.findMany({
+    const comments = await prisma.review.findMany({
       skip: 1250000,
       take: 10,
       include: {
@@ -99,8 +100,8 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < sampleComments.length; i++) {
-      console.log(sampleComments[i].Comments);
+    for (const comment of comments) {
+      console.log(comment);
     }
     console.log("Seeding 2/5 completed...");
   }
@@ -140,7 +141,7 @@ async function main() {
       })
     );
 
-    const sampleComments = await prisma.review.findMany({
+    const comments = await prisma.review.findMany({
       skip: 2250000,
       take: 10,
       include: {
@@ -148,8 +149,8 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < sampleComments.length; i++) {
-      console.log(sampleComments[i].Comments);
+    for (const comment of comments) {
+      console.log(comment);
     }
     console.log("Seeding 3/5 completed...");
   }
@@ -189,7 +190,7 @@ async function main() {
       })
     );
 
-    const sampleComments = await prisma.review.findMany({
+    const comments = await prisma.review.findMany({
       skip: 3250000,
       take: 10,
       include: {
@@ -197,8 +198,8 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < sampleComments.length; i++) {
-      console.log(sampleComments[i].Comments);
+    for (const comment of comments) {
+      console.log(comment);
     }
     console.log("Seeding 4/5 completed...");
   }
@@ -238,7 +239,7 @@ async function main() {
       })
     );
 
-    const sampleComments = await prisma.review.findMany({
+    const comments = await prisma.review.findMany({
       skip: 4000000,
       take: 10,
       include: {
@@ -246,8 +247,8 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < sampleComments.length; i++) {
-      console.log(sampleComments[i].Comments);
+    for (const comment of comments) {
+      console.log(comment);
     }
     console.log("Seeded comments.");
   }
