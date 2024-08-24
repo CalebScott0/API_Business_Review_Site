@@ -16,9 +16,11 @@ async function main() {
       id: true,
     },
   });
+
   console.log(
     `Updating ${businesses.length} businesses with review count and average stars...`
   );
+
   // for each business, update with review count and average stars rounded to nearest 0.5
   for (let i = 0; i < businesses.length; i++) {
     const reviews = await countBusinessReviews(businesses[i].id);
