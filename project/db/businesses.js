@@ -13,9 +13,20 @@ const getBusinessById = async (id) => {
       Reviews: {
         orderBy: { createdAt: "desc" },
         include: {
-          Comments: { orderBy: { createdAt: "desc" } },
+          author: {
+            select: { username: true },
+          },
+          Comments: {
+            include: {
+              author: {
+                select: { username: true },
+              },
+            },
+            orderBy: { createdAt: "desc" },
+          },
         },
       },
+      Photos: true,
     },
   });
 };
@@ -76,6 +87,11 @@ const getBusinessesByCategory = (categoryName) => {
         },
       },
       Reviews: {
+        include: {
+          author: {
+            select: { username: true },
+          },
+        },
         orderBy: { createdAt: "desc" },
         take: 1,
       },
@@ -85,7 +101,7 @@ const getBusinessesByCategory = (categoryName) => {
         stars: "desc",
       },
       {
-        reviewCount: "desc",
+        reviewCount: "asc",
       },
     ],
     take: 25,

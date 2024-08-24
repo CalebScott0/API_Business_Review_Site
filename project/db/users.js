@@ -12,7 +12,6 @@ const createUser = (userData) => {
 };
 
 const getUserById = async (id) => {
-  
   // MOVE THE BELOW INTO THE PRISMA QUERY??
 
   // count total num user reviews
@@ -39,6 +38,11 @@ const getUserById = async (id) => {
         },
         include: {
           Comments: {
+            include: {
+              author: {
+                select: { username: true },
+              },
+            },
             orderBy: {
               createdAt: "desc",
             },
@@ -52,7 +56,6 @@ const getUserById = async (id) => {
       },
     },
   });
-
 };
 
 const getUserByUsername = (username) => {

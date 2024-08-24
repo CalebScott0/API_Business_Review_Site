@@ -6,7 +6,7 @@ const {
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
-  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
+  const stars = await averageBusinessStars(id);
 
   return prisma.business.update({
     where: {
@@ -22,12 +22,12 @@ const updateBusinessOnReview = async (id) => {
 };
 
 // create a review for user
-const createReview = async (reviewData) => {
+const createReview = async (data) => {
+  const newReview = await prisma.review.create({ data });
+
   // update business with businessId from review data
-  const newReview = await prisma.review.create({
-    data: reviewData,
-  });
-  await updateBusinessOnReview(reviewData.businessId);
+  await updateBusinessOnReview(data.businessId);
+
   return newReview;
 };
 
@@ -35,7 +35,7 @@ const createReview = async (reviewData) => {
 const updateBusinessStars = async (reviewId) => {
   const { businessId } = await getReviewById(reviewId);
 
-  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
+  const stars = await averageBusinessStars(businessId);
 
   return prisma.business.update({
     where: {
@@ -47,16 +47,16 @@ const updateBusinessStars = async (reviewId) => {
   });
 };
 // update a user review
-const updateReview = async (id, reviewData) => {
+const updateReview = async (id, data) => {
   const updateReview = await prisma.review.update({
     where: { id },
     data: {
       updatedAt: new Date(),
-      ...reviewData,
+      ...data,
     },
   });
   // update business with id passed to updateReview if data has stars
-  if (reviewData.stars) {
+  if (data.stars) {
     await updateBusinessStars(id);
   }
   return updateReview;
@@ -64,7 +64,7 @@ const updateReview = async (id, reviewData) => {
 
 // update business on review delete
 const decrementBusinessReview = async (id) => {
-  const stars = roundHalf((await averageBusinessStars(id))._avg.stars);
+  const stars = await averageBusinessStars(id);
 
   return prisma.business.update({
     where: { id },

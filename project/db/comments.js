@@ -1,9 +1,7 @@
 const prisma = require("./index");
 
-const createComment = (commentData) => {
-  return prisma.comment.create({
-    data: commentData,
-  });
+const createComment = (data) => {
+  return prisma.comment.create({ data });
 };
 
 const updateComment = (id, text) => {
@@ -24,9 +22,7 @@ const deleteComment = (id) => {
 
 const getCommentById = (id) => {
   return prisma.comment.findUnique({
-    where: {
-      id,
-    },
+    where: { id },
   });
 };
 

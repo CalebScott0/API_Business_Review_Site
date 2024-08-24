@@ -59,9 +59,7 @@ async function main() {
       where: {
         id: item.id,
       },
-      data: {
-        businessCount,
-      },
+      data: { businessCount },
     });
   }
 }

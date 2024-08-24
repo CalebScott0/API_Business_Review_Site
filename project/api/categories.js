@@ -7,7 +7,6 @@ const getCategories = require("../db/categories");
 categoryRouter.get("/", async (req, res, next) => {
   try {
     const categories = await getCategories();
-    console.log(categories);
 
     res.send({ categories });
   } catch ({ name, message }) {
