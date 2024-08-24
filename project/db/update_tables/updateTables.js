@@ -1,8 +1,4 @@
-const {
-  countBusinessReviews,
-  averageBusinessStars,
-  roundHalf,
-} = require("./utils");
+const { countBusinessReviews, averageBusinessStars } = require("./utils");
 
 const prisma = require("../index");
 
@@ -16,24 +12,20 @@ async function main() {
       id: true,
     },
   });
-
   console.log(
     `Updating ${businesses.length} businesses with review count and average stars...`
   );
-
   // for each business, update with review count and average stars rounded to nearest 0.5
   for (let i = 0; i < businesses.length; i++) {
-    const reviews = await countBusinessReviews(businesses[i].id);
+    const reviewCount = await countBusinessReviews(businesses[i].id);
 
-    const avgStars = roundHalf(
-      (await averageBusinessStars(businesses[i].id))._avg.stars
-    );
+    const stars = await averageBusinessStars(businesses[i].id);
 
     await prisma.business.update({
       where: { id: businesses[i].id },
       data: {
-        reviewCount: reviews,
-        stars: avgStars,
+        reviewCount,
+        stars,
       },
     });
 
@@ -50,7 +42,7 @@ async function main() {
 
   console.log("Businesses updated");
 
-  // update category with count of total businesses
+  // update category with count of businesses
   const categories = await prisma.category.findMany();
   for (let item of categories) {
     const businessCount = await prisma.categoryToBusiness.count({
