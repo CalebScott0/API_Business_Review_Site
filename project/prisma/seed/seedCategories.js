@@ -68,13 +68,13 @@ async function main() {
   const businesses = await prisma.business.findMany({
     skip: 1000,
     take: 2,
-    select: {
-      name: true,
+    include: {
       Categories: true,
     },
   });
 
-  console.log("Business with categories: ", businesses);
+  console.log("Business with categories: ", businesses[0]);
+  console.log("Business with categories: ", businesses[1]);
 
   console.log("Categories to Businesses seeded.");
 }
