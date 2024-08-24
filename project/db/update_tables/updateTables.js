@@ -36,7 +36,12 @@ async function main() {
           where: { id: businesses[i].id },
         })
       );
-      console.log(`Updated business # ${i} / ${businesses.length}`);
+      console.log(
+        `Updated business # ${i == 0 ? 1 : i} / ${businesses.length} - ${(
+          (i / businesses.length) *
+          100
+        ).toFixed(2)}%...`
+      );
     }
   }
 
