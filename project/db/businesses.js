@@ -59,13 +59,11 @@ const getAllBusinesses = () => {
 
 // get business with photos by category, returning categories, most recent review -
 //  ordered by stars descending and then review count descending
-const getBusinessesByCategory = (categoryName) => {
+const getBusinessList = ({ categoryName, startIndex, limit }) => {
   return prisma.business.findMany({
     where: {
       Categories: {
-        some: {
-          categoryName,
-        },
+        some: { categoryName },
       },
       Photos: {
         some: {},
@@ -75,12 +73,6 @@ const getBusinessesByCategory = (categoryName) => {
       Categories: {
         select: {
           categoryName: true,
-        },
-        // order categories to display the first several to user
-        orderBy: {
-          category: {
-            businessCount: "desc",
-          },
         },
       },
       // take first review to display on business list
@@ -105,11 +97,27 @@ const getBusinessesByCategory = (categoryName) => {
         reviewCount: "desc",
       },
     ],
-    take: 10,
+    skip: startIndex,
+    take: limit,
   });
 };
+
+const getBusinessesInCategory = (categoryName) => {
+  return prisma.business.findMany({
+    where: {
+      Categories: {
+        some: { categoryName },
+      },
+      Photos: {
+        some: {},
+      },
+    },
+  });
+};
+
 module.exports = {
   getBusinessById,
-  getBusinessesByCategory,
   getAllBusinesses,
+  getBusinessList,
+  getBusinessesInCategory,
 };
