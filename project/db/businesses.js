@@ -1,7 +1,7 @@
 const prisma = require("./index");
 
 // get business by id including reviews and review comments
-const getBusinessById = async (id) => {
+const getBusinessById = (id) => {
   return prisma.business.findUnique({
     where: { id },
     include: {
@@ -79,7 +79,9 @@ const getBusinessList = ({ categoryName, startIndex, limit }) => {
       Reviews: {
         include: {
           author: {
-            select: { username: true },
+            select: {
+              username: true,
+            },
           },
         },
         orderBy: { createdAt: "desc" },
