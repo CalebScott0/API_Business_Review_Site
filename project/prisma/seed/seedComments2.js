@@ -116,7 +116,7 @@ async function main() {
       take: 500000,
     });
 
-    console.log("Creating comments 3/4...");
+    console.log("Creating comments 3/3...");
     await Promise.all(
       [...reviews].map((review) => {
         //pick random user index from all users array
