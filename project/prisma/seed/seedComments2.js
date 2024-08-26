@@ -21,13 +21,23 @@ async function main() {
       [...reviews].map((review) => {
         //pick random user index from all users array
         let randUser = Math.floor(Math.random() * (users.length - 1));
+
+        let randUser2 = Math.floor(Math.random() * (users.length - 1));
         // check if random user is the same as reviews author and change index if true
         if (users[randUser].id === review.authorId) {
           // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
-          if (randUser + 1 === users.length) {
+          if (randUser === users.length - 1) {
             randUser -= 1;
           } else {
             randUser += 1;
+          }
+        }
+
+        if (randUser2 === randUser) {
+          if (randUser2 === users.length - 1) {
+            randUser2 -= 1;
+          } else {
+            randUser2 += 1;
           }
         }
 
@@ -36,6 +46,16 @@ async function main() {
             data: {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
+              reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
+            },
+          });
+        });
+        [...Array(1)].map(async () => {
+          await prisma.comment.create({
+            data: {
+              text: faker.lorem.lines({ min: 1, max: 1 }),
+              authorId: users[randUser2].id,
               reviewId: review.id,
               createdAt: faker.date.past({ years: 10 }),
             },
@@ -70,13 +90,23 @@ async function main() {
       [...reviews].map((review) => {
         //pick random user index from all users array
         let randUser = Math.floor(Math.random() * (users.length - 1));
+
+        let randUser2 = Math.floor(Math.random() * (users.length - 1));
         // check if random user is the same as reviews author and change index if true
         if (users[randUser].id === review.authorId) {
           // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
-          if (randUser + 1 === users.length) {
+          if (randUser === users.length - 1) {
             randUser -= 1;
           } else {
             randUser += 1;
+          }
+        }
+
+        if (randUser2 === randUser) {
+          if (randUser2 === users.length - 1) {
+            randUser2 -= 1;
+          } else {
+            randUser2 += 1;
           }
         }
 
@@ -85,6 +115,16 @@ async function main() {
             data: {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
+              reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
+            },
+          });
+        });
+        [...Array(1)].map(async () => {
+          await prisma.comment.create({
+            data: {
+              text: faker.lorem.lines({ min: 1, max: 1 }),
+              authorId: users[randUser2].id,
               reviewId: review.id,
               createdAt: faker.date.past({ years: 10 }),
             },
@@ -119,13 +159,23 @@ async function main() {
       [...reviews].map((review) => {
         //pick random user index from all users array
         let randUser = Math.floor(Math.random() * (users.length - 1));
+
+        let randUser2 = Math.floor(Math.random() * (users.length - 1));
         // check if random user is the same as reviews author and change index if true
         if (users[randUser].id === review.authorId) {
           // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
-          if (randUser + 1 === users.length) {
+          if (randUser === users.length - 1) {
             randUser -= 1;
           } else {
             randUser += 1;
+          }
+        }
+
+        if (randUser2 === randUser) {
+          if (randUser2 === users.length - 1) {
+            randUser2 -= 1;
+          } else {
+            randUser2 += 1;
           }
         }
 
@@ -134,6 +184,16 @@ async function main() {
             data: {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
+              reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
+            },
+          });
+        });
+        [...Array(1)].map(async () => {
+          await prisma.comment.create({
+            data: {
+              text: faker.lorem.lines({ min: 1, max: 1 }),
+              authorId: users[randUser2].id,
               reviewId: review.id,
               createdAt: faker.date.past({ years: 10 }),
             },
@@ -155,7 +215,7 @@ async function main() {
     }
     console.log("Seeding 3/4 completed...");
   }
-  async function reviewSeed5() {
+  async function reviewSeed4() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
@@ -168,13 +228,23 @@ async function main() {
       [...reviews].map((review) => {
         //pick random user index from all users array
         let randUser = Math.floor(Math.random() * (users.length - 1));
+
+        let randUser2 = Math.floor(Math.random() * (users.length - 1));
         // check if random user is the same as reviews author and change index if true
         if (users[randUser].id === review.authorId) {
           // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
-          if (randUser + 1 === users.length) {
+          if (randUser === users.length - 1) {
             randUser -= 1;
           } else {
             randUser += 1;
+          }
+        }
+
+        if (randUser2 === randUser) {
+          if (randUser2 === users.length - 1) {
+            randUser2 -= 1;
+          } else {
+            randUser2 += 1;
           }
         }
 
@@ -183,6 +253,16 @@ async function main() {
             data: {
               text: faker.lorem.lines({ min: 1, max: 1 }),
               authorId: users[randUser].id,
+              reviewId: review.id,
+              createdAt: faker.date.past({ years: 10 }),
+            },
+          });
+        });
+        [...Array(1)].map(async () => {
+          await prisma.comment.create({
+            data: {
+              text: faker.lorem.lines({ min: 1, max: 1 }),
+              authorId: users[randUser2].id,
               reviewId: review.id,
               createdAt: faker.date.past({ years: 10 }),
             },
@@ -208,7 +288,6 @@ async function main() {
     .then(() => reviewSeed2())
     .then(() => reviewSeed3())
     .then(() => reviewSeed4())
-    .then(() => reviewSeed5())
     .catch((e) => {
       console.log(e);
     });
