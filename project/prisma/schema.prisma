@@ -56,7 +56,7 @@ model Review {
   authorId   String
   author     User      @relation(fields: [authorId], references: [id])
   businessId String
-  business   Business  @relation(fields: [businessId], references: [id])
+  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
   Comments   Comment[]
 
   @@unique(name: "uniqueReview", [authorId, businessId])
@@ -83,7 +83,7 @@ model Category {
 model CategoryToBusiness {
   categoryName String
   businessId   String
-  business     Business @relation(fields: [businessId], references: [id])
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   categoryId   String
   category     Category @relation(fields: [categoryId], references: [id])
 
