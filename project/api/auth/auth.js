@@ -55,8 +55,12 @@ authRouter.post("/login", async (req, res, next) => {
 
     // if user exists and passwords match, create token with user id
     const token = jwt.sign(
-      { id: user.id },
-      process.env.JWT || "Super secret super safe"
+      {
+        id: user.id,
+      },
+      process.env.JWT || "Super secret super safe",
+      // set expiration to 24hrs (UTC)
+      { expiresIn: "1d" }
     );
 
     res.send({ token });
