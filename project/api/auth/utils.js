@@ -22,7 +22,7 @@ const checkUserExists = async (req, res, next) => {
     // error if username exists
     return res.status(409).send({
       name: "UserExistsError",
-      message: "A user by that username already exists",
+      message: "An account with that username already exists",
     });
   }
 
