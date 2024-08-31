@@ -59,7 +59,8 @@ businessRouter.get("/category/:categoryName", async (req, res, next) => {
       return;
     }
 
-    res.send({ Pages: pages, currentPage: page, businesses });
+    // res.send({ Pages: pages, currentPage: page, businesses });
+    res.send({ businesses });
   } catch ({ name, message }) {
     next({ name, message });
   }
