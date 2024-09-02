@@ -93,7 +93,7 @@ model CategoryToBusiness {
 model Photo {
   id         String   @id @default(uuid())
   businessId String
-  business   Business @relation(fields: [businessId], references: [id])
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   caption    String   @db.VarChar(256)
   label      String   @db.VarChar(10)
 }
