@@ -3,6 +3,8 @@ const prisma = require("./index");
 const main = async () => {
   console.log("Deleting Businesses With No Photos...");
 
+  // Could not get "deleteMany and findMany where photos : {none: {} } " to work ?
+
   const countBus = (await prisma.business.findMany()).length;
   const busWithPics = (
     await prisma.business.findMany({
