@@ -6,8 +6,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // seed users
-  console.log("Creating Initial User Data...");
-
+  console.log("Mapping User data...");
   const data = userArr.map((user, i) => ({
     id: user.user_id,
     username: `${faker.internet.displayName({
@@ -18,6 +17,8 @@ async function main() {
     firstname: user.name,
     createdAt: new Date(user.yelping_since).toISOString(),
   }));
+
+  console.log("Creating Initial User Data...");
 
   await prisma.user.createMany({ data });
   // for (let i = 0; i < userArr.length; i++) {
