@@ -17,6 +17,7 @@ async function main() {
     firstname: user.name,
     createdAt: new Date(user.yelping_since).toISOString(),
   }));
+  console.log(data.slice(0, 5));
 
   console.log("Creating Initial User Data...");
 
