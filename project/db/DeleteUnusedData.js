@@ -10,12 +10,14 @@ const main = async () => {
     })
   ).length;
   console.log(`${countBus - busWithPics} businesses to be deleted`);
+
   const numBus = await prisma.business.findMany({ include: { Photos: true } });
-  numBus.forEach(async (ele) => {
+  numBus.forEach(async (ele, idx) => {
     if (ele.Photos.length === 0) {
       await prisma.business.delete({
         where: { id: ele.id },
       });
+      console.log(`Deleted business ${idx + 1} / ${numBus.length}`);
     }
   });
   console.log(
