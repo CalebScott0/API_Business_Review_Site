@@ -1,6 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { withOptimize } = require("@prisma/extension-optimize");
 
-const prisma = new PrismaClient().$extends(withOptimize());
+const prisma = new PrismaClient();
 
 module.exports = prisma;
