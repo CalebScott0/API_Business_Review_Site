@@ -2,7 +2,11 @@ const prisma = require("./index");
 
 const main = async () => {
   console.log("Deleting Businesses With No Photos...");
-
+  await prisma.business.deleteMany({
+    where: {
+      Photos: { none: {} },
+    },
+  });
   // Could not get "deleteMany and findMany where photos : {none: {} } " to work ?
 
   const countBus = (await prisma.business.findMany()).length;
@@ -28,10 +32,10 @@ const main = async () => {
       }
     }
   }
-  console.log(
-    (await prisma.business.findMany()).length,
-    "Businesses are now in the database."
-  );
+  // console.log(
+  //   (await prisma.business.findMany()).length,
+  //   "Businesses are now in the database."
+  // );
   console.log("Business Delete Complete");
 };
 main();
