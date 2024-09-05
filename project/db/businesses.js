@@ -104,22 +104,8 @@ const getBusinessList = ({ categoryName, startIndex, limit }) => {
   });
 };
 
-const getBusinessesInCategory = (categoryName) => {
-  return prisma.business.findMany({
-    where: {
-      Categories: {
-        some: { categoryName },
-      },
-      Photos: {
-        some: {},
-      },
-    },
-  });
-};
-
 module.exports = {
   getBusinessById,
   getAllBusinesses,
   getBusinessList,
-  getBusinessesInCategory,
 };
