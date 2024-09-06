@@ -23,9 +23,9 @@ businessRouter.get("/", async (req, res, next) => {
 businessRouter.get("/:id", async (req, res, next) => {
   try {
     const business = await getBusinessById(req.params.id);
-
     res.send({ business });
   } catch (error) {
+    console.log(error);
     next({
       name: "UnableToFindBusinessError",
       message: "Unable to find business, id may be invalid",
