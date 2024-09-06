@@ -41,12 +41,13 @@ businessRouter.get("/category/:categoryName", async (req, res, next) => {
     const limit = +req.query.limit;
 
     // total pages available
-    const pages = Math.ceil(
-      (await getBusinessesInCategory(categoryName)).length / limit
-    );
+    // const pages = Math.ceil(
+    //   (await getBusinessesInCategory(categoryName)).length / limit
+    // );
 
     // if page 1 -> startIndex = 0, if page 2, startIndex is 1 index after last result on page 1...
-    const startIndex = (page - 1) * limit;
+    // const startIndex = (page - 1) * limit;
+    const startIndex = 0;
 
     const businesses = await getBusinessList({
       categoryName,
