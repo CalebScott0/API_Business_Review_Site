@@ -1,13 +1,11 @@
 const prisma = require("./index");
 
 // get business by id including reviews and review comments
-// grab base business object
 const getBusinessById = async (id) => {
+  // grab base business object
   let business =
     await prisma.$queryRaw`SELECT * FROM "Business" WHERE id = ${id} `;
-
-  // add categories, reviews, and photos array to object
-  business = { ...business[0] };
+  business = { ...business["0"] };
 
   // grab all categories related to businessId
   const categories =
@@ -18,20 +16,16 @@ const getBusinessById = async (id) => {
     await prisma.$queryRaw`SELECT * from "Review" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
 
   // find comments associated with the business's reviews
-  const comments =
-    await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "reviewId" in (SELECT id FROM "Review" WHERE "businessId"=${id})`;
-  console.log(comments.length);
+  // const comments =
+  // await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "reviewId" in (SELECT id FROM "Review" WHERE "businessId"=${id})`;
 
   // grab all photos for the business
   const photos =
     await prisma.$queryRaw`SELECT * FROM "Photo" WHERE "businessId"=${id};`;
 
-  // add categories and reviews array to business object
-  business = { ...business, reviews, categories, photos };
-
+  // add categories reviews, and photos array to business object
+  business = { ...business, categories, reviews, photos };
   return business;
-
-  // console.log(reviewIds);
 
   // return prisma.$queryRaw`SELECT "categoryName" FROM "Business" t1 FULL JOIN "CategoryToBusiness" t2 ON t1.id = t2."businessId" WHERE t1.id=${id} ;`;
   // return prisma.business.findUnique({
