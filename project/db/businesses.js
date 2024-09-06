@@ -85,49 +85,75 @@ const getAllBusinesses = () => {
 
 // get business with photos by category, returning categories, most recent review -
 //  ordered by stars descending and then review count descending
-const getBusinessList = ({ categoryName, startIndex, limit }) => {
-  return prisma.business.findMany({
-    where: {
-      Categories: {
-        some: { categoryName },
-      },
-      Photos: {
-        some: {},
-      },
-    },
-    include: {
-      Categories: {
-        select: {
-          categoryName: true,
-        },
-      },
-      // take first review to display on business list
-      Reviews: {
-        include: {
-          author: {
-            select: {
-              username: true,
-            },
+const getBusinessList = async ({ categoryName, startIndex, limit }) => {
+  // grab all businesses in category filtered by category name and photos exist
+  const businesses =
+    await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b JOIN "CategoryToBusiness" c on c."businessId" = b.id 
+                            JOIN "Photo" p on p."businessId" = b.id WHERE "categoryName"=${categoryName} ORDER BY "reviewCount" DESC;`;
+  //  JOIN "Photo" P ON b.id= p."businessId"
+  //  ${limit};
+
+  console.log("SQL statement", businesses.length);
+
+  console.log(
+    "prisma bus with photos",
+    (
+      await prisma.business.findMany({
+        where: {
+          Categories: {
+            some: { categoryName },
           },
+          Photos: { some: {} },
         },
-        orderBy: { createdAt: "desc" },
-        take: 1,
-      },
-      Photos: {
-        take: 1,
-      },
-    },
-    orderBy: [
-      {
-        stars: "desc",
-      },
-      {
-        reviewCount: "desc",
-      },
-    ],
-    skip: startIndex,
-    take: limit,
-  });
+        orderBy: {
+          reviewCount: "desc",
+        },
+      })
+    ).length
+  );
+
+  // return prisma.business.findMany({
+  //   where: {
+  //     Categories: {
+  //       some: { categoryName },
+  //     },
+  //     Photos: {
+  //       some: {},
+  //     },
+  //   },
+  //   include: {
+  //     Categories: {
+  //       select: {
+  //         categoryName: true,
+  //       },
+  //     },
+  //     // take first review to display on business list
+  //     Reviews: {
+  //       include: {
+  //         author: {
+  //           select: {
+  //             username: true,
+  //           },
+  //         },
+  //       },
+  //       orderBy: { createdAt: "desc" },
+  //       take: 1,
+  //     },
+  //     Photos: {
+  //       take: 1,
+  //     },
+  //   },
+  //   orderBy: [
+  //     {
+  //       stars: "desc",
+  //     },
+  //     {
+  //       reviewCount: "desc",
+  //     },
+  //   ],
+  //   skip: startIndex,
+  //   take: limit,
+  // });
 };
 
 module.exports = {
