@@ -107,12 +107,13 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
 
       // grab most recent review for each business
       const reviews =
-        await prisma.$queryRaw`SELECT r.*, username FROM "Review" r JOIN "User" u on u.id = r."authorId"
+        await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r JOIN "User" u on u.id = r."authorId"
           WHERE "businessId" = ${item.id} ORDER BY "createdAt" DESC LIMIT 1`;
 
       return { ...item, categories, photos, reviews };
     })
   );
+  console.log(businessList[0]);
   return businessList;
   // return prisma.business.findMany({
   //   where: {
