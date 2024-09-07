@@ -6,15 +6,13 @@ const getBusinessById = async (id) => {
   let business =
     await prisma.$queryRaw`SELECT * FROM "Business" WHERE id = ${id} `;
   business = { ...business["0"] };
-
   // grab all categories related to businessId
   const categories =
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
-
   // grab all reviews related to businessId
-  const reviews = await prisma.$queryRaw`SELECT r.*, username from "Review" r 
-                            JOIN "User" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
-
+  const reviews =
+    await prisma.$queryRaw`SELECT r.*, username AS author from "Review" r 
+                            JOIN "User" u ON u.id = r."authorId" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
   // find comments associated with the business's reviews
   // const comments =
   // await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "reviewId" in (SELECT id FROM "Review" WHERE "businessId"=${id})`;
@@ -89,8 +87,8 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
   // grab businesses in category filtered by category name and photos exist
   let businessList =
     await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
-                            JOIN "CategoryToBusiness" c on c."businessId" = b.id 
-                            JOIN "Photo" p on p."businessId" = b.id WHERE "categoryName"=${categoryName} 
+                            JOIN "CategoryToBusiness" c ON c."businessId" = b.id 
+                            JOIN "Photo" p ON p."businessId" = b.id WHERE "categoryName"=${categoryName} 
                             ORDER BY stars DESC, "reviewCount" DESC LIMIT ${limit};`;
 
   // loop through businessList adding categories, photos, and reviews for each
@@ -107,13 +105,12 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
 
       // grab most recent review for each business
       const reviews =
-        await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r JOIN "User" u on u.id = r."authorId"
+        await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r JOIN "User" u ON u.id = r."authorId"
           WHERE "businessId" = ${item.id} ORDER BY "createdAt" DESC LIMIT 1`;
 
       return { ...item, categories, photos, reviews };
     })
   );
-  console.log(businessList[0]);
   return businessList;
   // return prisma.business.findMany({
   //   where: {
