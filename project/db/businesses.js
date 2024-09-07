@@ -12,8 +12,8 @@ const getBusinessById = async (id) => {
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
 
   // grab all reviews related to businessId
-  const reviews =
-    await prisma.$queryRaw`SELECT * from "Review" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
+  const reviews = await prisma.$queryRaw`SELECT r.*, username from "Review" r 
+                            JOIN "User" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
 
   // find comments associated with the business's reviews
   // const comments =
@@ -87,30 +87,40 @@ const getAllBusinesses = () => {
 //  ordered by stars descending and then review count descending
 const getBusinessList = async ({ categoryName, startIndex, limit }) => {
   // grab all businesses in category filtered by category name and photos exist
-  const businesses =
-    await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b JOIN "CategoryToBusiness" c on c."businessId" = b.id 
-                            JOIN "Photo" p on p."businessId" = b.id WHERE "categoryName"=${categoryName} ORDER BY "reviewCount" DESC;`;
-  //  JOIN "Photo" P ON b.id= p."businessId"
-  //  ${limit};
+  let businesses = await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
+                            JOIN "CategoryToBusiness" c on c."businessId" = b.id 
+                            JOIN "Photo" p on p."businessId" = b.id WHERE "categoryName"=${categoryName} 
+                            ORDER BY stars DESC, "reviewCount" DESC ;`; //LIMIT ${limit}
 
-  console.log("SQL statement", businesses.length);
+  // loop through businesses finding categories for each
+  const addCategories = businesses.map(async (item) => {
+    await prisma.$queryRaw`SELECT "categoryId", "categoryName" FROM "CategoryToBusiness"
+                                              WHERE "businessId" = ${item.id};`;
 
-  console.log(
-    "prisma bus with photos",
-    (
-      await prisma.business.findMany({
-        where: {
-          Categories: {
-            some: { categoryName },
-          },
-          Photos: { some: {} },
-        },
-        orderBy: {
-          reviewCount: "desc",
-        },
-      })
-    ).length
-  );
+    // return { ...item, categories };
+  });
+  console.log(addCategories);
+
+  // console.log("SQL statement", businesses.length);
+  // console.log("SQL FIRST ENTRY", businesses[0]);
+  // const prismaTest = await prisma.business.findMany({
+  //   where: {
+  //     Categories: {
+  //       some: { categoryName },
+  //     },
+  //     Photos: { some: {} },
+  //   },
+  //   orderBy: [
+  //     {
+  //       stars: "desc",
+  //     },
+  //     {
+  //       reviewCount: "desc",
+  //     },
+  //   ],
+  // take: limit,
+  // });
+  // console.log("PRISMA FIRST ENTRY", prismaTest[0]);
 
   // return prisma.business.findMany({
   //   where: {
@@ -143,16 +153,16 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
   //       take: 1,
   //     },
   //   },
-  //   orderBy: [
-  //     {
-  //       stars: "desc",
-  //     },
-  //     {
-  //       reviewCount: "desc",
-  //     },
-  //   ],
-  //   skip: startIndex,
-  //   take: limit,
+  // orderBy: [
+  //   {
+  //     stars: "desc",
+  //   },
+  //   {
+  //     reviewCount: "desc",
+  //   },
+  // ],
+  // skip: startIndex,
+  // take: limit,
   // });
 };
 
