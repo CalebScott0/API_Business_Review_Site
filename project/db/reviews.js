@@ -4,18 +4,18 @@ const { averageBusinessStars } = require("../db/update_tables/utils");
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
   const stars = await averageBusinessStars(id);
-  // return prisma.$queryRaw`UPDATE "Business" SET stars = ${stars}, "reviewCount"="reviewCount" + 1 WHERE id=${id}`;
-  return prisma.business.update({
-    where: {
-      id,
-    },
-    data: {
-      reviewCount: {
-        increment: 1,
-      },
-      stars,
-    },
-  });
+  return prisma.$queryRaw`UPDATE "Business" SET stars = ${stars}, "reviewCount"="reviewCount" + 1 WHERE id=${id}`;
+  // return prisma.business.update({
+  //   where: {
+  //     id,
+  //   },
+  //   data: {
+  //     reviewCount: {
+  //       increment: 1,
+  //     },
+  //     stars,
+  //   },
+  // });
 };
 
 // create a review for user
