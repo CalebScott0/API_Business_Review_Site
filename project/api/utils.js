@@ -48,7 +48,7 @@ const checkUserHasReview = async (req, res, next) => {
     authorId: req.user.id,
     businessId: req.params.businessId,
   });
-  if (hasReview.length) {
+  if (hasReview) {
     return res.status(409).send({
       name: "UserReviewError",
       message: "User already has review for this business",
@@ -61,8 +61,7 @@ const checkUserHasReview = async (req, res, next) => {
 // check if user is author of review before update or delete
 const checkIsUserReview = async (req, res, next) => {
   const review = await getReviewById(req.params.id);
-  console.log(review[0]);
-  if (req.user.id !== review[0].authorId) {
+  if (req.user.id !== review.authorId) {
     return res
       .status(400)
       .send({ message: "User is not the author of this review" });
