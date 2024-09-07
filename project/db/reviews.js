@@ -1,5 +1,6 @@
 const prisma = require("./index");
 const { averageBusinessStars } = require("../db/update_tables/utils");
+const uuid = require("uuid");
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
@@ -20,11 +21,14 @@ const updateBusinessOnReview = async (id) => {
 
 // create a review for user
 const createReview = async (data) => {
-  const newReview = await prisma.review.create({ data });
-
+  const newReview =
+    await prisma.$queryRaw`INSERT INTO "Review" (id, stars, text, "authorId", "businessId")
+      Values (${uuid.v4()}, ${data.stars}, ${data.text}, ${data.authorId}, ${
+      data.businessId
+    })`;
+  // const newReview = await prisma.review.create({ data });
   // update business with businessId from review data
   await updateBusinessOnReview(data.businessId);
-
   return newReview;
 };
 
@@ -88,20 +92,22 @@ const deleteReview = async (id) => {
 
 // find a review given an authorId & businessId
 const getUserRevByBusiness = ({ authorId, businessId }) => {
-  return prisma.review.findUnique({
-    where: {
-      uniqueReview: {
-        authorId,
-        businessId,
-      },
-    },
-  });
+  return prisma.$queryRaw`SELECT * FROM "Review" WHERE "authorId"=${authorId} AND "businessId"=${businessId}`;
+  // return prisma.review.findUnique({
+  // where: {
+  // uniqueReview: {
+  // authorId,
+  // businessId,
+  // },
+  // },
+  // });
 };
 
 const getReviewById = (id) => {
-  return prisma.review.findUnique({
-    where: { id },
-  });
+  return prisma.$queryRaw`SELECT "authorId" FROM "Review" WHERE id=${id}`;
+  // return prisma.review.findUnique({
+  //   where: { id },
+  // });
 };
 module.exports = {
   createReview,
