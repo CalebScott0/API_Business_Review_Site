@@ -86,42 +86,34 @@ const getAllBusinesses = () => {
 // get business with photos by category, returning categories, most recent review -
 //  ordered by stars descending and then review count descending
 const getBusinessList = async ({ categoryName, startIndex, limit }) => {
-  // grab all businesses in category filtered by category name and photos exist
-  let businesses = await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
+  // grab businesses in category filtered by category name and photos exist
+  let businessList =
+    await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
                             JOIN "CategoryToBusiness" c on c."businessId" = b.id 
                             JOIN "Photo" p on p."businessId" = b.id WHERE "categoryName"=${categoryName} 
-                            ORDER BY stars DESC, "reviewCount" DESC ;`; //LIMIT ${limit}
+                            ORDER BY stars DESC, "reviewCount" DESC LIMIT ${limit};`;
 
-  // loop through businesses finding categories for each
-  const addCategories = businesses.map(async (item) => {
-    await prisma.$queryRaw`SELECT "categoryId", "categoryName" FROM "CategoryToBusiness"
-                                              WHERE "businessId" = ${item.id};`;
+  // loop through businessList adding categories, photos, and reviews for each
+  businessList = await Promise.all(
+    businessList.map(async (item) => {
+      const categories =
+        await prisma.$queryRaw`SELECT "categoryId", "categoryName" FROM "CategoryToBusiness"
+           WHERE "businessId" = ${item.id};`;
 
-    // return { ...item, categories };
-  });
-  console.log(addCategories);
+      // grab 1 photo per business for now
+      const photos =
+        await prisma.$queryRaw`SELECT id, caption, label FROM "Photo"
+          WHERE "businessId" = ${item.id} LIMIT 1`;
 
-  // console.log("SQL statement", businesses.length);
-  // console.log("SQL FIRST ENTRY", businesses[0]);
-  // const prismaTest = await prisma.business.findMany({
-  //   where: {
-  //     Categories: {
-  //       some: { categoryName },
-  //     },
-  //     Photos: { some: {} },
-  //   },
-  //   orderBy: [
-  //     {
-  //       stars: "desc",
-  //     },
-  //     {
-  //       reviewCount: "desc",
-  //     },
-  //   ],
-  // take: limit,
-  // });
-  // console.log("PRISMA FIRST ENTRY", prismaTest[0]);
+      // grab most recent review for each business
+      const reviews =
+        await prisma.$queryRaw`SELECT r.*, username FROM "Review" r JOIN "User" u on u.id = r."authorId"
+          WHERE "businessId" = ${item.id} ORDER BY "createdAt" DESC LIMIT 1`;
 
+      return { ...item, categories, photos, reviews };
+    })
+  );
+  return businessList;
   // return prisma.business.findMany({
   //   where: {
   //     Categories: {
