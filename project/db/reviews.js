@@ -1,13 +1,10 @@
 const prisma = require("./index");
-const {
-  averageBusinessStars,
-  roundHalf,
-} = require("../db/update_tables/utils");
+const { averageBusinessStars } = require("../db/update_tables/utils");
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
   const stars = await averageBusinessStars(id);
-
+  // return prisma.$queryRaw`UPDATE "Business" SET stars = ${stars}, "reviewCount"="reviewCount" + 1 WHERE id=${id}`;
   return prisma.business.update({
     where: {
       id,
