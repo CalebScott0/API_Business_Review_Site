@@ -5,8 +5,9 @@ const {
   getBusinessById,
   getAllBusinesses,
   getBusinessList,
-  getBusinessesInCategory,
+  // getBusinessesInCategory,
 } = require("../db/businesses");
+const { getReviewsForBusiness } = require("../db/reviews");
 
 // GET /api/businesses
 businessRouter.get("/", async (req, res, next) => {
@@ -28,6 +29,19 @@ businessRouter.get("/:id", async (req, res, next) => {
     next({
       name: "UnableToFindBusinessError",
       message: "Unable to find business, id may be invalid",
+    });
+  }
+});
+
+// GET /api/businesses/:id/reviews
+businessRouter.get("/:id/reviews", async (req, res, next) => {
+  try {
+    const reviews = await getReviewsForBusiness(req.params.id);
+    res.send({ reviews });
+  } catch (error) {
+    next({
+      name: "UnableToFetchReviews",
+      message: "Unable to fetch reviews",
     });
   }
 });

@@ -1,7 +1,7 @@
 const prisma = require("./index");
 
 // get business by id including reviews and review comments
-const getBusinessById = async (id) => {
+const getBusinessById = async (id, limit = 5) => {
   // grab base business object
   let business =
     await prisma.$queryRaw`SELECT * FROM "Business" WHERE id = ${id} `;
@@ -10,19 +10,24 @@ const getBusinessById = async (id) => {
   const categories =
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
   // grab all reviews related to businessId
-  const reviews =
-    await prisma.$queryRaw`SELECT r.*, username AS author from "Review" r 
-                            JOIN "User" u ON u.id = r."authorId" WHERE "businessId"=${id} ORDER BY "createdAt" DESC;`;
-  // find comments associated with the business's reviews
-  // const comments =
-  // await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "reviewId" in (SELECT id FROM "Review" WHERE "businessId"=${id})`;
-
+  // let reviews =
+  //   await prisma.$queryRaw`SELECT r.*, username AS author from "Review" r
+  //                           JOIN "User" u ON u.id = r."authorId" WHERE "businessId"=${id} ORDER BY "createdAt" DESC LIMIT ${limit};`;
+  // // find comments associated with the business's reviews
+  // reviews = await Promise.all(
+  //   reviews.map(async (review) => {
+  //     const comments =
+  //       await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "Comment"."reviewId"=${review.id}`;
+  //     return { ...review, comments };
+  //   })
+  // );
   // grab all photos for the business
-  const photos =
-    await prisma.$queryRaw`SELECT * FROM "Photo" WHERE "businessId"=${id};`;
+  // const photos =
+  //   await prisma.$queryRaw`SELECT * FROM "Photo" WHERE "businessId"=${id};`;
 
   // add categories reviews, and photos array to business object
-  business = { ...business, categories, reviews, photos };
+  business = { ...business, categories };
+  // business = { ...business, categories, reviews, photos };
   return business;
 
   // return prisma.$queryRaw`SELECT "categoryName" FROM "Business" t1 FULL JOIN "CategoryToBusiness" t2 ON t1.id = t2."businessId" WHERE t1.id=${id} ;`;
