@@ -127,6 +127,18 @@ const getReviewById = (id) => {
 
 const getMostRecentReviews = () => {
   return prisma.review.findMany({
+    include: {
+      author: {
+        select: {
+          username: true,
+        },
+      },
+      business: {
+        select: {
+          name: true,
+        },
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },
