@@ -1,11 +1,14 @@
 const prisma = require("./index");
-const { averageBusinessStars } = require("../db/update_tables/utils");
-const uuid = require("uuid");
+const {
+  averageBusinessStars,
+  averageUserStars,
+  countUserReviews,
+} = require("../db/update_tables/utils");
 
 // update businesses on review creation
 const updateBusinessOnReview = async (id) => {
   const stars = await averageBusinessStars(id);
-  // return prisma.$queryRaw`UPDATE "Business" SET stars = ${stars}, "reviewCount"="reviewCount" + 1 WHERE id=${id}`;
+
   return prisma.business.update({
     where: {
       id,
@@ -18,17 +21,28 @@ const updateBusinessOnReview = async (id) => {
     },
   });
 };
+const updateUserOnReview = async (authorId) => {
+  // count total num user reviews - parseInt convert from BigInt
+  const reviewCount = parseInt((await countUserReviews(authorId))[0].count);
+
+  // // count total num user comment
+  // const commentCount = await countUserComments(authorId);
+
+  // // average user star ratings on reviews rounded to nearest 0.5
+  const stars = await averageUserStars(authorId);
+
+  // update user with review count and stars
+  return prisma.$queryRaw`UPDATE "User" SET "reviewCount"=${reviewCount}, stars=${stars} WHERE id = ${authorId} RETURNING *`;
+};
 
 // create a review for user
 const createReview = async (data) => {
-  // const newReview =
-  //   await prisma.$queryRaw`INSERT INTO "Review" (id, stars, text, "authorId", "businessId")
-  //     Values (${uuid.v4()}, ${data.stars}, ${data.text}, ${data.authorId}, ${
-  //     data.businessId
-  //   })`;
   const newReview = await prisma.review.create({ data });
+
+  await updateUserOnReview(data.authorId);
   // update business with businessId from review data
   await updateBusinessOnReview(data.businessId);
+
   return newReview;
 };
 
@@ -56,6 +70,7 @@ const updateReview = async (id, data) => {
       ...data,
     },
   });
+  await updateUserOnReview(data.authorId);
   // update business with id passed to updateReview if data has stars
   if (data.stars) {
     await updateBusinessStars(id);
@@ -81,18 +96,19 @@ const decrementBusinessReview = async (id) => {
 // delete a user review
 const deleteReview = async (id) => {
   // id to pass to decrementBusinessReview before review is deleted
-  const { businessId } = await getReviewById(id);
-
-  const deletedReview = await prisma.review.delete({
-    where: { id },
-  });
+  const { businessId, authorId } = await getReviewById(id);
+  const deletedReview = await prisma.$queryRaw`DELETE FROM "Review"
+          WHERE id=${id};`;
+  // const deletedReview = await prisma.review.delete({
+  //   where: { id },
+  // });
   await decrementBusinessReview(businessId);
+  await updateUserOnReview(authorId);
   return deletedReview;
 };
 
 // find a review given an authorId & businessId
 const getUserRevByBusiness = ({ authorId, businessId }) => {
-  // return prisma.$queryRaw`SELECT * FROM "Review" WHERE "authorId"=${authorId} AND "businessId"=${businessId}`;
   return prisma.review.findUnique({
     where: {
       uniqueReview: {
@@ -104,7 +120,6 @@ const getUserRevByBusiness = ({ authorId, businessId }) => {
 };
 
 const getReviewById = (id) => {
-  // return prisma.$queryRaw`SELECT "authorId" FROM "Review" WHERE id=${id}`;
   return prisma.review.findUnique({
     where: { id },
   });

@@ -27,7 +27,6 @@ reviewRouter.post(
       });
       res.status(201).send({ review });
     } catch ({ name, message }) {
-      console.log({ name, message });
       next({ name, message });
     }
   }
@@ -41,10 +40,10 @@ reviewRouter.put(
   checkIsUserReview,
   checkUpdateReviewData,
   async (req, res, next) => {
-    console.log("hi");
     try {
       const review = await updateReview(req.params.id, {
         ...req.body,
+        authorId: req.user.id,
       });
 
       res.send({ review });

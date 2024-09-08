@@ -89,8 +89,7 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
     await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
                             JOIN "CategoryToBusiness" c ON c."businessId" = b.id 
                             JOIN "Photo" p ON p."businessId" = b.id WHERE "categoryName"=${categoryName} 
-                            ORDER BY "reviewCount" ASC LIMIT ${limit};`;
-  //                  ** CHANGE BACK AFTER TEST ORDER BY stars DESC, "reviewCount" DESC LIMIT ${limit};`;
+                            ORDER BY stars DESC, "reviewCount" DESC LIMIT ${limit};`;
 
   // loop through businessList adding categories, photos, and reviews for each
   businessList = await Promise.all(
