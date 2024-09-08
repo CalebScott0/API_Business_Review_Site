@@ -35,8 +35,8 @@ const updateUserOnReview = async (authorId) => {
   return prisma.$queryRaw`UPDATE "User" SET "reviewCount"=${reviewCount}, stars=${stars} WHERE id = ${authorId} RETURNING *`;
 };
 
-// create a review for user
 const createReview = async (data) => {
+  // create a review for user
   const newReview = await prisma.review.create({ data });
 
   await updateUserOnReview(data.authorId);
@@ -46,9 +46,9 @@ const createReview = async (data) => {
   return newReview;
 };
 
-// update business average stars if review update stars changed
 const updateBusinessStars = async (reviewId) => {
   const { businessId } = await getReviewById(reviewId);
+  // update business average stars if review update stars changed
 
   const stars = await averageBusinessStars(businessId);
 
