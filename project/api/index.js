@@ -53,7 +53,7 @@ apiRouter.use("/businesses", require("./businesses"));
 apiRouter.use("/categories", require("./categories"));
 
 //  /api/review
-apiRouter.use("/review", requireUser, require("./review"));
+apiRouter.use("/review", require("./review"));
 
 //  /api/comment
 apiRouter.use("/comment", requireUser, require("./comment"));

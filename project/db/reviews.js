@@ -124,12 +124,23 @@ const getReviewById = (id) => {
     where: { id },
   });
 };
+
+const getMostRecentReviews = () => {
+  return prisma.review.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
+  });
+};
+
 module.exports = {
   createReview,
   updateReview,
   deleteReview,
-  getUserRevByBusiness,
   getReviewById,
+  getMostRecentReviews,
+  getUserRevByBusiness,
   updateBusinessOnReview,
   decrementBusinessReview,
 };
