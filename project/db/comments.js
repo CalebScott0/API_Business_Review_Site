@@ -20,6 +20,20 @@ const deleteComment = (id) => {
   });
 };
 
+const getCommentsForReview = (reviewId) => {
+  return prisma.comment.findMany({
+    include: {
+      author: {
+        select: {
+          username: true,
+        },
+      },
+    },
+    where: { reviewId },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
 const getCommentById = (id) => {
   return prisma.comment.findUnique({
     where: { id },
@@ -31,4 +45,5 @@ module.exports = {
   updateComment,
   deleteComment,
   getCommentById,
+  getCommentsForReview,
 };

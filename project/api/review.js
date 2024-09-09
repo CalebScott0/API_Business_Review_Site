@@ -6,6 +6,7 @@ const {
   updateReview,
   deleteReview,
   getMostRecentReviews,
+  getReviewsForBusiness,
 } = require("../db/reviews");
 const {
   checkCreateReviewData,
@@ -77,6 +78,19 @@ reviewRouter.delete(
   }
 );
 
+// GET /api/review/business/:id
+reviewRouter.get("/business/:id", async (req, res, next) => {
+  try {
+    const reviews = await getReviewsForBusiness(req.params.id);
+
+    res.send({ reviews });
+  } catch (error) {
+    next({
+      name: "UnableToFetchReviews",
+      message: "Unable to fetch reviews",
+    });
+  }
+});
 
 // GET /api/review/recent
 reviewRouter.get("/recent", async (req, res, next) => {

@@ -126,21 +126,10 @@ const getReviewById = (id) => {
 };
 
 const getReviewsForBusiness = (id, limit = 5) => {
-  // let reviews =
-  //   await prisma.$queryRaw`SELECT r.*, username AS author from "Review" r
-  //                           JOIN "User" u ON u.id = r."authorId" WHERE "businessId"=${id} ORDER BY "createdAt" DESC LIMIT ${limit};`;
-  // // find comments associated with the business's reviews
-  // reviews = await Promise.all(
-  //   reviews.map(async (review) => {
-  //     const comments =
-  //       await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "Comment"."reviewId"=${review.id}`;
-  //     return { ...review, comments };
-  //   })
-  // );
   return prisma.$queryRaw`SELECT r.*, u.username AS author from "Review" r
                           JOIN "User" u ON u.id = r."authorId" 
-                          WHERE "businessId"=${id} 
-                          ORDER BY "createdAt" DESC 
+                          WHERE r."businessId"=${id} 
+                          ORDER BY r."createdAt" DESC 
                           LIMIT ${limit};`;
 };
 

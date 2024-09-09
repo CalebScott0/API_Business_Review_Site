@@ -5,8 +5,10 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  getCommentsForReview,
 } = require("../db/comments");
 const {
+  requireUser,
   checkIsNotUserReview,
   checkCommentData,
   checkIsUserComment,
@@ -19,6 +21,7 @@ commentRouter.post(
   "/:reviewId",
   // check user is not author of review
   // then check user provided text for comment
+  requireUser,
   checkIsNotUserReview,
   checkCommentData,
   async (req, res, next) => {
@@ -40,6 +43,7 @@ commentRouter.post(
 commentRouter.put(
   "/:id",
   //  check user is author of comment and text data was provided
+  requireUser,
   checkIsUserComment,
   checkCommentData,
   async (req, res, next) => {
@@ -53,15 +57,30 @@ commentRouter.put(
   }
 );
 
-//  DELETE /api/comment/:id
-commentRouter.delete("/:id", checkIsUserComment, async (req, res, next) => {
+// GET /api/comment/review/:reviewid
+commentRouter.get("/review/:reviewId", async (req, res, next) => {
   try {
-    await deleteComment(req.params.id);
-
-    res.sendStatus(204);
+    const comments = await getCommentsForReview(req.params.reviewId);
+    res.send({ comments });
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
+
+//  DELETE /api/comment/:id
+commentRouter.delete(
+  "/:id",
+  requireUser,
+  checkIsUserComment,
+  async (req, res, next) => {
+    try {
+      await deleteComment(req.params.id);
+
+      res.sendStatus(204);
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  }
+);
 
 module.exports = commentRouter;
