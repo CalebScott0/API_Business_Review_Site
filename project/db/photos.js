@@ -5,4 +5,6 @@ const getPhotosForBusiness = (businessId) => {
                             WHERE "businessId" = ${businessId}`;
 };
 
+
+// get photos for landing page?
 module.exports = { getPhotosForBusiness };

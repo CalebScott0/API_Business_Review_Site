@@ -9,55 +9,12 @@ const getBusinessById = async (id, limit = 5) => {
   // grab all categories related to businessId
   const categories =
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
-  // grab all reviews related to businessId
-  // let reviews =
-  //   await prisma.$queryRaw`SELECT r.*, username AS author from "Review" r
-  //                           JOIN "User" u ON u.id = r."authorId" WHERE "businessId"=${id} ORDER BY "createdAt" DESC LIMIT ${limit};`;
-  // // find comments associated with the business's reviews
-  // reviews = await Promise.all(
-  //   reviews.map(async (review) => {
-  //     const comments =
-  //       await prisma.$queryRaw`SELECT * FROM "Comment" WHERE "Comment"."reviewId"=${review.id}`;
-  //     return { ...review, comments };
-  //   })
-  // );
-  // grab all photos for the business
-  // const photos =
-  //   await prisma.$queryRaw`SELECT * FROM "Photo" WHERE "businessId"=${id};`;
-
-  // add categories reviews, and photos array to business object
+ 
   business = { ...business, categories };
   // business = { ...business, categories, reviews, photos };
   return business;
 
-  // return prisma.$queryRaw`SELECT "categoryName" FROM "Business" t1 FULL JOIN "CategoryToBusiness" t2 ON t1.id = t2."businessId" WHERE t1.id=${id} ;`;
-  // return prisma.business.findUnique({
-  //   where: { id },
-  //   include: {
-  //     Categories: {
-  //       select: {
-  //         categoryName: true,
-  //       },
-  //     },
-  //     Reviews: {
-  //       orderBy: { createdAt: "desc" },
-  //       include: {
-  //         author: {
-  //           select: { username: true },
-  //         },
-  //         Comments: {
-  //           include: {
-  //             author: {
-  //               select: { username: true },
-  //             },
-  //           },
-  //           orderBy: { createdAt: "desc" },
-  //         },
-  //       },
-  //     },
-  //     Photos: true,
-  //   },
-  // });
+ 
 };
 // Select all businesses with pictures ids & names - no duplicates
 // order by stars descending and then review count descending
@@ -117,48 +74,7 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
     })
   );
   return businessList;
-  // return prisma.business.findMany({
-  //   where: {
-  //     Categories: {
-  //       some: { categoryName },
-  //     },
-  //     Photos: {
-  //       some: {},
-  //     },
-  //   },
-  //   include: {
-  //     Categories: {
-  //       select: {
-  //         categoryName: true,
-  //       },
-  //     },
-  //     // take first review to display on business list
-  //     Reviews: {
-  //       include: {
-  //         author: {
-  //           select: {
-  //             username: true,
-  //           },
-  //         },
-  //       },
-  //       orderBy: { createdAt: "desc" },
-  //       take: 1,
-  //     },
-  //     Photos: {
-  //       take: 1,
-  //     },
-  //   },
-  // orderBy: [
-  //   {
-  //     stars: "desc",
-  //   },
-  //   {
-  //     reviewCount: "desc",
-  //   },
-  // ],
-  // skip: startIndex,
-  // take: limit,
-  // });
+ 
 };
 
 module.exports = {

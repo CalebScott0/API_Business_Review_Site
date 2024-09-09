@@ -43,20 +43,22 @@ apiRouter.use(async (req, res, next) => {
 // /api/auth auth routes
 apiRouter.use("/auth", require("./auth/auth"));
 
-// /api/user route to get logged in user
+// /api/user routes
 apiRouter.use("/user", requireUser, require("./user"));
 
-// /api/businesses to get businessess by id and category
+// api/landing-page routes
+apiRouter.use("/landing-page", require("./landingPage"));
+
+// /api/businesses
 apiRouter.use("/businesses", require("./businesses"));
 
-// /api/categories to get all categories
+// /api/categories
 apiRouter.use("/categories", require("./categories"));
 
 //  /api/review
-apiRouter.use("/review", require("./review"));
+apiRouter.use("/review", requireUser, require("./review"));
 
 //  /api/comment
-apiRouter.use("/comment", require("./comment"));
-// review & comment routes will all need requireUser middleware!
+apiRouter.use("/comment", requireUser, require("./comment"));
 
 module.exports = apiRouter;

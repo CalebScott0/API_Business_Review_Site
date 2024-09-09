@@ -1,13 +1,13 @@
 const express = require("express");
 const businessRouter = express.Router();
-
 const {
   getBusinessById,
   getAllBusinesses,
   getBusinessList,
-  // getBusinessesInCategory,
 } = require("../db/businesses");
+const { getReviewsForBusiness } = require("./review");
 const { getPhotosForBusiness } = require("../db/photos");
+const { getCommentsForReview } = require("../db/comments");
 
 // GET /api/businesses
 businessRouter.get("/", async (req, res, next) => {
@@ -33,8 +33,8 @@ businessRouter.get("/:id", async (req, res, next) => {
   }
 });
 
-// GET /api/businesses/category/:category
-businessRouter.get("/category/:categoryName", async (req, res, next) => {
+// GET /api/businesses/list/category/:categoryName
+businessRouter.get("/list/category/:categoryName", async (req, res, next) => {
   try {
     const { categoryName } = req.params;
     const page = +req.query.page;
@@ -67,14 +67,45 @@ businessRouter.get("/category/:categoryName", async (req, res, next) => {
   }
 });
 
-// GET /api/businesses/:businessId/photos
-businessRouter.get(`/:businessId/photos`, async (req, res, next) => {
+// GET /api/businesses/:id/reviews
+businessRouter.get("/:id/reviews", async (req, res, next) => {
   try {
-    const photos = await getPhotosForBusiness(req.params.businessId);
+    const reviews = await getReviewsForBusiness(req.params.id);
+
+    res.send({ reviews });
+  } catch (error) {
+    next({
+      name: "UnableToFetchReviews",
+      message: "Unable to fetch reviews",
+    });
+  }
+});
+
+// GET /api/businesses/reviews/:reviewId/comments
+businessRouter.get("/reviews/:reviewId", async (req, res, next) => {
+  try {
+    const comments = await getCommentsForReview(req.params.reviewId);
+
+    res.send({ comments });
+  } catch (error) {
+    next({
+      name: "UnableToFetchComments",
+      message: "Unable to fetch comments for review",
+    });
+  }
+});
+
+// GET /api/businesses/:id/photos
+businessRouter.get(`/:id/photos`, async (req, res, next) => {
+  try {
+    const photos = await getPhotosForBusiness(req.params.id);
 
     res.send({ photos });
-  } catch ({ name, message }) {
-    next({ name, message });
+  } catch (error) {
+    next({
+      name: "UnableToFetchPhotos",
+      message: "Unable to fetch photos for review",
+    });
   }
 });
 

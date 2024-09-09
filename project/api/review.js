@@ -1,19 +1,13 @@
 const express = require("express");
 const reviewRouter = express.Router();
 
-const {
-  createReview,
-  updateReview,
-  deleteReview,
-  getMostRecentReviews,
-  getReviewsForBusiness,
-} = require("../db/reviews");
+const { createReview, updateReview, deleteReview } = require("../db/reviews");
+
 const {
   checkCreateReviewData,
   checkUpdateReviewData,
   checkUserHasReview,
   checkIsUserReview,
-  requireUser,
 } = require("./utils");
 
 // user will be set to req.user as token will be required for review functions
@@ -23,7 +17,6 @@ reviewRouter.post(
   "/:businessId",
   // check if user already has review for business,
   // then check if user provided text & star rating
-  requireUser,
   checkUserHasReview,
   checkCreateReviewData,
   async (req, res, next) => {
@@ -45,7 +38,6 @@ reviewRouter.put(
   "/:id",
   // check user is author of review
   // then check either text or stars have been provided
-  requireUser,
   checkIsUserReview,
   checkUpdateReviewData,
   async (req, res, next) => {
@@ -65,7 +57,7 @@ reviewRouter.put(
 // DELETE /api/review/:id
 reviewRouter.delete(
   "/:id",
-  requireUser,
+  // check user is author of review
   checkIsUserReview,
   async (req, res, next) => {
     try {
@@ -78,29 +70,29 @@ reviewRouter.delete(
   }
 );
 
-// GET /api/review/business/:id
-reviewRouter.get("/business/:id", async (req, res, next) => {
-  try {
-    const reviews = await getReviewsForBusiness(req.params.id);
+// // GET /api/review/business/:id
+// reviewRouter.get("/business/:id", async (req, res, next) => {
+//   try {
+//     const reviews = await getReviewsForBusiness(req.params.id);
 
-    res.send({ reviews });
-  } catch (error) {
-    next({
-      name: "UnableToFetchReviews",
-      message: "Unable to fetch reviews",
-    });
-  }
-});
+//     res.send({ reviews });
+//   } catch (error) {
+//     next({
+//       name: "UnableToFetchReviews",
+//       message: "Unable to fetch reviews",
+//     });
+//   }
+// });
 
 // GET /api/review/recent
-reviewRouter.get("/recent", async (req, res, next) => {
-  try {
-    const reviews = await getMostRecentReviews();
+// reviewRouter.get("/recent", async (req, res, next) => {
+//   try {
+//     const reviews = await getMostRecentReviews();
 
-    res.send({ reviews });
-  } catch ({ name, message }) {
-    next({ name, message });
-  }
-});
+//     res.send({ reviews });
+//   } catch ({ name, message }) {
+//     next({ name, message });
+//   }
+// });
 
 module.exports = reviewRouter;
