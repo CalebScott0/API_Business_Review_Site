@@ -7,6 +7,7 @@ const {
   getBusinessList,
   // getBusinessesInCategory,
 } = require("../db/businesses");
+const { getPhotosForBusiness } = require("../db/photos");
 
 // GET /api/businesses
 businessRouter.get("/", async (req, res, next) => {
@@ -31,7 +32,6 @@ businessRouter.get("/:id", async (req, res, next) => {
     });
   }
 });
-
 
 // GET /api/businesses/category/:category
 businessRouter.get("/category/:categoryName", async (req, res, next) => {
@@ -62,6 +62,17 @@ businessRouter.get("/category/:categoryName", async (req, res, next) => {
 
     // res.send({ Pages: pages, currentPage: page, businesses });
     res.send({ businesses });
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+// GET /api/businesses/:businessId/photos
+businessRouter.get(`/:businessId/photos`, async (req, res, next) => {
+  try {
+    const photos = await getPhotosForBusiness(req.params.businessId);
+
+    res.send({ photos });
   } catch ({ name, message }) {
     next({ name, message });
   }
