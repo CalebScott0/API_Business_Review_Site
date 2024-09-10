@@ -98,7 +98,7 @@ const deleteReview = async (id) => {
   // id to pass to decrementBusinessReview before review is deleted
   const { businessId, authorId } = await getReviewById(id);
   const deletedReview = await prisma.$queryRaw`DELETE FROM "Review"
-          WHERE id=${id};`;
+                          WHERE id = ${id};`;
   // const deletedReview = await prisma.review.delete({
   //   where: { id },
   // });
@@ -125,12 +125,17 @@ const getReviewById = (id) => {
   });
 };
 
-const getReviewsForBusiness = (id, limit = 5) => {
+const getReviewsForBusiness = (businessId, limit = 5) => {
   return prisma.$queryRaw`SELECT r.*, u.username AS author from "Review" r
                           JOIN "User" u ON u.id = r."authorId" 
-                          WHERE r."businessId"=${id} 
+                          WHERE r."businessId" = ${businessId} 
                           ORDER BY r."createdAt" DESC 
                           LIMIT ${limit};`;
+};
+
+const getReviewsForUser = (userId) => {
+  return prisma.$queryRaw`SELECT * FROM "Review"
+                          WHERE "authorId" = ${userId}`;
 };
 
 const getMostRecentReviews = () => {
@@ -163,5 +168,5 @@ module.exports = {
   getReviewsForBusiness,
   getUserRevByBusiness,
   updateBusinessOnReview,
-  decrementBusinessReview,
+  getReviewsForUser,
 };

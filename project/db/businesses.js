@@ -9,12 +9,10 @@ const getBusinessById = async (id, limit = 5) => {
   // grab all categories related to businessId
   const categories =
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
- 
+
   business = { ...business, categories };
   // business = { ...business, categories, reviews, photos };
   return business;
-
- 
 };
 // Select all businesses with pictures ids & names - no duplicates
 // order by stars descending and then review count descending
@@ -50,7 +48,8 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
   let businessList =
     await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
                             JOIN "CategoryToBusiness" c ON c."businessId" = b.id 
-                            JOIN "Photo" p ON p."businessId" = b.id WHERE "categoryName"=${categoryName} 
+                            JOIN "Photo" p ON p."businessId" = b.id 
+                            WHERE "categoryName"=${categoryName} 
                             ORDER BY stars DESC, "reviewCount" DESC LIMIT ${limit};`;
 
   // loop through businessList adding categories, photos, and reviews for each
@@ -67,14 +66,15 @@ const getBusinessList = async ({ categoryName, startIndex, limit }) => {
 
       // grab most recent review for each business
       const reviews =
-        await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r JOIN "User" u ON u.id = r."authorId"
-          WHERE "businessId" = ${item.id} ORDER BY "createdAt" DESC LIMIT 1`;
+        await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r 
+                                JOIN "User" u ON u.id = r."authorId"
+                                WHERE "businessId" = ${item.id} 
+                                ORDER BY "createdAt" DESC LIMIT 1`;
 
       return { ...item, categories, photos, reviews };
     })
   );
   return businessList;
- 
 };
 
 module.exports = {

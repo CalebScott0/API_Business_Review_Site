@@ -20,18 +20,31 @@ const deleteComment = (id) => {
   });
 };
 
-const getCommentsForReview = (reviewId) => {
-  return prisma.comment.findMany({
-    include: {
-      author: {
-        select: {
-          username: true,
-        },
-      },
-    },
-    where: { reviewId },
-    orderBy: { createdAt: "desc" },
-  });
+const getCommentsForReview = async (reviewId) => {
+  return prisma.$queryRaw`SELECT c.*, u.username as author
+                          FROM "Comment" c JOIN "User" u ON u.id = c."authorId"
+                          WHERE "reviewId" = ${reviewId}
+                          ORDER BY "createdAt" DESC;`;
+  // return prisma.comment.findMany({
+  //   include: {
+  //     author: {
+  //       select: {
+  //         username: true,
+  //       },
+  //     },
+  //   },
+  //   where: { reviewId },
+  //   orderBy: { createdAt: "desc" },
+  // });
+};
+
+const getCommentsForUser = (userId) => {
+  return prisma.$queryRaw`SELECT c.*, b.name AS "businessName", u.username AS "reviewAuthor" FROM "Comment" c
+                          JOIN "Review" r ON r.id = c."reviewId"
+                          JOIN "Business" b on b.id = r."businessId" 
+                          JOIN "User" u on u.id = r."authorId"
+                          WHERE c."authorId" = ${userId}
+                          ORDER BY "createdAt" DESC;`;
 };
 
 const getCommentById = (id) => {
@@ -46,4 +59,5 @@ module.exports = {
   deleteComment,
   getCommentById,
   getCommentsForReview,
+  getCommentsForUser,
 };

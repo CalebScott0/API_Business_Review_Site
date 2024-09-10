@@ -5,7 +5,7 @@ const {
   getAllBusinesses,
   getBusinessList,
 } = require("../db/businesses");
-const { getReviewsForBusiness } = require("./review");
+const { getReviewsForBusiness } = require("../db/reviews");
 const { getPhotosForBusiness } = require("../db/photos");
 const { getCommentsForReview } = require("../db/comments");
 
@@ -82,10 +82,9 @@ businessRouter.get("/:id/reviews", async (req, res, next) => {
 });
 
 // GET /api/businesses/reviews/:reviewId/comments
-businessRouter.get("/reviews/:reviewId", async (req, res, next) => {
+businessRouter.get("/reviews/:reviewId/comments", async (req, res, next) => {
   try {
     const comments = await getCommentsForReview(req.params.reviewId);
-
     res.send({ comments });
   } catch (error) {
     next({
