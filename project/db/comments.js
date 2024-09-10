@@ -1,7 +1,20 @@
+const { countUserComments } = require("./update_tables/utils");
 const prisma = require("./index");
 
-const createComment = (data) => {
-  return prisma.comment.create({ data });
+const updateUserOnComment = async (authorId) => {
+  const comCount = parseInt((await countUserComments(authorId))[0].count);
+  await prisma.user.update({
+    where: { id: authorId },
+    data: {
+      commentCount: comCount,
+    },
+  });
+};
+
+const createComment = async (data) => {
+  const comment = await prisma.comment.create({ data });
+  await updateUserOnComment(data.authorId);
+  return comment;
 };
 
 const updateComment = (id, text) => {
@@ -14,10 +27,21 @@ const updateComment = (id, text) => {
   });
 };
 
-const deleteComment = (id) => {
-  return prisma.comment.delete({
+const deleteComment = async (id) => {
+  const authorId = await prisma.comment.findUnique({
+    select: {
+      authorId: true,
+    },
     where: { id },
   });
+  console.log(authorId);
+  // const authorId = await prisma.$queryRaw`SELECT "authorId" FROM "Comment"
+  //                                        WHERE id = ${id}`;
+  const comment = await prisma.comment.delete({
+    where: { id },
+  });
+  await updateUserOnComment(authorId.authorId);
+  return comment;
 };
 
 const getCommentsForReview = async (reviewId) => {

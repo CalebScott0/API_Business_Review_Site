@@ -39,24 +39,24 @@ model User {
   lastname     String?
   createdAt    DateTime  @default(now())
   reviewCount  Int       @default(0)
-  // commentCount Int       @default(0)
+  commentCount Int       @default(0)
   stars        Float     @default(0.0)
   Reviews      Review[]
   Comments     Comment[]
 }
 
 model Review {
-  id         String    @id @default(uuid())
-  text       String
-  stars      Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  // commentCount Int       @default(0)
-  authorId   String
-  author     User      @relation(fields: [authorId], references: [id])
-  businessId String
-  business   Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  Comments   Comment[]
+  id           String    @id @default(uuid())
+  text         String
+  stars        Int
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  commentCount Int       @default(0)
+  authorId     String
+  author       User      @relation(fields: [authorId], references: [id])
+  businessId   String
+  business     Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  Comments     Comment[]
 
   @@unique(name: "uniqueReview", [authorId, businessId])
 }

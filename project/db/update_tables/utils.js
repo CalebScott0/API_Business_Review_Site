@@ -30,20 +30,11 @@ const averageBusinessStars = async (id) => {
 // aggregate user's review count to update table column
 const countUserReviews = (id) => {
   return prisma.$queryRaw`SELECT COUNT(*) FROM "Review" WHERE "authorId"=${id}`;
-  // return prisma.review.count({
-  //   where: {
-  //     authorId: id,
-  //   },
-  // });
 };
 
-// aggregate user's comment count to update table column
+// aggregate user's comment count
 const countUserComments = (id) => {
-  return prisma.comment.count({
-    where: {
-      authorId: id,
-    },
-  });
+  return prisma.$queryRaw`SELECT COUNT(*) FROM "Comment" WHERE "authorId"=${id}`;
 };
 
 // average all stars from reviews for a user given an id
