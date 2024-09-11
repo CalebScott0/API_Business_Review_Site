@@ -1,7 +1,7 @@
 const prisma = require("./index");
 
 // get business by id including reviews and review comments
-const getBusinessById = async (id, limit = 5) => {
+const getBusinessById = async (id) => {
   // grab base business object
   let business =
     await prisma.$queryRaw`SELECT * FROM "Business" WHERE id = ${id} `;

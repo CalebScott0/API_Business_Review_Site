@@ -81,7 +81,14 @@ businessRouter.get("/:id/reviews", async (req, res, next) => {
 // GET /api/businesses/reviews/:reviewId/comments
 businessRouter.get("/reviews/:reviewId/comments", async (req, res, next) => {
   try {
-    const comments = await getCommentsForReview(req.params.reviewId);
+    const { reviewId } = req.params;
+    const startIndex = +req.query.offset;
+    const limit = +req.query.limit;
+    const comments = await getCommentsForReview({
+      reviewId,
+      startIndex,
+      limit,
+    });
     res.send({ comments });
   } catch (error) {
     next({
