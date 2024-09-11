@@ -63,7 +63,6 @@ businessRouter.get("/:id/reviews", async (req, res, next) => {
   try {
     const startIndex = +req.query.offset;
     const limit = +req.query.limit;
-
     const reviews = await getReviewsForBusiness({
       businessId: req.params.id,
       startIndex,
