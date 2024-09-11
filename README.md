@@ -7,3 +7,15 @@ their associated reviews. It allows unauthenticated users to access and search f
 ```bash
 npm install
 ```
+2. Run local express server
+   With nodemon
+```bash
+npm run start:dev
+```
+  Without nodemon
+``` bash
+npm run start
+```
+
+## packages used
+  
