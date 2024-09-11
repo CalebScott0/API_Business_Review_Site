@@ -32,7 +32,8 @@ const updateUserOnReview = async (authorId) => {
   const stars = await averageUserStars(authorId);
 
   // update user with review count and stars
-  return prisma.$queryRaw`UPDATE "User" SET "reviewCount"=${reviewCount}, stars=${stars} WHERE id = ${authorId} RETURNING *`;
+  return prisma.$queryRaw`UPDATE "User" SET "reviewCount"=${reviewCount}, stars=${stars} 
+                          WHERE id = ${authorId} RETURNING *`;
 };
 
 const createReview = async (data) => {
@@ -126,16 +127,18 @@ const getReviewById = (id) => {
 };
 
 const getReviewsForBusiness = (businessId, limit = 5) => {
-  return prisma.$queryRaw`SELECT r.*, u.username AS author from "Review" r
-                          JOIN "User" u ON u.id = r."authorId" 
+  return prisma.$queryRaw`SELECT r.*, u.username AS author FROM "Review" r
+                          JOIN "User" u ON r."authorId" = u.id  
                           WHERE r."businessId" = ${businessId} 
                           ORDER BY r."createdAt" DESC 
                           LIMIT ${limit};`;
 };
 
 const getReviewsForUser = (userId) => {
-  return prisma.$queryRaw`SELECT * FROM "Review"
-                          WHERE "authorId" = ${userId}`;
+  return prisma.$queryRaw`SELECT r.*, b.name as "businessName" FROM "Review" r
+                          LEFT JOIN "Business" b on  r."businessId" = b.id
+                          WHERE "authorId" = ${userId}
+                          ORDER BY r."createdAt" DESC;`;
 };
 
 const getMostRecentReviews = () => {

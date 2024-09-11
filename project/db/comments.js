@@ -46,7 +46,8 @@ const deleteComment = async (id) => {
 
 const getCommentsForReview = async (reviewId) => {
   return prisma.$queryRaw`SELECT c.*, u.username as author
-                          FROM "Comment" c JOIN "User" u ON u.id = c."authorId"
+                          FROM "Comment" c 
+                          LEFT JOIN "User" u ON c."authorId" = u.id
                           WHERE "reviewId" = ${reviewId}
                           ORDER BY "createdAt" DESC;`;
   // return prisma.comment.findMany({
@@ -64,9 +65,9 @@ const getCommentsForReview = async (reviewId) => {
 
 const getCommentsForUser = (userId) => {
   return prisma.$queryRaw`SELECT c.*, b.name AS "businessName", u.username AS "reviewAuthor" FROM "Comment" c
-                          JOIN "Review" r ON r.id = c."reviewId"
-                          JOIN "Business" b on b.id = r."businessId" 
-                          JOIN "User" u on u.id = r."authorId"
+                          LEFT JOIN "Review" r ON c."reviewId" = r.id
+                          JOIN "Business" b on r."businessId" = b.id
+                          JOIN "User" u on r."authorId" = u.id
                           WHERE c."authorId" = ${userId}
                           ORDER BY "createdAt" DESC;`;
 };
