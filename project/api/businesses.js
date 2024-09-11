@@ -37,17 +37,8 @@ businessRouter.get("/:id", async (req, res, next) => {
 businessRouter.get("/list/category/:categoryName", async (req, res, next) => {
   try {
     const { categoryName } = req.params;
-    const page = +req.query.page;
+    const startIndex = +req.query.offset;
     const limit = +req.query.limit;
-
-    // total pages available
-    // const pages = Math.ceil(
-    //   (await getBusinessesInCategory(categoryName)).length / limit
-    // );
-
-    // if page 1 -> startIndex = 0, if page 2, startIndex is 1 index after last result on page 1...
-    // const startIndex = (page - 1) * limit;
-    const startIndex = 0;
 
     const businesses = await getBusinessList({
       categoryName,
@@ -56,7 +47,7 @@ businessRouter.get("/list/category/:categoryName", async (req, res, next) => {
     });
 
     if (!businesses.length) {
-      res.status(400).send({ message: "Invalid category" });
+      res.status(400).send({ message: "No businesses found" });
       return;
     }
 
@@ -70,7 +61,14 @@ businessRouter.get("/list/category/:categoryName", async (req, res, next) => {
 // GET /api/businesses/:id/reviews
 businessRouter.get("/:id/reviews", async (req, res, next) => {
   try {
-    const reviews = await getReviewsForBusiness(req.params.id);
+    const startIndex = +req.query.offset;
+    const limit = +req.query.limit;
+
+    const reviews = await getReviewsForBusiness({
+      businessId: req.params.id,
+      startIndex,
+      limit,
+    });
 
     res.send({ reviews });
   } catch (error) {

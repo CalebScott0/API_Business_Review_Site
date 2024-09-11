@@ -11,6 +11,9 @@ const countBusinessReviews = (id) => {
     where: { businessId: id },
   });
 };
+
+
+
 // average all stars from reviews for a business given an id
 const averageBusinessStars = async (id) => {
   // return from aggregate will look like: { _avg: { stars: 5 } }

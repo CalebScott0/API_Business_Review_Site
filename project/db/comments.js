@@ -1,4 +1,6 @@
-const { countUserComments } = require("./update_tables/utils");
+const {
+  countUserComments,
+} = require("./update_tables/utils");
 const prisma = require("./index");
 
 const updateUserOnComment = async (authorId) => {
@@ -34,13 +36,13 @@ const deleteComment = async (id) => {
     },
     where: { id },
   });
-  console.log(authorId);
   // const authorId = await prisma.$queryRaw`SELECT "authorId" FROM "Comment"
   //                                        WHERE id = ${id}`;
   const comment = await prisma.comment.delete({
     where: { id },
   });
   await updateUserOnComment(authorId.authorId);
+
   return comment;
 };
 

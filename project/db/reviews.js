@@ -126,12 +126,12 @@ const getReviewById = (id) => {
   });
 };
 
-const getReviewsForBusiness = (businessId, limit = 5) => {
+const getReviewsForBusiness = ({ businessId, startIndex = 0, limit = 5 }) => {
   return prisma.$queryRaw`SELECT r.*, u.username AS author FROM "Review" r
                           JOIN "User" u ON r."authorId" = u.id  
                           WHERE r."businessId" = ${businessId} 
                           ORDER BY r."createdAt" DESC 
-                          LIMIT ${limit};`;
+                          LIMIT ${limit} OFFSET ${startIndex};`;
 };
 
 const getReviewsForUser = (userId) => {
