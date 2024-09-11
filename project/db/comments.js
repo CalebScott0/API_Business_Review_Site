@@ -12,10 +12,10 @@ const updateUserOnComment = async (authorId) => {
 };
 
 const createComment = async (data) => {
-  const comment = await prisma.comment.create({ data });
-  await updateUserOnComment(data.authorId);
-  return comment;
-  // return prisma.comment.create({ data });
+  // const comment = await prisma.comment.create({ data });
+  // await updateUserOnComment(data.authorId);
+  // return comment;
+  return prisma.comment.create({ data });
 };
 
 const updateComment = (id, text) => {
@@ -29,19 +29,20 @@ const updateComment = (id, text) => {
 };
 
 const deleteComment = async (id) => {
-  const authorId = await prisma.comment.findUnique({
-    select: {
-      authorId: true,
-    },
+  // const authorId = await prisma.comment.findUnique({
+  //   select: {
+  //     authorId: true,
+  //   },
+  //   where: { id },
+  // });
+  // const comment = await prisma.comment.delete({
+  //   where: { id },
+  // });
+  // await updateUserOnComment(authorId.authorId);
+  // return comment;
+  return prisma.comment.delete({
     where: { id },
   });
-  // const authorId = await prisma.$queryRaw`SELECT "authorId" FROM "Comment"
-  //                                        WHERE id = ${id}`;
-  const comment = await prisma.comment.delete({
-    where: { id },
-  });
-  await updateUserOnComment(authorId.authorId);
-  return comment;
 };
 
 const getCommentsForReview = async ({
