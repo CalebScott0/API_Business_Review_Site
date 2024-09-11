@@ -25,8 +25,6 @@ const updateUserOnReview = async (authorId) => {
   // count total num user reviews - parseInt convert from BigInt
   const reviewCount = parseInt((await countUserReviews(authorId))[0].count);
 
-  // // count total num user comment
-  // const commentCount = await countUserComments(authorId);
 
   // // average user star ratings on reviews rounded to nearest 0.5
   const stars = await averageUserStars(authorId);
@@ -100,9 +98,7 @@ const deleteReview = async (id) => {
   const { businessId, authorId } = await getReviewById(id);
   const deletedReview = await prisma.$queryRaw`DELETE FROM "Review"
                           WHERE id = ${id};`;
-  // const deletedReview = await prisma.review.delete({
-  //   where: { id },
-  // });
+
   await decrementBusinessReview(businessId);
   await updateUserOnReview(authorId);
   return deletedReview;

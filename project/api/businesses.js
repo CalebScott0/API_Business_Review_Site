@@ -9,7 +9,7 @@ const { getReviewsForBusiness } = require("../db/reviews");
 const { getPhotosForBusiness } = require("../db/photos");
 const { getCommentsForReview } = require("../db/comments");
 
-// GET /api/businesses
+// GET /api/businesses - returns id & name
 businessRouter.get("/", async (req, res, next) => {
   try {
     const businesses = await getAllBusinesses();
