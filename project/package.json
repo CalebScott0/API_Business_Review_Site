@@ -4,7 +4,6 @@
   "description": "Capstone Project: create the backend and frontend of a review site.",
   "main": "index.js",
   "scripts": {
-    "deleteData": "node --max-old-space-size=8192 ./db/DeleteBusNoPics.js",
     "seedBusinesses": "node --max-old-space-size=6000 ./prisma/seed/seedBusinesses.js",
     "seedUsers": "node --max-old-space-size=6000 ./prisma/seed/seedUsers.js",
     "seedReviews": "node --max-old-space-size=6000 ./prisma/seed/seedReviews.js",
