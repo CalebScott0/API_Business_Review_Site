@@ -26,26 +26,32 @@ async function main() {
 
   // create many for users caused error in seeding to deployed db
 
-  for (let i = 0; i < userArr.length; i++) {
+
+  // *** CHANGE THIS BACK TO 0 AFTER SEEDING IS COMPLETE
+  for (let i = 270000; i < userArr.length; i++) {
     const { user_id, name, yelping_since } = userArr[i];
 
     // convert yelping_since date/time string into ISOString for prisma DateTime
     const dateConverter = new Date(yelping_since).toISOString();
 
-    await prisma.user.create({
-      data: {
-        id: user_id,
-        // create display name using given names as base, may use one or both provided names
-        // index added to avoid duplicate values
-        username: `${faker.internet.displayName({
-          firstName: name,
-          lastName: faker.internet.lastName,
-        })}#${i}`,
-        password: `${faker.internet.password()}`,
-        firstname: name,
-        createdAt: dateConverter,
-      },
-    });
+    try {
+      await prisma.user.create({
+        data: {
+          id: user_id,
+          // create display name using given names as base, may use one or both provided names
+          // index added to avoid duplicate values
+          username: `${faker.internet.displayName({
+            firstName: name,
+            lastName: faker.internet.lastName,
+          })}#${i}`,
+          password: `${faker.internet.password()}`,
+          firstname: name,
+          createdAt: dateConverter,
+        },
+      });
+    } catch (error) {
+      continue;
+    }
     if (i !== 0 && i % 10000 === 0) {
       console.log(`${i} users seeded...`);
     }
