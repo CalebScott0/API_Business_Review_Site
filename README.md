@@ -17,7 +17,7 @@ npm run start:dev
 npm run start
 ```
 3. Seed Data (file suffixes: Businesses -> Users -> Categories/Photos/Reviews -> Comments/Comments2)
-      (both comments seed files may be run as many times as desired; however, high comment record count will slow down database queries)
+      (both comments seed files may be run as many times as desired; however, a large record amount for comments will slow down database queries)
 ```bash
 npm run seed< file suffix > 
 ```
