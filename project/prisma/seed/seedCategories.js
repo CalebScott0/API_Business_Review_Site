@@ -30,10 +30,10 @@ async function main() {
   // seed categories to businesses
   console.log("Seeding Categories to Businesses...");
 
-  for (let bus of businessArr) {
+  for (let i = 0; i < businessArr.length; i++) {
     // only create category to business record if current business has categories
-    if (bus.categories) {
-      const splitCategories = bus.categories.split(", ");
+    if (businessArr[i].categories) {
+      const splitCategories = businessArr[i].categories.split(", ");
 
       // filter out any duplicate category values of business
       const data = splitCategories.filter(
@@ -49,7 +49,7 @@ async function main() {
             },
           });
           // destrcuture business_id from current object of businessArr
-          const { business_id } = bus;
+          const { business_id } = businessArr[i];
 
           /* create a category to business record
            (business <-> categories = many to many relationship) */
@@ -63,6 +63,7 @@ async function main() {
         })
       );
     }
+    if (i % 1000 === 0) console.log(`${((i/businessArr.length)*100).toFixed(2)}%`);
   }
 
   const businesses = await prisma.business.findMany({

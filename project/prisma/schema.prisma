@@ -83,7 +83,7 @@ model CategoryToBusiness {
   businessId   String
   business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
   categoryId   String
-  category     Category @relation(fields: [categoryId], references: [id])
+  category     Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@unique([businessId, categoryId])
 }
