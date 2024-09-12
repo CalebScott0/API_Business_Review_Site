@@ -67,6 +67,6 @@ npm run updateCategories && npm run updateBusinesses
 * nodemon
 
 
-* [Academic Dataset Agreement]
+### [Academic Dataset Agreement]
 https://s3-media0.fl.yelpcdn.com/assets/srv0/engineering_pages/f64cb2d3efcc/assets/vendor/Dataset_User_Agreement.pdf.
   
