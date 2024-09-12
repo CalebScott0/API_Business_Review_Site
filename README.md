@@ -3,7 +3,7 @@
 ## Overview
 
 This API has been created to support a review-based platform where users can view businesses and 
-their associated reviews. It allows unauthenticated users to access and search for items, view detailed information and average ratings, and browse reviews. Authenticated users can create, read, update, and delete their own reviews and comments. The database for this API is seeded with data from the YELP academic data set AND IS FOR ACADEMIC PURPOSES ONLY https://s3-media0.fl.yelpcdn.com/assets/srv0/engineering_pages/f64cb2d3efcc/assets/vendor/Dataset_User_Agreement.pdf. Businesses are interactable both by a category filter as well as by individual id.
+their associated reviews. It allows unauthenticated users to access and search for items, view detailed information and average ratings, and browse reviews. Authenticated users can create, read, update, and delete their own reviews and comments. The database for this API is seeded with data from the YELP academic data set AND IS FOR ACADEMIC PURPOSES ONLY. Businesses are interactable both by a category filter as well as by individual id.
 
 ## Local Setup
 
