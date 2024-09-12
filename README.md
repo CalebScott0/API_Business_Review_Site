@@ -47,6 +47,13 @@ npm run updateCategories && npm run updateBusinesses
 | POST   | /review/:businessId | Add a review to a business | Yes |
 | PUT    | /review/:id | Updates a user's review | Yes |
 | DELETE | /review/:id | Deletes a user's review | Yes |
+| GET    | /user       | Get a logged in user's info | Yes |
+| GET    | /user/reviews | Get a logged in user's reviews | Yes |
+| GET    | /user/comments | Get a logged in user's comments | Yes |
+| GET    | /user/:id   | Get a user by id | Yes |
+| POST   | /auth/register | Register a new user | No |
+| POST   | /auth/login | Log in a user | No |
+
 
 
 ## packages used
