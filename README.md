@@ -2,8 +2,8 @@
 
 ## Overview
 
-This API has been created to support a review-based platform where users can view businesses and 
-their associated reviews. It allows unauthenticated users to access and search for items, view detailed information and average ratings, and browse reviews. Authenticated users can create, read, update, and delete their own reviews and comments. The database for this API is seeded with data from the YELP academic data set and is for academic purposes only. Businesses are interactable both by a category filter as well as by individual id.
+A node.js express API created to support a review-based platform where users can view businesses and 
+their associated reviews. It allows unauthenticated users to access and search for items, view detailed information and average ratings, and browse reviews. Authenticated users can create, read, update, and delete their own reviews and comments. The database for this API utilizes prisma and is seeded with data from the YELP academic data set and is for academic purposes only. Businesses are interactable both by a category filter as well as by individual id.
 
 ## Local Setup
 
