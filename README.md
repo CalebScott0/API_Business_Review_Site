@@ -29,10 +29,12 @@ npm run seed< file suffix >
 ```bash
 npm run updateCategories && npm run updateBusinesses
 ```
-## Endpoints
-| Method | Endpoint | Description | Requires Auth Token? |
+## Endpoints (/api is a prefix to all endpoints!!)
+
+| Method | Endpoint (/api) | Description | Requires Auth Token? |
 | ------ | -------- | ----------- | -------------------- |
-| GET    | /api/businesses | Get all businesses (returns id and name ordered by stars then review count desc) | No
-| GET    | /businesses/:id | Get a business by id (also returns associated categories) |  No
+| GET    | /businesses | Get all businesses (returns id and name ordered by stars then review count desc) | No
+| GET    | /businesses/:id | Get a business by id (also returns associated categories) |  No |
+| GET    | /businesses/list/category/:categoryName  | Returns a list of businesses in the requested category | No
 ## packages used
   
