@@ -28,7 +28,7 @@ async function main() {
 
 
   // *** CHANGE THIS BACK TO 0 AFTER SEEDING IS COMPLETE
-  for (let i = 270000; i < userArr.length; i++) {
+  for (let i = 300000; i < userArr.length; i++) {
     const { user_id, name, yelping_since } = userArr[i];
 
     // convert yelping_since date/time string into ISOString for prisma DateTime
