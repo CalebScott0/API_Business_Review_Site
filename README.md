@@ -16,6 +16,14 @@ npm run start:dev
 ``` bash
 npm run start
 ```
+3. Seed Data (Businesses -> Users -> Categories/Photos/Reviews -> Comments 1 & 2)
+```bash
+npm run seed... 
+```
+4. Update database tables
+```bash
+npm run updateCategories && npm run updateBusinesses
+```
 
 ## packages used
   
