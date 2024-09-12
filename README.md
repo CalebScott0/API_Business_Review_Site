@@ -32,7 +32,7 @@ npm run updateCategories && npm run updateBusinesses
 ## Endpoints
 | Method | Endpoint | Description | Requires Auth Token? |
 | ------ | -------- | ----------- | -------------------- |
-| GET    | /api/businesses | Get all businesses (returns id and name ordered by stars and review count desc) |
+| GET    | /api/businesses | Get all businesses (returns id and name ordered by stars then review count desc) | No
 |
 |
 |
