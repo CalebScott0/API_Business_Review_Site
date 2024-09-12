@@ -57,8 +57,8 @@ npm run updateCategories && npm run updateBusinesses
 ## Packages
 * Prisma ORM
 * bcrypt
-* Express.js
-* From-ndjson
+* express.js
+* from-ndjson
 * jsonwebtoken
 * morgan
 * uuid
