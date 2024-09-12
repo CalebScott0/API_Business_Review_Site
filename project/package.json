@@ -4,9 +4,9 @@
   "description": "Capstone Project: create the backend and frontend of a review site.",
   "main": "index.js",
   "scripts": {
-    "seedBusinesses": "node --max-old-space-size=6000 ./prisma/seed/seedBusinesses.js",
-    "seedUsers": "node --max-old-space-size=6000 ./prisma/seed/seedUsers.js",
-    "seedReviews": "node --max-old-space-size=6000 ./prisma/seed/seedReviews.js",
+    "seedBusinesses": "node --max-old-space-size=8192 ./prisma/seed/seedBusinesses.js",
+    "seedUsers": "node --max-old-space-size=8192 ./prisma/seed/seedUsers.js",
+    "seedReviews": "node --max-old-space-size=8192 ./prisma/seed/seedReviews.js",
     "seedComments": "node --max-old-space-size=8192 ./prisma/seed/seedComments.js",
     "seedComments2": "node --max-old-space-size=8192 ./prisma/seed/seedComments2.js",
     "seedCategories": "node --max-old-space-size=8192 ./prisma/seed/seedCategories.js",
@@ -14,8 +14,8 @@
     "start": "node index.js",
     "start:dev": "nodemon index.js",
     "test": "jest --runInBand --watch",
-    "updateBusinesses": "node --max-old-space-size=6000 ./db/update_tables/updateBusinesses.js",
-    "updateCategories": "node --max-old-space-size=6000 ./db/update_tables/updateCategories.js"
+    "updateBusinesses": "node --max-old-space-size=8192 ./db/update_tables/updateBusinesses.js",
+    "updateCategories": "node --max-old-space-size=8192 ./db/update_tables/updateCategories.js"
   },
   "keywords": [],
   "author": "",
