@@ -35,10 +35,19 @@ npm run updateCategories && npm run updateBusinesses
 | ------ | -------- | ----------- | -------------------- |
 | GET    | /businesses | Get all businesses (returns id and name ordered by stars then review count desc) | No
 | GET    | /businesses/:id | Get a business by id (also returns associated categories) |  No |
-| GET    | /businesses/list/category/:categoryName  | Get a list of businesses in the requested category (default request paramaters limit 10 records skip none) | No
-| GET    | /businesses/:id/reviews | Get reviews for a business (default request parameters limit 5 skip none) | No
-| GET    | /businesses/reviews/:reviewId/comments | Get comments for a review (default request parameters limit 2 skip 0) | No
-| GET    | /businesses/:id/photos | Get photos for a business | No
+| GET    | /businesses/list/category/:categoryName  | Get a list of businesses in the requested category (default request paramaters limit 10 records skip none) | No |
+| GET    | /businesses/:id/reviews | Get reviews for a business (default request parameters limit 5 skip none) | No |
+| GET    | /businesses/reviews/:reviewId/comments | Get comments for a review (default request parameters limit 2 skip 0) | No |
+| GET    | /businesses/:id/photos | Get photos for a business | No |
+| GET    | /categories | Get all categories | No |
+| POST   | /comment/:reviewId | Add a comment to a review | Yes |
+| PUT    | /comment/:id | Updates a user's comment | Yes |
+| DELETE | /comment/:id | Deletes a user's comment | Yes |
+| GET    | /landing-page/reviews/recent | Get the 10 most recent reviews | No
+| POST   | /review/:businessId | Add a review to a business | Yes |
+| PUT    | /review/:id | Updates a user's review | Yes |
+| DELETE | /review/:id | Deletes a user's review | Yes |
+
 
 ## packages used
   
