@@ -7,66 +7,31 @@ const prisma = new PrismaClient();
 async function main() {
   // seed users
 
-  // console.log("Mapping User data...");
+  console.log("Mapping User data...");
 
-  // const data = userArr.map((user, i) => ({
-  //   id: user.user_id,
-  //   username: `${faker.internet.displayName({
-  //     firstName: user.name,
-  //     lastName: faker.internet.lastName,
-  //   })}#${i}`,
-  //   password: `${faker.internet.password()}`,
-  //   firstname: user.name,
-  //   createdAt: new Date(user.yelping_since).toISOString(),
-  // }));
-  // console.log(data.slice(0, 5));
-
+  let users = userArr.map((user, i) => ({
+    id: user.user_id,
+    username: `${faker.internet.displayName({
+      firstName: user.name,
+      lastName: faker.internet.lastName,
+    })}#${i}`,
+    password: `${faker.internet.password()}`,
+    firstname: user.name,
+    createdAt: new Date(user.yelping_since).toISOString(),
+  }));
+  // delete the slice after seeded to new db
+  data = users.slice(1300010, 1600000);
+  console.log(data.slice(0, 5));
   console.log("Creating Initial User Data...");
-  // await prisma.user.createMany({ data });
+  await prisma.user.createMany({ data });
 
-  // create many for users caused error in seeding to deployed db
+  // const sampleUserData = await prisma.user.findMany({
+  //   skip: 100000,
+  //   take: 10,
+  // });
 
-
-  // *** CHANGE THIS BACK TO 0 AFTER SEEDING IS COMPLETE
-  for (let i = 300000; i < userArr.length; i++) {
-    const { user_id, name, yelping_since } = userArr[i];
-
-    // convert yelping_since date/time string into ISOString for prisma DateTime
-    const dateConverter = new Date(yelping_since).toISOString();
-
-    try {
-      await prisma.user.create({
-        data: {
-          id: user_id,
-          // create display name using given names as base, may use one or both provided names
-          // index added to avoid duplicate values
-          username: `${faker.internet.displayName({
-            firstName: name,
-            lastName: faker.internet.lastName,
-          })}#${i}`,
-          password: `${faker.internet.password()}`,
-          firstname: name,
-          createdAt: dateConverter,
-        },
-      });
-    } catch (error) {
-      continue;
-    }
-    if (i !== 0 && i % 10000 === 0) {
-      console.log(`${i} users seeded...`);
-    }
-  }
-
-  const sampleUserData = await prisma.user.findMany({
-    skip: 100000,
-    take: 10,
-  });
-
-  console.log("userData", sampleUserData);
-
-  const userData = await prisma.user.findMany();
-
-  console.log(`${userData.length} Users Seeded.`);
+  // console.log("userData", sampleUserData);
+  console.log(`${data.length} users seeded`);
 }
 main()
   .then(async () => {

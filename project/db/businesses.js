@@ -14,16 +14,11 @@ const getBusinessById = async (id) => {
   // business = { ...business, categories, reviews, photos };
   return business;
 };
-// Select all businesses with pictures ids & names - no duplicates
+// Select all businesses' ids & names - no duplicates
 // order by stars descending and then review count descending
 const getAllBusinesses = () => {
   return prisma.business.findMany({
-    where: {
-      Photos: {
-        some: {},
-      },
-    },
-    select: {
+     select: {
       id: true,
       name: true,
     },
@@ -69,13 +64,13 @@ const getBusinessList = async ({
           WHERE "businessId" = ${item.id} LIMIT 1`;
 
       // grab most recent review for each business
-      const reviews =
+      const review =
         await prisma.$queryRaw`SELECT r.*, username AS author FROM "Review" r 
                                 JOIN "User" u ON u.id = r."authorId"
                                 WHERE "businessId" = ${item.id} 
                                 ORDER BY "createdAt" DESC LIMIT 1`;
 
-      return { ...item, categories, photos, reviews };
+      return { ...item, categories, photos, review };
     })
   );
   return businessList;

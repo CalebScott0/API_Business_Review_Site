@@ -1,13 +1,16 @@
 const { PrismaClient } = require("@prisma/client");
 const { faker } = require("@faker-js/faker");
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ["info"],
+});
+
 async function main() {
   // find all users to assign random user to each seeded comment
   const users = await prisma.user.findMany();
   // create comments for reviews 500000 reviews at a time, skipping every other 500000
   // will be adding on to pre seeded comments
-  async function reviewSeed1() {
+  async function commentSeed1() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
@@ -43,7 +46,7 @@ async function main() {
     );
 
     const comments = await prisma.review.findMany({
-      skip: 250000,
+      // skip: 0,
       take: 10,
       include: {
         Comments: true,
@@ -56,11 +59,12 @@ async function main() {
 
     console.log("Seeding 1/5 completed...");
   }
-  async function reviewSeed2() {
+
+  async function commentSeed2() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
-      skip: 1000000,
+      skip: 500000,
       take: 500000,
     });
 
@@ -93,7 +97,7 @@ async function main() {
     );
 
     const comments = await prisma.review.findMany({
-      skip: 1250000,
+      skip: 500000,
       take: 10,
       include: {
         Comments: true,
@@ -105,11 +109,12 @@ async function main() {
     }
     console.log("Seeding 2/5 completed...");
   }
-  async function reviewSeed3() {
+
+  async function commentSeed3() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
-      skip: 2000000,
+      skip: 1000000,
       take: 500000,
     });
 
@@ -142,7 +147,7 @@ async function main() {
     );
 
     const comments = await prisma.review.findMany({
-      skip: 2250000,
+      skip: 1000000,
       take: 10,
       include: {
         Comments: true,
@@ -154,11 +159,11 @@ async function main() {
     }
     console.log("Seeding 3/5 completed...");
   }
-  async function reviewSeed4() {
+  async function commentSeed4() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
-      skip: 3000000,
+      skip: 1500000,
       take: 500000,
     });
 
@@ -191,7 +196,7 @@ async function main() {
     );
 
     const comments = await prisma.review.findMany({
-      skip: 3250000,
+      skip: 1500000,
       take: 10,
       include: {
         Comments: true,
@@ -203,11 +208,11 @@ async function main() {
     }
     console.log("Seeding 4/5 completed...");
   }
-  async function reviewSeed5() {
+  async function commentSeed5() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
     const reviews = await prisma.review.findMany({
-      skip: 4000000,
+      skip: 2000000,
       take: 500000,
     });
 
@@ -240,7 +245,7 @@ async function main() {
     );
 
     const comments = await prisma.review.findMany({
-      skip: 4000000,
+      skip: 2000000,
       take: 10,
       include: {
         Comments: true,
@@ -250,13 +255,13 @@ async function main() {
     for (const comment of comments) {
       console.log(comment);
     }
-    console.log("Seeded comments.");
   }
-  reviewSeed1()
-    .then(() => reviewSeed2())
-    .then(() => reviewSeed3())
-    .then(() => reviewSeed4())
-    .then(() => reviewSeed5())
+  commentSeed1()
+    .then(() => commentSeed2())
+    .then(() => commentSeed3())
+    .then(() => commentSeed4())
+    .then(() => commentSeed5())
+    .then(() => console.log("Seeded comments."))
     .catch((e) => {
       console.log(e);
     });

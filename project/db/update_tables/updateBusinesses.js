@@ -4,10 +4,6 @@ const prisma = require("../index");
 
 async function main() {
   const businesses = await prisma.business.findMany({
-    where: {
-      reviewCount: 0,
-      stars: 0,
-    },
     select: {
       id: true,
     },
