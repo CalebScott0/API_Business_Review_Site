@@ -3,13 +3,6 @@ const prisma = require("./index");
 // get all categories
 // - ordered by count of businesses desc
 const getCategories = () => {
-  return prisma.categoryToBusiness.findMany({
-    distinct: ["categoryName"],
-    orderBy: {
-      category: {
-        businessCount: "desc",
-      },
-    },
-  });
+  return prisma.$queryRaw`SELECT DISTINCT "categoryName" FROM "CategoryToBusiness"`;
 };
 module.exports = getCategories;
