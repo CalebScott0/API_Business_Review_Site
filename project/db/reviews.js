@@ -25,7 +25,6 @@ const updateUserOnReview = async (authorId) => {
   // count total num user reviews - parseInt convert from BigInt
   const reviewCount = parseInt((await countUserReviews(authorId))[0].count);
 
-
   // // average user star ratings on reviews rounded to nearest 0.5
   const stars = await averageUserStars(authorId);
 
@@ -36,9 +35,11 @@ const updateUserOnReview = async (authorId) => {
 
 const createReview = async (data) => {
   // create a review for user
+  console.log("creating review");
   const newReview = await prisma.review.create({ data });
-
+  console.log("updating user");
   await updateUserOnReview(data.authorId);
+  console.log("updating business");
   // update business with businessId from review data
   await updateBusinessOnReview(data.businessId);
 

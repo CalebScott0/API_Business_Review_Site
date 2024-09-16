@@ -6,6 +6,7 @@ const { getCommentsForUser } = require("../db/comments");
 // GET /api/user
 userRouter.get("/", async (req, res, next) => {
   try {
+    console.log("hi")
     // delete user password? won't be needed on frontend?
     delete req.user.password;
     // req.user is set in api/index.js, do not need to requery here
