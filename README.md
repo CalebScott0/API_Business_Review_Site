@@ -20,15 +20,7 @@ npm run start:dev
 ``` bash
 npm run start
 ```
-3. Seed Data (file suffixes: Businesses -> Users -> Categories/Photos/Reviews -> Comments/Comments2)
-      (both comments seed files may be run as many times as desired; however, a large record amount for comments will slow down database queries)
-```bash
-npm run seed< file suffix > 
-```
-4. Update database tables
-```bash
-npm run updateCategories && npm run updateBusinesses
-```
+
 ## Endpoints (/api is a prefix to all endpoints!!)
 
 | Method | Endpoint (/api) | Description | Requires Auth Token? |
