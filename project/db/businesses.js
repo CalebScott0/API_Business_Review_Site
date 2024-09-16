@@ -18,7 +18,7 @@ const getBusinessById = async (id) => {
 // order by stars descending and then review count descending
 const getAllBusinesses = () => {
   return prisma.business.findMany({
-     select: {
+    select: {
       id: true,
       name: true,
     },
