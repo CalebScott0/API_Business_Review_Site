@@ -36,7 +36,7 @@ const createReview = (data) => {
 };
 
 const updateBusinessStars = async (reviewId) => {
-  const { businessId } = await getReviewById(reviewId);
+  const { businessId } = (await getReviewById(reviewId))[0];
   // update business average stars if review update stars changed
 
   const stars = await averageBusinessStars(businessId);
