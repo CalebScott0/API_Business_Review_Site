@@ -60,7 +60,7 @@ const checkUserHasReview = async (req, res, next) => {
 
 // check if user is author of review before update or delete
 const checkIsUserReview = async (req, res, next) => {
-  const { authorId } = await getReviewById(req.params.id)[0];
+  const { authorId } = (await getReviewById(req.params.id))[0];
   if (req.user.id !== authorId) {
     return res
       .status(400)
@@ -71,7 +71,7 @@ const checkIsUserReview = async (req, res, next) => {
 
 // check if user is trying to comment on their own review
 const checkIsNotUserReview = async (req, res, next) => {
-  const { authorId } = await getReviewById(req.params.reviewId)[0];
+  const { authorId } = (await getReviewById(req.params.reviewId))[0];
   if (req.user.id === authorId) {
     return res
       .status(400)
