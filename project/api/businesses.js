@@ -116,7 +116,7 @@ businessRouter.get(`/:id/photos`, async (req, res, next) => {
 // GET /api/businesses/:id/categories
 businessRouter.get("/:id/categories", async (req, res, next) => {
   try {
-    const categories = await getCategoriesForBusiness(req.params.businessId);
+    const categories = await getCategoriesForBusiness(req.params.id);
 
     res.send({ categories });
   } catch ({ name, message }) {
