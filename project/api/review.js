@@ -1,7 +1,13 @@
 const express = require("express");
 const reviewRouter = express.Router();
 
-const { createReview, updateReview, deleteReview } = require("../db/reviews");
+const {
+  createReview,
+  updateReview,
+  deleteReview,
+  incrementBusinessOnReview,
+  incrementUserOnReview,
+} = require("../db/reviews");
 
 const {
   checkCreateReviewData,
@@ -69,6 +75,5 @@ reviewRouter.delete(
     }
   }
 );
-
 
 module.exports = reviewRouter;
