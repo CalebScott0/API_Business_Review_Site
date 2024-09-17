@@ -34,6 +34,7 @@ const incrementUserOnReview = async (authorId) => {
 const createReview = (data) => {
   // create a review for user
   // const newReview = await prisma.review.create({ data });
+  
   // update business / user with ids from review data
   // await incrementUserOnReview(data.authorId);
   // await incrementBusinessOnReview(data.businessId);
