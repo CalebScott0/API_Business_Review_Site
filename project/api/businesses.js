@@ -118,11 +118,11 @@ businessRouter.get("/:id/categories", async (req, res, next) => {
   try {
     const categories = await getCategoriesForBusiness(req.params.id);
 
-    res.send({ error });
+    res.send({ categories });
   } catch (error) {
     next({
       name: "UnableToFetchPhotos",
-      message: "Unable to fetch photos for review",
+      message: "Unable to fetch categories",
     });
   }
 });
