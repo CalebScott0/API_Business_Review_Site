@@ -7,4 +7,10 @@ const getCategories = () => {
                           FROM "CategoryToBusiness"
                           ORDER BY "categoryName" ASC`;
 };
+
+const getCategoriesForBusiness = (businessId) => {
+  return prisma.$queryRaw`SELECT "categoryId", "categoryName"
+                          FROM "CategoryToBusiness"
+                          WHERE "businessId" = ${businessId}`;
+};
 module.exports = getCategories;
