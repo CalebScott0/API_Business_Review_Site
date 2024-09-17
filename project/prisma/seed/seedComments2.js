@@ -11,56 +11,56 @@ async function main() {
   // create comments for reviews 500000 reviews at a time, skipping every other 500000
   // will be adding on to pre seeded comments
 
-  async function commentSeed1() {
-    // use pagination to get reviews, too big to find all at once
-    // will assign 1 comment to each review
-    const reviews = await prisma.review.findMany({
-      skip: 500000,
-      take: 500000,
-    });
+  // async function commentSeed1() {
+  //   // use pagination to get reviews, too big to find all at once
+  //   // will assign 1 comment to each review
+  //   const reviews = await prisma.review.findMany({
+  //     skip: 500000,
+  //     take: 500000,
+  //   });
 
-    console.log("Creating comments 1/4...");
-    await Promise.all(
-      [...reviews].map((review) => {
-        //pick random user index from all users array
-        let randUser = Math.floor(Math.random() * (users.length - 1));
+  //   console.log("Creating comments 1/4...");
+  //   await Promise.all(
+  //     [...reviews].map((review) => {
+  //       //pick random user index from all users array
+  //       let randUser = Math.floor(Math.random() * (users.length - 1));
 
-        // check if random user is the same as reviews author and change index if true
-        if (users[randUser].id === review.authorId) {
-          // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
-          if (randUser === users.length - 1) {
-            randUser -= 1;
-          } else {
-            randUser += 1;
-          }
-        }
+  //       // check if random user is the same as reviews author and change index if true
+  //       if (users[randUser].id === review.authorId) {
+  //         // if randUser is the last user, subtract one instead of adding as index would be out of range otherwise
+  //         if (randUser === users.length - 1) {
+  //           randUser -= 1;
+  //         } else {
+  //           randUser += 1;
+  //         }
+  //       }
 
-        [...Array(1)].map(async () => {
-          await prisma.comment.create({
-            data: {
-              text: faker.lorem.lines({ min: 1, max: 1 }),
-              authorId: users[randUser].id,
-              reviewId: review.id,
-              createdAt: faker.date.past({ years: 10 }),
-            },
-          });
-        });
-      })
-    );
+  //       [...Array(1)].map(async () => {
+  //         await prisma.comment.create({
+  //           data: {
+  //             text: faker.lorem.lines({ min: 1, max: 1 }),
+  //             authorId: users[randUser].id,
+  //             reviewId: review.id,
+  //             createdAt: faker.date.past({ years: 10 }),
+  //           },
+  //         });
+  //       });
+  //     })
+  //   );
 
-    const comments = await prisma.review.findMany({
-      skip: 750000,
-      take: 10,
-      include: {
-        Comments: true,
-      },
-    });
+  //   const comments = await prisma.review.findMany({
+  //     skip: 750000,
+  //     take: 10,
+  //     include: {
+  //       Comments: true,
+  //     },
+  //   });
 
-    for (const comment of comments) {
-      console.log(comment);
-    }
-    console.log("Seeding 1/4 completed...");
-  }
+  //   for (const comment of comments) {
+  //     console.log(comment);
+  //   }
+  //   console.log("Seeding 1/4 completed...");
+  // }
   async function commentSeed2() {
     // use pagination to get reviews, too big to find all at once
     // will assign 1 comment to each review
@@ -210,8 +210,9 @@ async function main() {
       console.log(comment);
     }
   }
-  commentSeed1()
-    .then(() => commentSeed2())
+  // commentSeed1()
+  // .then(() => commentSeed2())
+  commentSeed2()
     .then(() => commentSeed3())
     .then(() => commentSeed4())
     .then(() => console.log("Seeded comments."))

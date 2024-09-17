@@ -8,6 +8,7 @@ const {
 const { getReviewsForBusiness } = require("../db/reviews");
 const { getPhotosForBusiness } = require("../db/photos");
 const { getCommentsForReview } = require("../db/comments");
+const { getCategoriesForBusiness } = require("../db/categories");
 
 // GET /api/businesses - returns id & name
 businessRouter.get("/", async (req, res, next) => {
@@ -17,19 +18,6 @@ businessRouter.get("/", async (req, res, next) => {
     res.send({ businesses });
   } catch ({ name, message }) {
     next({ name, message });
-  }
-});
-
-// GET /api/businesses/:id
-businessRouter.get("/:id", async (req, res, next) => {
-  try {
-    const business = await getBusinessById(req.params.id);
-    res.send({ business });
-  } catch (error) {
-    next({
-      name: "UnableToFindBusinessError",
-      message: "Unable to find business, id may be invalid",
-    });
   }
 });
 
@@ -55,6 +43,19 @@ businessRouter.get("/list/category/:categoryName", async (req, res, next) => {
     res.send({ businesses });
   } catch ({ name, message }) {
     next({ name, message });
+  }
+});
+
+// GET /api/businesses/:id
+businessRouter.get("/:id", async (req, res, next) => {
+  try {
+    const business = await getBusinessById(req.params.id);
+    res.send({ business });
+  } catch (error) {
+    next({
+      name: "UnableToFindBusinessError",
+      message: "Unable to find business, id may be invalid",
+    });
   }
 });
 
@@ -109,6 +110,17 @@ businessRouter.get(`/:id/photos`, async (req, res, next) => {
       name: "UnableToFetchPhotos",
       message: "Unable to fetch photos for review",
     });
+  }
+});
+
+// GET /api/businesses/:id/categories
+businessRouter.get("/:id/categories", async (req, res, next) => {
+  try {
+    const categories = await getCategoriesForBusiness(req.params.businessId);
+
+    res.send({ categories });
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

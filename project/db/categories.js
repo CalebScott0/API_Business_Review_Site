@@ -13,4 +13,4 @@ const getCategoriesForBusiness = (businessId) => {
                           FROM "CategoryToBusiness"
                           WHERE "businessId" = ${businessId}`;
 };
-module.exports = getCategories;
+module.exports = { getCategories, getCategoriesForBusiness };
