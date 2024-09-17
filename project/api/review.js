@@ -75,15 +75,11 @@ reviewRouter.put(
 
       /* update business & user if data has stars
           business before res to display accurate info  */
-      if (stars) {
-        await updateBusinessStars(id);
+      stars && (await updateBusinessStars(id));
 
-        res.send({ review });
+      res.send({ review });
 
-        await updateUserStars(authorId);
-      } else {
-        res.send({ review });
-      }
+      stars && (await updateUserStars(authorId));
     } catch ({ name, message }) {
       next({ name, message });
     }
