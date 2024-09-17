@@ -1,21 +1,22 @@
 const { countUserComments } = require("./update_tables/utils");
 const prisma = require("./index");
 
-const updateUserOnComment = async (authorId) => {
-  const comCount = parseInt((await countUserComments(authorId))[0].count);
-  await prisma.user.update({
-    where: { id: authorId },
-    data: {
-      commentCount: comCount,
-    },
-  });
+const updateUserOnComment = async (authorId, type) => {
+  // const comCount = parseInt((await countUserComments(authorId))[0].count);
+  if (type === "create") {
+    await prisma.$queryRaw`UPDATE "User" SET "commentCount" = "commentCount" + 1
+                          WHERE id = ${authorId};`;
+  } else if (type === "delete") {
+    await prisma.$queryRaw`UPDATE "User" SET "commentCount" = "commentCount" - 1
+                          WHERE id = ${authorId};`;
+  }
 };
 
 const createComment = async (data) => {
-  // const comment = await prisma.comment.create({ data });
-  // await updateUserOnComment(data.authorId);
-  // return comment;
-  return prisma.comment.create({ data });
+  const comment = await prisma.comment.create({ data });
+  await updateUserOnComment(data.authorId, "create");
+  return comment;
+  // return prisma.comment.create({ data });
 };
 
 const updateComment = (id, text) => {
@@ -29,20 +30,20 @@ const updateComment = (id, text) => {
 };
 
 const deleteComment = async (id) => {
-  // const authorId = await prisma.comment.findUnique({
-  //   select: {
-  //     authorId: true,
-  //   },
-  //   where: { id },
-  // });
-  // const comment = await prisma.comment.delete({
-  //   where: { id },
-  // });
-  // await updateUserOnComment(authorId.authorId);
-  // return comment;
-  return prisma.comment.delete({
+  const authorId = await prisma.comment.findUnique({
+    select: {
+      authorId: true,
+    },
     where: { id },
   });
+  const comment = await prisma.comment.delete({
+    where: { id },
+  });
+  await updateUserOnComment(authorId.authorId, "delete");
+  return comment;
+  // return prisma.comment.delete({
+  // where: { id },
+  // });
 };
 
 const getCommentsForReview = async ({
