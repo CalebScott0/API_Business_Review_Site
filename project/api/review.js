@@ -41,11 +41,14 @@ reviewRouter.post(
         businessId: req.params.businessId,
       });
 
+      /* re-average stars and + 1 to review count 
+       (business before res to display accurate review count) */
+      await incrementBusinessOnReview(businessId);
+
       res.status(201).send({ review });
 
       // re-average stars and + 1 to review count
       await incrementUserOnReview(authorId);
-      await incrementBusinessOnReview(businessId);
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -70,13 +73,14 @@ reviewRouter.put(
         authorId,
       });
 
+      /* update business if data has stars
+          business before res to display accurate info  */
+      if (stars) await updateBusinessStars(id);
+
       res.send({ review });
 
-      // update business if data has stars
-      if (stars) {
-        await updateBusinessStars(id);
-        await updateUserStars(authorId);
-      }
+      // update user if data has stars
+      if (stars) await updateUserStars(authorId);
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -96,10 +100,13 @@ reviewRouter.delete(
 
       await deleteReview(id);
 
+      /* re-average stars and - 1 to review count 
+          business before res to display accurate info */
+      await decrementBusinessOnReview(businessId);
+
       res.sendStatus(204);
 
       // re-average stars and - 1 to review count
-      await decrementBusinessOnReview(businessId);
       await decrementUserOnReview(authorId);
     } catch ({ name, message }) {
       next({ name, message });

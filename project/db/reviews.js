@@ -2,7 +2,6 @@ const prisma = require("./index");
 const {
   averageBusinessStars,
   averageUserStars,
-  // countUserReviews,
 } = require("../db/update_tables/utils");
 
 // update businesses on review creation
@@ -31,14 +30,8 @@ const incrementUserOnReview = async (authorId) => {
                           WHERE id = ${authorId} RETURNING *`;
 };
 
+// create a review for user
 const createReview = (data) => {
-  // create a review for user
-  // const newReview = await prisma.review.create({ data });
-  
-  // update business / user with ids from review data
-  // await incrementUserOnReview(data.authorId);
-  // await incrementBusinessOnReview(data.businessId);
-
   return prisma.review.create({ data });
 };
 
@@ -69,18 +62,6 @@ const updateUserStars = async (authorId) => {
 
 // update a user review
 const updateReview = (id, data) => {
-  // const updateReview = await prisma.review.update({
-  //   where: { id },
-  //   data: {
-  //     updatedAt: new Date(),
-  //     ...data,
-  //   },
-  // });
-  // update business with id passed to updateReview if data has stars
-  // if (data.stars) {
-  // await updateBusinessStars(id);
-  // await updateUserStars(data.authorId);
-  // }
   return prisma.review.update({
     where: { id },
     data: {
@@ -115,13 +96,6 @@ const decrementUserOnReview = async (authorId) => {
 
 // delete a user review
 const deleteReview = (id) => {
-  // id to pass to decrementBusinessReview before review is deleted
-  // const { businessId, authorId } = await getReviewById(id);
-  // const deletedReview = await prisma.$queryRaw`DELETE FROM "Review"
-  //                         WHERE id = ${id};`;
-
-  // await decrementBusinessOnReview(businessId);
-  // await decrementUserOnReview(authorId);
   return prisma.$queryRaw`DELETE FROM "Review"
                           WHERE id = ${id};`;
 };
@@ -144,6 +118,7 @@ const getReviewById = (id) => {
   });
 };
 
+// get reviews for a business with a default limit of 5
 const getReviewsForBusiness = ({ businessId, startIndex = 0, limit = 5 }) => {
   return prisma.$queryRaw`SELECT r.*, u.username AS author FROM "Review" r
                           JOIN "User" u ON r."authorId" = u.id  
@@ -152,6 +127,8 @@ const getReviewsForBusiness = ({ businessId, startIndex = 0, limit = 5 }) => {
                           LIMIT ${limit} OFFSET ${startIndex};`;
 };
 
+// get reviews for a user 
+// &&with a default limit of 5
 const getReviewsForUser = (userId) => {
   return prisma.$queryRaw`SELECT r.*, b.name as "businessName" FROM "Review" r
                           LEFT JOIN "Business" b on  r."businessId" = b.id

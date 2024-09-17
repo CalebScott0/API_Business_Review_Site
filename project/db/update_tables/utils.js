@@ -12,8 +12,6 @@ const countBusinessReviews = (id) => {
   });
 };
 
-
-
 // average all stars from reviews for a business given an id
 const averageBusinessStars = async (id) => {
   // return from aggregate will look like: { _avg: { stars: 5 } }
@@ -28,16 +26,6 @@ const averageBusinessStars = async (id) => {
       })
     )._avg.stars
   );
-};
-
-// aggregate user's review count to update table column
-const countUserReviews = (id) => {
-  return prisma.$queryRaw`SELECT COUNT(*) FROM "Review" WHERE "authorId"=${id}`;
-};
-
-// aggregate user's comment count
-const countUserComments = (id) => {
-  return prisma.$queryRaw`SELECT COUNT(*) FROM "Comment" WHERE "authorId"=${id}`;
 };
 
 // average all stars from reviews for a user given an id
@@ -59,7 +47,5 @@ const averageUserStars = async (id) => {
 module.exports = {
   countBusinessReviews,
   averageBusinessStars,
-  countUserReviews,
-  countUserComments,
   averageUserStars,
 };

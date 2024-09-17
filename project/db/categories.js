@@ -1,7 +1,7 @@
 const prisma = require("./index");
 
 // get all categories
-// - ordered by count of businesses desc
+// - ordered by name a-z
 const getCategories = () => {
   return prisma.$queryRaw`SELECT DISTINCT "categoryId", "categoryName" 
                           FROM "CategoryToBusiness"
