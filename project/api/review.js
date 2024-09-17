@@ -95,7 +95,7 @@ reviewRouter.delete(
     try {
       const { id } = req.params;
       // id to pass to decrementBusinessReview before review is deleted
-      const { businessId, authorId } = await getReviewById(id);
+      const { businessId, authorId } = (await getReviewById(id))[0];
 
       await deleteReview(id);
 
