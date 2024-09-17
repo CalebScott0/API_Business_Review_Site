@@ -27,7 +27,7 @@ const incrementUserOnReview = async (authorId) => {
   const stars = await averageUserStars(authorId);
 
   // update user with review count and stars
-  return prisma.$queryRaw`UPDATE "User" SET "reviewCount" + 1, stars=${stars} 
+  return prisma.$queryRaw`UPDATE "User" SET "reviewCount" = "reviewCount" + 1, stars=${stars} 
                           WHERE id = ${authorId} RETURNING *`;
 };
 
@@ -102,7 +102,7 @@ const decrementBusinessOnReview = async (id) => {
 const decrementUserOnReview = async (authorId) => {
   const stars = await averageUserStars(authorId);
 
-  return prisma.$queryRaw`UPDATE "User" SET "reviewCount" - 1, stars=${stars} 
+  return prisma.$queryRaw`UPDATE "User" SET "reviewCount" = "reviewCount" - 1, stars=${stars} 
                           WHERE id = ${authorId} RETURNING *`;
 };
 
