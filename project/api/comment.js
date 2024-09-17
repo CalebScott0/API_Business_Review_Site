@@ -5,6 +5,7 @@ const {
   createComment,
   updateComment,
   deleteComment,
+  updateUserOnComment,
 } = require("../db/comments");
 const {
   checkIsNotUserReview,
@@ -22,14 +23,18 @@ commentRouter.post(
   checkIsNotUserReview,
   checkCommentData,
   async (req, res, next) => {
+    const authorId = req.user.id;
     try {
       const comment = await createComment({
         ...req.body,
-        authorId: req.user.id,
+        authorId,
         reviewId: req.params.reviewId,
       });
 
       res.status(201).send({ comment });
+
+      // + 1 to user comment count
+      await updateUserOnComment(authorId, "create");
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -54,18 +59,17 @@ commentRouter.put(
 );
 
 //  DELETE /api/comment/:id
-commentRouter.delete(
-  "/:id",
-  checkIsUserComment,
-  async (req, res, next) => {
-    try {
-      await deleteComment(req.params.id);
+commentRouter.delete("/:id", checkIsUserComment, async (req, res, next) => {
+  try {
+    await deleteComment(req.params.id);
 
-      res.sendStatus(204);
-    } catch ({ name, message }) {
-      next({ name, message });
-    }
+    res.sendStatus(204);
+
+    // -1 to user comment count
+    await updateUserOnComment(req.user.id, "delete");
+  } catch ({ name, message }) {
+    next({ name, message });
   }
-);
+});
 
 module.exports = commentRouter;

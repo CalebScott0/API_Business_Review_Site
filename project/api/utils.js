@@ -60,8 +60,8 @@ const checkUserHasReview = async (req, res, next) => {
 
 // check if user is author of review before update or delete
 const checkIsUserReview = async (req, res, next) => {
-  const review = await getReviewById(req.params.id);
-  if (req.user.id !== review.authorId) {
+  const { authorId } = await getReviewById(req.params.id)[0];
+  if (req.user.id !== authorId) {
     return res
       .status(400)
       .send({ message: "User is not the author of this review" });
@@ -71,8 +71,8 @@ const checkIsUserReview = async (req, res, next) => {
 
 // check if user is trying to comment on their own review
 const checkIsNotUserReview = async (req, res, next) => {
-  const review = await getReviewById(req.params.reviewId);
-  if (req.user.id === review.authorId) {
+  const { authorId } = await getReviewById(req.params.reviewId)[0];
+  if (req.user.id === authorId) {
     return res
       .status(400)
       .send({ message: "User can not submit comment on their own review" });
@@ -89,8 +89,8 @@ const checkCommentData = async (req, res, next) => {
 };
 // check user is author of comment before update or delete
 const checkIsUserComment = async (req, res, next) => {
-  const comment = await getCommentById(req.params.id);
-  if (req.user.id !== comment.authorId) {
+  const { authorId } = await getCommentById(req.params.id);
+  if (req.user.id !== authorId) {
     return res
       .status(400)
       .send({ message: "User is not the author of this comment" });

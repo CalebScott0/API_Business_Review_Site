@@ -96,8 +96,11 @@ const decrementUserOnReview = async (authorId) => {
 
 // delete a user review
 const deleteReview = (id) => {
-  return prisma.$queryRaw`DELETE FROM "Review"
-                          WHERE id = ${id};`;
+  return prisma.review.delete({
+    where: {
+      id,
+    },
+  });
 };
 
 // find a review given an authorId & businessId
@@ -113,9 +116,9 @@ const getUserRevByBusiness = ({ authorId, businessId }) => {
 };
 
 const getReviewById = (id) => {
-  return prisma.review.findUnique({
-    where: { id },
-  });
+  return prisma.$queryRaw`SELECT *
+                FROM "Review"
+                WHERE id = ${id}`;
 };
 
 // get reviews for a business with a default limit of 5
@@ -127,7 +130,7 @@ const getReviewsForBusiness = ({ businessId, startIndex = 0, limit = 5 }) => {
                           LIMIT ${limit} OFFSET ${startIndex};`;
 };
 
-// get reviews for a user 
+// get reviews for a user
 // &&with a default limit of 5
 const getReviewsForUser = (userId) => {
   return prisma.$queryRaw`SELECT r.*, b.name as "businessName" FROM "Review" r

@@ -1,4 +1,3 @@
-const { countUserComments } = require("./update_tables/utils");
 const prisma = require("./index");
 
 const updateUserOnComment = async (authorId, type) => {
@@ -12,11 +11,11 @@ const updateUserOnComment = async (authorId, type) => {
   }
 };
 
-const createComment = async (data) => {
-  const comment = await prisma.comment.create({ data });
-  await updateUserOnComment(data.authorId, "create");
-  return comment;
-  // return prisma.comment.create({ data });
+const createComment = (data) => {
+  // const comment = await prisma.comment.create({ data });
+  // await updateUserOnComment(data.authorId, "create");
+  // return comment;
+  return prisma.comment.create({ data });
 };
 
 const updateComment = (id, text) => {
@@ -29,28 +28,24 @@ const updateComment = (id, text) => {
   });
 };
 
-const deleteComment = async (id) => {
-  const authorId = await prisma.comment.findUnique({
-    select: {
-      authorId: true,
-    },
-    where: { id },
-  });
-  const comment = await prisma.comment.delete({
-    where: { id },
-  });
-  await updateUserOnComment(authorId.authorId, "delete");
-  return comment;
-  // return prisma.comment.delete({
-  // where: { id },
+const deleteComment = (id) => {
+  // const authorId = await prisma.comment.findUnique({
+  //   select: {
+  //     authorId: true,
+  //   },
+  //   where: { id },
   // });
+  // const comment = await prisma.comment.delete({
+  //   where: { id },
+  // });
+  // await updateUserOnComment(authorId.authorId, "delete");
+  // return comment;
+  return prisma.comment.delete({
+    where: { id },
+  });
 };
 
-const getCommentsForReview = async ({
-  reviewId,
-  startIndex = 0,
-  limit = 2,
-}) => {
+const getCommentsForReview = ({ reviewId, startIndex = 0, limit = 2 }) => {
   return prisma.$queryRaw`SELECT c.*, u.username as author
                           FROM "Comment" c 
                           LEFT JOIN "User" u ON c."authorId" = u.id
@@ -92,4 +87,5 @@ module.exports = {
   getCommentById,
   getCommentsForReview,
   getCommentsForUser,
+  updateUserOnComment,
 };

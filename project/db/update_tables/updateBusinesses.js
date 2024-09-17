@@ -31,7 +31,7 @@ async function main() {
 
     // console log first, last and every 50 businesses to see progress
     console.log(
-      `Updated business # ${i == 0 ? 1 : i} / ${businesses.length} - ${(
+      `Updated business # ${i + 1} / ${businesses.length} - ${(
         (i / businesses.length) *
         100
       ).toFixed(2)}%...`
