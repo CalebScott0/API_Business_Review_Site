@@ -1,5 +1,5 @@
-const reviewRouter = express.Router();
 const express = require("express");
+const reviewRouter = express.Router();
 
 const {
   createReview,
