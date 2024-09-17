@@ -65,12 +65,12 @@ const getCommentsForReview = ({ reviewId, startIndex = 0, limit = 2 }) => {
   // });
 };
 
-const getCommentsForUser = (userId) => {
+const getCommentsForUser = (authorId) => {
   return prisma.$queryRaw`SELECT c.*, b.name AS "businessName", u.username AS "reviewAuthor" FROM "Comment" c
                           LEFT JOIN "Review" r ON c."reviewId" = r.id
                           JOIN "Business" b on r."businessId" = b.id
                           JOIN "User" u on r."authorId" = u.id
-                          WHERE c."authorId" = ${userId}
+                          WHERE c."authorId" = ${authorId}
                           ORDER BY "createdAt" DESC;`;
 };
 

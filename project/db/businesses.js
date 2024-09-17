@@ -11,7 +11,6 @@ const getBusinessById = async (id) => {
     await prisma.$queryRaw`SELECT "categoryName" FROM "CategoryToBusiness" WHERE "businessId"=${id};`;
 
   business = { ...business, categories };
-  // business = { ...business, categories, reviews, photos };
   return business;
 };
 // Select all businesses' ids & names - no duplicates
