@@ -45,7 +45,6 @@ const getBusinessList = async ({
   let businessList =
     await prisma.$queryRaw`SELECT DISTINCT b.* FROM "Business" b 
                             JOIN "CategoryToBusiness" c ON c."businessId" = b.id 
-                            JOIN "Photo" p ON p."businessId" = b.id 
                             WHERE "categoryName"=${categoryName} 
                             ORDER BY stars DESC, "reviewCount" DESC
                             LIMIT ${limit} OFFSET ${startIndex};`;
