@@ -140,24 +140,13 @@ const getReviewsForUser = (userId) => {
 };
 
 const getMostRecentReviews = () => {
-  return prisma.review.findMany({
-    include: {
-      author: {
-        select: {
-          username: true,
-        },
-      },
-      business: {
-        select: {
-          name: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 10,
-  });
+  // Order by most recent taken out as query was too slow, find a way to fix this!
+  return prisma.$queryRaw`SELECT r.*, u.username AS author, b.name AS "businessName"
+  FROM "Review" r
+  LEFT JOIN "User" u ON r."authorId" = u.id
+  LEFT JOIN "Business" b ON r."businessId" = b.id
+  -- ORDER BY "createdAt" DESC
+  LIMIT 10`;
 };
 
 module.exports = {
