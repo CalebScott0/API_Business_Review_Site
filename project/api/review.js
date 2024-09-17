@@ -1,12 +1,17 @@
-const express = require("express");
 const reviewRouter = express.Router();
+const express = require("express");
 
 const {
   createReview,
   updateReview,
   deleteReview,
+  getReviewById,
   incrementBusinessOnReview,
   incrementUserOnReview,
+  updateBusinessStars,
+  updateUserStars,
+  decrementBusinessOnReview,
+  decrementUserOnReview,
 } = require("../db/reviews");
 
 const {
@@ -27,12 +32,20 @@ reviewRouter.post(
   checkCreateReviewData,
   async (req, res, next) => {
     try {
+      const authorId = req.user.id;
+      const { businessId } = req.params;
+
       const review = await createReview({
         ...req.body,
-        authorId: req.user.id,
+        authorId,
         businessId: req.params.businessId,
       });
+
       res.status(201).send({ review });
+
+      // re-average stars and + 1 to review count
+      await incrementUserOnReview(authorId);
+      await incrementBusinessOnReview(businessId);
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -48,12 +61,22 @@ reviewRouter.put(
   checkUpdateReviewData,
   async (req, res, next) => {
     try {
-      const review = await updateReview(req.params.id, {
+      const { id } = req.params;
+      const { stars } = req.body;
+      const authorId = req.user.id;
+
+      const review = await updateReview(id, {
         ...req.body,
-        authorId: req.user.id,
+        authorId,
       });
 
       res.send({ review });
+
+      // update business if data has stars
+      if (stars) {
+        await updateBusinessStars(id);
+        await updateUserStars(authorId);
+      }
     } catch ({ name, message }) {
       next({ name, message });
     }
@@ -67,9 +90,17 @@ reviewRouter.delete(
   checkIsUserReview,
   async (req, res, next) => {
     try {
-      await deleteReview(req.params.id);
+      const { id } = req.params;
+      // id to pass to decrementBusinessReview before review is deleted
+      const { businessId, authorId } = await getReviewById(id);
+
+      await deleteReview(id);
 
       res.sendStatus(204);
+
+      // re-average stars and - 1 to review count
+      await decrementBusinessOnReview(businessId);
+      await decrementUserOnReview(authorId);
     } catch ({ name, message }) {
       next({ name, message });
     }
